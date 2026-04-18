@@ -1,0 +1,127 @@
+1. Módulo de Perfil y Autenticación
+    Esta API alimenta la pantalla de inicio (home) del usuario paciente.
+
+    GET /v1/views/patient/home
+
+        Respuesta esperada:
+            - nombre_pila
+            - foto_perfil_url
+            - estado_salud_resumen
+
+            - next_cita: # (Puede ser null si no hay citas)
+                - id_cita
+                - doctor_nombre
+                - especialidad_etiqueta
+                - fecha_relativa # "Mañana", "Hoy"
+                - hora_formateada
+                - ubicacion_resumen
+                - badge_status
+
+            - quick_actions:
+                - action_id
+                - label
+                - icon_id
+                - route_name
+                - is_enabled
+
+
+2. Módulo de Citas (Agendamiento)
+    Este es el flujo de 5 pasos para la reserva médica.
+
+    GET /especialidades (Paso 1):
+
+        Uso: Lista de especialidades disponibles.
+
+        Qué necesitas: 
+            - ID
+            - nombre ("Cardiología")
+            - descripción corta
+            - ícono
+
+    GET /sucursales (Paso 2):
+
+        Uso: Selección de clínica.
+
+        Qué necesitas: 
+            - Nombre
+            - dirección completa
+            Opcional: coordenadas (latitud/longitud) para renderizar el mapa interactivo.
+
+    GET /doctor?especialidad={id}&sucursal={id} (Paso 3):
+
+        Uso: Lista de especialistas filtrados.
+
+        Qué necesitas: 
+            - Nombre
+            - Foto
+            - Calificación (4.9 estrellas)
+            - Años de experiencia
+            - Etiqueta ("Cardióloga")
+
+    GET /doctor/{id}/disponibilidad?date={YYYY-MM-DD} (Paso 4):
+
+        Uso: Calendario y horarios.
+
+        Qué necesitas: 
+            - Días con disponibilidad
+            - lista de slots de tiempo con su estado ("Disponible", "Ocupado")
+
+    POST /citas (Paso 5):
+
+        Uso: Confirmación final y pago del anticipo.
+
+        Qué necesitas: 
+            - Enviar IDs de doctor
+            - sucursal
+            - fecha/hora
+            - el monto del anticipo  
+            Respuesta del backend:
+            - ID de reserva
+
+3. Gestión de Citas Existentes
+    Para el control de la agenda del paciente.
+
+    GET /appointments/next:
+
+        Uso: Tarjeta de "Próxima Cita" en el Inicio.
+
+        Qué necesitas: El registro más cercano: 
+            - nombre del doctor
+            - especialidad
+            - fecha
+            - hora
+            - número de consultorio 
+
+    GET /appointments?status={upcoming|past}:
+
+        Uso: Pantalla "Mis Citas" con pestañas.
+
+        Qué necesitas: 
+            Lista de citas con estado ("Confirmada", "Listo") y prioridad.
+
+    PATCH /appointments/{id}/cancel:
+
+        Uso: Botón "Cancelar Cita" con advertencia de penalización.
+
+        Qué necesitas: Enviar el ID de la cita. El backend debe validar si falta menos de 24 horas para aplicar la pérdida del anticipo.
+
+4. Módulo Médico y Financiero
+    Para el historial y control de pagos.
+
+    GET /medical-history:
+
+    Uso: Línea de tiempo de consultas pasadas.
+
+    Qué necesitas: Fecha, título del diagnóstico ("Seguimiento de Hipertensión"), resumen corto y un link/objeto para "Ver resumen médico".
+
+    GET /payments:
+
+    Uso: Historial de transacciones y balance pendiente.
+
+    Qué necesitas: El monto total pendiente ($850.00), y una lista de transacciones con descripción ("Limpieza Dental"), monto, fecha y estado de pago ("Pagado").
+
+    POST /payments/export:
+
+    Uso: Botón "Exportar Historial".
+
+    Qué necesitas: Solicitar la generación de un PDF con el reporte anual de gastos.
