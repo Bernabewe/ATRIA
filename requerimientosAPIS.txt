@@ -1,127 +1,269 @@
-1. Módulo de Perfil y Autenticación
+Módulo de Perfil y Autenticación
     Esta API alimenta la pantalla de inicio (home) del usuario paciente.
 
     GET /v1/views/patient/home
 
+    Respuesta esperada:
+        - nombre_pila
+        - foto_perfil_url
+        - estado_salud_resumen
+
+        - next_cita: # (Puede ser null si no hay citas)
+            - id_cita
+            - doctor_nombre
+            - especialidad_etiqueta
+            - fecha_relativa # "Mañana", "Hoy"
+            - hora_formateada
+            - ubicacion_resumen
+            - badge_status
+
+        - quick_actions:
+            - action_id
+            - label
+            - icon_id
+            - route_name
+            - is_enabled
+
+Módulo de Citas
+    Proximas: Esta es la sección para que el paciente vea sus citas en la subsección próximas.
+
+    GET /v1/views/patient/citas_proximas
+
+    Respuesta esperada:
+
+        - proxima_prioridad:
+            - id_cita
+            - doctor_nombre
+            - doctor_foto_url
+            - especialidad_etiqueta       
+            - estado_badge              
+            - fecha_hora_resumen      
+
+        - visitas_proximas: (lista)
+            - id_cita
+            - doctor_nombre
+            - motivo_consulta
+            - fecha_corta
+            - icono_especialidad_id
+
+        - completadas_recientemente: (lista)
+            - id_cita
+            - doctor_nombre
+            - motivo_consulta
+            - fecha_corta
+            - icono_especialidad_id
+            - estado_texto
+            - estado_icono
+    Pasadas: Esta es la sección para que el paciente vea el historial de citas pasadas.
+
+    GET /v1/views/patient/citas_pasadas
+
+    Respuesta esperada:
+        - historial_citas: (lista)
+            - id_cita
+            - doctor_nombre
+            - motivo_consulta
+            - fecha_corta
+            - icono_especialidad_id
+            - estado_texto
+            - estado_icono
+
+Módulo Detalles Citas
+    Esta es la sección para que el paciente gestione los detalles de la cita seleccionada.
+
+    GET /v1/views/patient/gestionar_cita?id_cita={id}
+
+    Respuesta esperada:
+
+        # Datos del Médico
+        - doctor_nombre                   
+        - doctor_foto_url                            
+        - especialidad_titulo      
+
+        # Resumen de la Consulta               
+        - estado_badge                     
+        - fecha_completa                  
+        - hora_formateada                 
+        - ubicacion_completa              
+
+        # Detalles de Cobro
+        - anticipo_monto
+
+        # Políticas y Alertas
+        - alerta_cancelacion: # (Puede ser null)             
+            - titulo
+            - mensaje
+
+        # Acciones disponibles 
+        - permitir_cancelacion
+
+Módulo Reserva Médica (Flujo de Agendamiento)
+    Paso 1: Selección de Especialidad
+
+        GET /v1/views/patient/reservas/especialidad
+
         Respuesta esperada:
-            - nombre_pila
-            - foto_perfil_url
-            - estado_salud_resumen
+            - especialidades: (lista)
+                - id_especialidad
+                - nombre_especialidad
+                - descripcion_corta
+                - icono_id
+            
+    Paso 2: Selección de Sucursal
 
-            - next_cita: # (Puede ser null si no hay citas)
-                - id_cita
-                - doctor_nombre
-                - especialidad_etiqueta
-                - fecha_relativa # "Mañana", "Hoy"
+        GET /v1/views/patient/reservas/sucursal
+
+        Respuesta esperada:
+            - sucursales: (lista)
+                - id_sucursal
+                - nombre_sucursal
+                - direccion_completa
+                - coordenadas:
+                    - latitud
+                    - longitud
+
+    Paso 3: Selección de Especialista
+
+        GET /v1/views/patient/reservas/doctores?id_especialidad={id}&id_sucursal={id}
+
+        Respuesta esperada:
+            - especialistas: (lista)
+                - id_doctor
+                - nombre_doctor
+                - foto_url
+                - calificacion_promedio
+                - experiencia_anios
+                - especialidad_titulo
+
+    Paso 4: Selección de Fecha y Hora
+
+        GET /v1/views/patient/reservas/disponibilidad?id_doctor={id}&mes={YYYY-MM}
+
+        Respuesta esperada:
+            - dias_disponibles: (lista de fechas)
+            - horarios_por_dia: (lista)
                 - hora_formateada
-                - ubicacion_resumen
-                - badge_status
+                - estado # "disponible" o "ocupado"
 
-            - quick_actions:
-                - action_id
-                - label
-                - icon_id
-                - route_name
-                - is_enabled
+    Paso 5: Resumen Final antes del Pago
+
+        GET /v1/views/patient/reservas/resumen?id_doctor={id}&id_sucursal={id}&fecha={date}&hora={time}
+
+        Respuesta esperada:
+            - doctor_nombre
+            - doctor_foto_url
+            - especialidad_titulo
+            - sucursal_nombre
+            - sucursal_direccion
+            - fecha_hora_formateada
+            - duracion_estimada
+            - costo_total
+            - anticipo_requerido
+
+Módulo Historial Médico
+    Esta es la sección de la línea de tiempo de los diagnósticos del paciente.
+
+    GET /v1/views/patient/medical_history
+
+    Respuesta esperada:
+        - linea_tiempo_consultas: (lista)
+            - id_historial
+            - fecha_formateada
+            - diagnostico_titulo
+            - resumen_notas
+            - tiene_resumen_medico # booleano para habilitar el link "Ver resumen médico"
+
+Módulo Historial de Pagos
+    Esta es la sección para el control financiero y pagos pendientes.
+
+    GET /v1/views/patient/payments
+
+    Respuesta esperada:
+        - saldo_pendiente
+        - transacciones_recientes: (lista)
+            - id_transaccion
+            - titulo_concepto # ej. "Consulta General"
+            - fecha_formateada
+            - monto_formateado
+            - estado_pago # "PAGADO"
+            - icono_concepto # ej. diente, estetoscopio, etc.
+
+Módulo Mi Perfil
+    Esta es la vista de los datos personales y de contacto del paciente.
+
+    GET /v1/views/patient/profile_details
+
+    Respuesta esperada:
+        - foto_perfil_url
+        - nombre_completo
+        - correo_electronico
+
+        # Información Personal
+        - fecha_nacimiento
+        - peso
+        - altura
+        - tipo_sangre
+
+        # Detalles de Contacto
+        - telefono
+        - direccion_completa
 
 
-2. Módulo de Citas (Agendamiento)
-    Este es el flujo de 5 pasos para la reserva médica.
+Módulo de Acciones (Actualización y Creación)
+    Esta sección contiene los endpoints que el paciente utiliza para interactuar con el sistema, modificar sus datos o realizar transacciones.
 
-    GET /especialidades (Paso 1):
+    Acción: Editar Perfil
+    Se utiliza al presionar el botón "Editar Perfil" para actualizar la información personal.
 
-        Uso: Lista de especialidades disponibles.
+    PUT /v1/patient/profile
 
-        Qué necesitas: 
-            - ID
-            - nombre ("Cardiología")
-            - descripción corta
-            - ícono
+        Cuerpo de la petición (Lo que se envía):
+            - peso
+            - altura
+            - telefono
+            - direccion_completa
 
-    GET /sucursales (Paso 2):
+        Respuesta esperada:
+            - mensaje # ej. "Perfil guardado con éxito"
 
-        Uso: Selección de clínica.
 
-        Qué necesitas: 
-            - Nombre
-            - dirección completa
-            Opcional: coordenadas (latitud/longitud) para renderizar el mapa interactivo.
+    Acción: Pagar Anticipo / Crear Cita (Paso 5)
+    Se utiliza al presionar el botón "Pagar Anticipo" para finalizar el flujo de agendamiento.
 
-    GET /doctor?especialidad={id}&sucursal={id} (Paso 3):
+    POST /v1/reservas/appointments
 
-        Uso: Lista de especialistas filtrados.
+        Cuerpo de la petición (Lo que se envía):
+            - id_doctor
+            - id_sucursal
+            - fecha_hora_inicio
+            - metodo_pago_id # ID de la tarjeta o token de pago
 
-        Qué necesitas: 
-            - Nombre
-            - Foto
-            - Calificación (4.9 estrellas)
-            - Años de experiencia
-            - Etiqueta ("Cardióloga")
+        Respuesta esperada:
+            - id_cita
+            - estado_pago # ej. "APROBADO"
 
-    GET /doctor/{id}/disponibilidad?date={YYYY-MM-DD} (Paso 4):
 
-        Uso: Calendario y horarios.
+    Acción: Pagar Pendiente (Historial de Pagos)
+    Se utiliza al presionar el botón "Pagar Ahora" en un adeudo registrado.
 
-        Qué necesitas: 
-            - Días con disponibilidad
-            - lista de slots de tiempo con su estado ("Disponible", "Ocupado")
+    POST /v1/patient/payments/{id_transaccion}/pay
 
-    POST /citas (Paso 5):
+        Cuerpo de la petición (Lo que se envía):
+            - metodo_pago_id
 
-        Uso: Confirmación final y pago del anticipo.
+        Respuesta esperada:
+            - nuevo_estado # ej. "PAGADO"
+            - fecha_pago
 
-        Qué necesitas: 
-            - Enviar IDs de doctor
-            - sucursal
-            - fecha/hora
-            - el monto del anticipo  
-            Respuesta del backend:
-            - ID de reserva
 
-3. Gestión de Citas Existentes
-    Para el control de la agenda del paciente.
+    Acción: Cancelar Cita (Detalles de Cita)
+    Se utiliza al confirmar la alerta de "Cancelar Cita" para cambiar el estado de la reserva.
 
-    GET /appointments/next:
+    PATCH /v1/appointments/{id_cita}/cancel
 
-        Uso: Tarjeta de "Próxima Cita" en el Inicio.
+        Cuerpo de la petición (Lo que se envía):
+            - motivo_cancelacion # ej. "Problemas de transporte"
 
-        Qué necesitas: El registro más cercano: 
-            - nombre del doctor
-            - especialidad
-            - fecha
-            - hora
-            - número de consultorio 
-
-    GET /appointments?status={upcoming|past}:
-
-        Uso: Pantalla "Mis Citas" con pestañas.
-
-        Qué necesitas: 
-            Lista de citas con estado ("Confirmada", "Listo") y prioridad.
-
-    PATCH /appointments/{id}/cancel:
-
-        Uso: Botón "Cancelar Cita" con advertencia de penalización.
-
-        Qué necesitas: Enviar el ID de la cita. El backend debe validar si falta menos de 24 horas para aplicar la pérdida del anticipo.
-
-4. Módulo Médico y Financiero
-    Para el historial y control de pagos.
-
-    GET /medical-history:
-
-    Uso: Línea de tiempo de consultas pasadas.
-
-    Qué necesitas: Fecha, título del diagnóstico ("Seguimiento de Hipertensión"), resumen corto y un link/objeto para "Ver resumen médico".
-
-    GET /payments:
-
-    Uso: Historial de transacciones y balance pendiente.
-
-    Qué necesitas: El monto total pendiente ($850.00), y una lista de transacciones con descripción ("Limpieza Dental"), monto, fecha y estado de pago ("Pagado").
-
-    POST /payments/export:
-
-    Uso: Botón "Exportar Historial".
-
-    Qué necesitas: Solicitar la generación de un PDF con el reporte anual de gastos.
+        Respuesta esperada:
+            - nuevo_estado # ej. "CANCELADA"
+            - reembolso_aplicado # booleano

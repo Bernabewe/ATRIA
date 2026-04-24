@@ -1,0 +1,14 @@
+get:
+  summary: Control financiero y adeudos pendientes
+  tags: [ Vistas de Paciente ]
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            properties:
+              saldo_pendiente: { type: string, example: "$850.00" }
+              transacciones_recientes:
+                type: array
+                items:
+                  $ref: "../../components/schemas/Transaccion.yaml"

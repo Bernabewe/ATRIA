@@ -1,0 +1,32 @@
+type: object
+properties:
+  nombre_completo:
+    type: string
+    example: "Ananna Smith"
+  nombre_pila:
+    type: string
+    example: "Anna"
+  foto_perfil_url:
+    type: string
+    format: uri
+  correo_electronico:
+    type: string
+    format: email
+  fecha_nacimiento:
+    type: string
+    example: "15 Oct 1990"
+  peso:
+    type: number
+    example: 70
+  altura:
+    type: number
+    example: 1.75
+  tipo_sangre:
+    type: string
+    example: "O+"
+  telefono:
+    type: string
+    example: "+34 600 000 000"
+  direccion_completa:
+    type: string
+    example: "Calle Principal 123, Madrid"

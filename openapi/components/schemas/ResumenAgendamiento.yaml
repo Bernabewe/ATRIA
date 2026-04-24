@@ -1,0 +1,11 @@
+type: object
+properties:
+  doctor_nombre: { type: string, example: "Dra. Sarah Rose" }
+  doctor_foto_url: { type: string, format: uri }
+  especialidad_titulo: { type: string, example: "Dermatología Clínica" }
+  sucursal_nombre: { type: string, example: "Sucursal Las Américas" }
+  sucursal_direccion: { type: string, example: "Av. Reforma 12-45, Zona 10" }
+  fecha_hora_formateada: { type: string, example: "2 de Marzo, 10:30 AM" }
+  duracion_estimada: { type: string, example: "45 min" }
+  costo_total: { type: string, example: "$1,000.00" }
+  anticipo_requerido: { type: string, example: "$500.00" }

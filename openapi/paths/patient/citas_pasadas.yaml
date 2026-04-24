@@ -1,0 +1,14 @@
+get:
+  summary: Historial completo de citas finalizadas
+  tags: [ Vistas de Paciente ]
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              historial_citas:
+                type: array
+                items:
+                  $ref: "../../components/schemas/CitaLista.yaml"

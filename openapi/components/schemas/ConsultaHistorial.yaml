@@ -1,0 +1,17 @@
+type: object
+properties:
+  id_historial:
+    type: string
+    format: uuid
+  fecha_formateada:
+    type: string
+    example: "15 de Agosto, 2023"
+  diagnostico_titulo:
+    type: string
+    example: "Seguimiento de Hipertensión"
+  resumen_notas:
+    type: string
+    example: "Presión arterial estable en 125/82. Continuar con la dosis actual..."
+  tiene_resumen_medico:
+    type: boolean
+    example: true

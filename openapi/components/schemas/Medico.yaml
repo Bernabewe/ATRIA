@@ -1,0 +1,21 @@
+type: object
+properties:
+  id_doctor:
+    type: string
+    format: uuid
+  nombre_doctor:
+    type: string
+    example: "Dra. Sarah Rose"
+  foto_url:
+    type: string
+    format: uri
+  calificacion_promedio:
+    type: number
+    format: float
+    example: 4.9
+  experiencia_anios:
+    type: integer
+    example: 12
+  especialidad_titulo:
+    type: string
+    example: "Cardióloga"

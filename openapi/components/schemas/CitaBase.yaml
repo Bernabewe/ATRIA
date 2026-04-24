@@ -1,0 +1,14 @@
+type: object
+properties:
+  id_cita:
+    type: string
+    format: uuid
+  doctor_nombre:
+    type: string
+    example: "Dr. Aris Thorne"
+  especialidad_etiqueta:
+    type: string
+    example: "Especialista en Cardiología"
+  estado_badge:
+    type: string
+    example: "CONFIRMADA"

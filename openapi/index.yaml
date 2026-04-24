@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  title: Atria API - Sistema de Gestión Médica (Módulo Paciente)
+  description: Documentación oficial de las APIs bajo el patrón BFF para el portal
+    de pacientes de Atria.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api
+    description: Servidor de desarrollo local
+
+# ------------------------------------------------------------------
+# RUTAS (PATHS) - Mapeo de endpoints a archivos específicos
+# ------------------------------------------------------------------
+paths:
+  # --- Módulo de Perfil e Inicio ---
+  /v1/views/patient/home:
+    $ref: "./paths/patient/home.yaml"
+  /v1/views/patient/profile_details:
+    $ref: "./paths/patient/perfil_paciente.yaml"
+
+  # --- Módulo de Citas ---
+  /v1/views/patient/citas_proximas:
+    $ref: "./paths/patient/citas_proximas.yaml"
+  /v1/views/patient/citas_pasadas:
+    $ref: "./paths/patient/citas_pasadas.yaml"
+  /v1/views/patient/gestionar_cita:
+    $ref: "./paths/patient/gestionar_cita.yaml"
+
+  # --- Módulo de Reserva Médica (Agendamiento) ---
+  /v1/views/patient/reservas/especialidad:
+    $ref: "./paths/patient/agendamiento.yaml#/~1especialidades"
+  /v1/views/patient/reservas/sucursal:
+    $ref: "./paths/patient/agendamiento.yaml#/~1sucursales"
+  /v1/views/patient/reservas/doctores:
+    $ref: "./paths/patient/agendamiento.yaml#/~1doctores"
+  /v1/views/patient/reservas/disponibilidad:
+    $ref: "./paths/patient/agendamiento.yaml#/~1disponibilidad"
+  /v1/views/patient/reservas/resumen:
+    $ref: "./paths/patient/agendamiento.yaml#/~1resumen"
+
+  # --- Módulo de Historiales ---
+  /v1/views/patient/historial_medico:
+    $ref: "./paths/patient/historial_medico.yaml"
+  /v1/views/patient/historial_pagos:
+    $ref: "./paths/patient/historial_pagos.yaml"
+
+  # --- Módulo de Acciones (Mutaciones) ---
+  /v1/patient/profile:
+    $ref: "./paths/patient/actions/actualizar_perfil.yaml"
+  /v1/reservas/appointments:
+    $ref: "./paths/patient/actions/reservar_cita.yaml"
+  /v1/patient/historial_pagos/{id_transaccion}/pay:
+    $ref: "./paths/patient/actions/pagar_pendiente.yaml"
+  /v1/appointments/{id_cita}/cancel:
+    $ref: "./paths/patient/actions/cancelar_cita.yaml"
+
+# ------------------------------------------------------------------
+# COMPONENTES - Biblioteca global de piezas reutilizables
+# ------------------------------------------------------------------
+components:
+  # Esquema de seguridad para autenticación con JWT
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  # Registro de todos los moldes de datos (Schemas)
+  schemas:
+    Paciente:
+      $ref: "./components/schemas/Paciente.yaml"
+    CitaBase:
+      $ref: "./components/schemas/CitaBase.yaml"
+    CitaLista:
+      $ref: "./components/schemas/CitaLista.yaml"
+    CitaDetalle:
+      $ref: "./components/schemas/CitaDetalle.yaml"
+    Especialidad:
+      $ref: "./components/schemas/Especialidad.yaml"
+    Sucursal:
+      $ref: "./components/schemas/Sucursal.yaml"
+    Medico:
+      $ref: "./components/schemas/Medico.yaml"
+    AccionRapida:
+      $ref: "./components/schemas/AccionRapida.yaml"
+    Transaccion:
+      $ref: "./components/schemas/Transaccion.yaml"
+    ConsultaHistorial:
+      $ref: "./components/schemas/ConsultaHistorial.yaml"
+    ResumenAgendamiento:
+      $ref: "./components/schemas/ResumenAgendamiento.yaml"
+
+#  # Respuestas comunes (Opcional, para profesionalizar errores)
+#  responses:
+#    UnauthorizedError:
+#      $ref: "./components/responses/Unauthorized.yaml"

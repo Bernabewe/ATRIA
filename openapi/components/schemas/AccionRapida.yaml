@@ -1,0 +1,12 @@
+type: object
+properties:
+  action_id:
+    type: string
+  label:
+    type: string
+  icon_id:
+    type: string
+  route_name:
+    type: string
+  is_enabled:
+    type: boolean

@@ -1,0 +1,14 @@
+type: object
+properties:
+  id_especialidad:
+    type: string
+    format: uuid
+  nombre_especialidad:
+    type: string
+    example: "Cardiología"
+  descripcion_corta:
+    type: string
+    example: "Cuidado experto del corazón y sistema circulatorio."
+  icono_id:
+    type: string
+    example: "heart-outline"

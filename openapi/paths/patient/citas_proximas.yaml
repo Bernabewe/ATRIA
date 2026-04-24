@@ -1,0 +1,22 @@
+get:
+  summary: Listado de citas próximas y recientes
+  tags:
+    - Vistas de Paciente
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              proxima_prioridad:
+                $ref: "../../components/schemas/CitaBase.yaml"
+              visitas_proximas:
+                type: array
+                items:
+                  $ref: "../../components/schemas/CitaLista.yaml"
+              completadas_recientemente:
+                type: array
+                items:
+                  $ref: "../../components/schemas/CitaLista.yaml"

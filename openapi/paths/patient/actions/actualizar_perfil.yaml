@@ -1,0 +1,36 @@
+put:
+  summary: Actualizar la información del perfil del paciente
+  tags:
+    - Acciones de Paciente
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            peso:
+              type: number
+              example: 72.5
+            altura:
+              type: number
+              example: 1.75
+            telefono:
+              type: string
+              example: "+34 600 000 000"
+            direccion_completa:
+              type: string
+              example: "Calle Principal 123, Madrid"
+  responses:
+    "200":
+      description: Perfil actualizado correctamente.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              mensaje:
+                type: string
+                example: "Perfil guardado con éxito"

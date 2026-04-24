@@ -1,0 +1,88 @@
+/especialidades:
+  get:
+    summary: "Paso 1: Lista de especialidades"
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              properties:
+                especialidades:
+                  type: array
+                  items: { $ref: "../../components/schemas/Especialidad.yaml" }
+
+/sucursales:
+  get:
+    summary: "Paso 2: Selección de clínica más cercana"
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              properties:
+                sucursales:
+                  type: array
+                  items: { $ref: "../../components/schemas/Sucursal.yaml" }
+
+/doctores:
+  get:
+    summary: "Paso 3: Especialistas por sucursal y área"
+    parameters:
+      - name: id_especialidad
+        in: query
+        required: true
+        schema: { type: string }
+      - name: id_sucursal
+        in: query
+        required: true
+        schema: { type: string }
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              properties:
+                especialistas:
+                  type: array
+                  items: { $ref: "../../components/schemas/Medico.yaml" }
+
+/disponibilidad:
+  get:
+    summary: "Paso 4: Calendario de horarios libres"
+    parameters:
+      - name: id_doctor
+        in: query
+        required: true
+        schema: { type: string }
+      - name: mes
+        in: query
+        required: true
+        schema: { type: string, example: "2026-03" }
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              properties:
+                dias_disponibles: { type: array, items: { type: string, example: "2026-03-06" } }
+                horarios_por_dia:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      hora_formateada: { type: string, example: "10:30 AM" }
+                      estado: { type: string, example: "disponible" }
+
+/resumen:
+  get:
+    summary: "Paso 5: Resumen final para confirmación"
+    parameters:
+      - { name: id_doctor, in: query, required: true, schema: { type: string } }
+      - { name: id_sucursal, in: query, required: true, schema: { type: string } }
+      - { name: fecha, in: query, required: true, schema: { type: string } }
+      - { name: hora, in: query, required: true, schema: { type: string } }
+    responses:
+      "200":
+        content:
+          application/json:
+            schema: { $ref: "../../components/schemas/ResumenAgendamiento.yaml" }

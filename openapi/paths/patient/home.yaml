@@ -1,0 +1,29 @@
+get:
+  summary: Obtener datos para la pantalla de inicio del paciente
+  tags:
+    - Vistas de Paciente
+  responses:
+    "200":
+      description: Respuesta exitosa con datos agregados para el Home
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              nombre_pila:
+                type: string
+                example: "Anna"
+              foto_perfil_url:
+                type: string
+                format: uri
+                example: "https://atria.com/profiles/anna.jpg"
+              estado_salud_resumen:
+                type: string
+                example: "Tus métricas de salud lucen excelentes hoy."
+              next_cita:
+                nullable: true
+                $ref: "../../components/schemas/CitaBase.yaml"
+              quick_actions:
+                type: array
+                items:
+                  $ref: "../../components/schemas/AccionRapida.yaml"

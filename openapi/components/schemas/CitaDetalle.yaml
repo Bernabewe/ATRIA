@@ -1,0 +1,29 @@
+allOf:
+  - $ref: "./CitaBase.yaml"
+  - type: object
+    properties:
+      doctor_foto_url:
+        type: string
+        format: uri
+      fecha_completa:
+        type: string
+        example: "24 Octubre, 2023"
+      hora_formateada:
+        type: string
+        example: "10:30 AM"
+      ubicacion_completa:
+        type: string
+        example: "Hospital Ángeles del Valle, Torre II, Piso 4"
+      anticipo_monto:
+        type: string
+        example: "$500.00 MXN"
+      alerta_cancelacion:
+        nullable: true
+        type: object
+        properties:
+          titulo:
+            type: string
+          mensaje:
+            type: string
+      permitir_cancelacion:
+        type: boolean

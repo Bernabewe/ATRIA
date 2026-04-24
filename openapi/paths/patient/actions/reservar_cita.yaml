@@ -1,0 +1,44 @@
+post:
+  summary: Confirmar agendamiento y pagar anticipo
+  tags:
+    - Acciones de Reserva
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - id_doctor
+            - id_sucursal
+            - fecha_hora_inicio
+            - metodo_pago_id
+          properties:
+            id_doctor:
+              type: string
+              format: uuid
+            id_sucursal:
+              type: string
+              format: uuid
+            fecha_hora_inicio:
+              type: string
+              format: date-time
+            metodo_pago_id:
+              type: string
+              example: "pm_1N4b5c2eZvKYlo2C"
+  responses:
+    "201":
+      description: Cita creada y pago procesado.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id_cita:
+                type: string
+                format: uuid
+              estado_pago:
+                type: string
+                example: "APROBADO"

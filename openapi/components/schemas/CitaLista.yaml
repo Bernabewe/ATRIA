@@ -1,0 +1,19 @@
+allOf:
+  - $ref: "./CitaBase.yaml"
+  - type: object
+    properties:
+      motivo_consulta:
+        type: string
+        example: "Chequeo de Rutina"
+      fecha_corta:
+        type: string
+        example: "02 Nov"
+      icono_especialidad_id:
+        type: string
+        example: "tooth-outline"
+      estado_texto:
+        type: string
+        example: "Listo"
+      estado_icono:
+        type: string
+        example: "check-circle"

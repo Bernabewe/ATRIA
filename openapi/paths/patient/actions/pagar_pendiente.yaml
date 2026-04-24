@@ -1,0 +1,34 @@
+post:
+  summary: Pagar el saldo de una transacción pendiente
+  tags:
+    - Acciones Financieras
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: id_transaccion
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            metodo_pago_id:
+              type: string
+              example: "card_9876"
+  responses:
+    "200":
+      description: Pago completado.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              nuevo_estado:
+                type: string
+                example: "PAGADO"

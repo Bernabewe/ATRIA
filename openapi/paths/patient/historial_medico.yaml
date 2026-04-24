@@ -1,0 +1,13 @@
+get:
+  summary: Línea de tiempo de diagnósticos y consultas
+  tags: [ Vistas de Paciente ]
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            properties:
+              linea_tiempo_consultas:
+                type: array
+                items:
+                  $ref: "../../components/schemas/ConsultaHistorial.yaml"

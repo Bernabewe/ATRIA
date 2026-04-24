@@ -1,0 +1,19 @@
+get:
+  summary: Detalles y gestión de una cita específica
+  tags:
+    - Vistas de Paciente
+  parameters:
+    - name: id_cita
+      in: query
+      required: true
+      description: ID de la cita a gestionar
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "200":
+      description: Carga exitosa de los detalles de la cita
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/CitaDetalle.yaml"

@@ -1,0 +1,20 @@
+type: object
+properties:
+  id_sucursal:
+    type: string
+    format: uuid
+  nombre_sucursal:
+    type: string
+    example: "Sucursal Las Américas"
+  direccion_completa:
+    type: string
+    example: "Boulevard de las Américas, Culiacán."
+  coordenadas:
+    type: object
+    properties:
+      latitud:
+        type: number
+        example: 24.8083
+      longitud:
+        type: number
+        example: -107.3938

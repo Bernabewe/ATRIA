@@ -1,0 +1,37 @@
+patch:
+  summary: Cancelar una cita programada
+  tags:
+    - Acciones de Cita
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: id_cita
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            motivo_cancelacion:
+              type: string
+              example: "Problemas de transporte"
+  responses:
+    "200":
+      description: Cita cancelada correctamente.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              nuevo_estado:
+                type: string
+                example: "CANCELADA"
+              reembolso_aplicado:
+                type: boolean
+                example: false
