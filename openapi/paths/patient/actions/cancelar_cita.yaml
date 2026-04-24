@@ -5,12 +5,7 @@ patch:
   security:
     - bearerAuth: []
   parameters:
-    - name: id_cita
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
+    - $ref: "../../components/parameters.yaml#/id_cita_path"
   requestBody:
     required: true
     content:

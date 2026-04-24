@@ -28,14 +28,8 @@
   get:
     summary: "Paso 3: Especialistas por sucursal y área"
     parameters:
-      - name: id_especialidad
-        in: query
-        required: true
-        schema: { type: string }
-      - name: id_sucursal
-        in: query
-        required: true
-        schema: { type: string }
+      - $ref: "../../components/parameters.yaml#/id_especialidad_query"
+      - $ref: "../../components/parameters.yaml#/id_sucursal_query"
     responses:
       "200":
         content:
@@ -50,14 +44,8 @@
   get:
     summary: "Paso 4: Calendario de horarios libres"
     parameters:
-      - name: id_doctor
-        in: query
-        required: true
-        schema: { type: string }
-      - name: mes
-        in: query
-        required: true
-        schema: { type: string, example: "2026-03" }
+      - $ref: "../../components/parameters.yaml#/id_doctor_query"
+      - $ref: "../../components/parameters.yaml#/mes_query"
     responses:
       "200":
         content:
@@ -77,10 +65,10 @@
   get:
     summary: "Paso 5: Resumen final para confirmación"
     parameters:
-      - { name: id_doctor, in: query, required: true, schema: { type: string } }
-      - { name: id_sucursal, in: query, required: true, schema: { type: string } }
-      - { name: fecha, in: query, required: true, schema: { type: string } }
-      - { name: hora, in: query, required: true, schema: { type: string } }
+      - $ref: "../../components/parameters.yaml#/id_doctor_query"
+      - $ref: "../../components/parameters.yaml#/id_sucursal_query"
+      - $ref: "../../components/parameters.yaml#/fecha_query"
+      - $ref: "../../components/parameters.yaml#/hora_query"
     responses:
       "200":
         content:

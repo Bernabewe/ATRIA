@@ -13,7 +13,7 @@ allOf:
         example: "tooth-outline"
       estado_texto:
         type: string
-        example: "Listo"
+        enum: [ Pendiente, Confirmada, Cancelada, Lista ]
       estado_icono:
         type: string
         example: "check-circle"

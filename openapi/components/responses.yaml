@@ -1,0 +1,50 @@
+# openapi/components/responses.yaml
+
+BadRequest:
+  description: Solicitud incorrecta. Datos inválidos o faltantes.
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+Unauthorized:
+  description: No autorizado. Token inexistente o expirado.
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+Forbidden:
+  description: Acceso prohibido. Sin permisos suficientes.
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+NotFound:
+  description: Recurso no encontrado. El ID no existe.
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+InternalServerError:
+  description: Error interno del servidor. Fallo inesperado.
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+Created:
+  description: Recurso creado exitosamente.
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+          mensaje:
+            type: string
+            example: "Operación realizada con éxito."

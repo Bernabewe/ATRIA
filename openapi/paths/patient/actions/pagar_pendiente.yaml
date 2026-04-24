@@ -5,12 +5,7 @@ post:
   security:
     - bearerAuth: []
   parameters:
-    - name: id_transaccion
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
+    - $ref: "../../components/parameters.yaml#/id_transaccion_path"
   requestBody:
     required: true
     content:

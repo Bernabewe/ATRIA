@@ -1,0 +1,70 @@
+# Identificadores usados en la URL (Rutas)
+id_cita_path:
+  name: id_cita
+  in: path
+  required: true
+  schema:
+    type: string
+    format: uuid
+
+id_transaccion_path:
+  name: id_transaccion
+  in: path
+  required: true
+  schema:
+    type: string
+    format: uuid
+
+# Identificadores usados como filtros (Query)
+id_cita_query:
+  name: id_cita
+  in: query
+  required: true
+  description: ID de la cita a gestionar
+  schema:
+    type: string
+    format: uuid
+
+id_especialidad_query:
+  name: id_especialidad
+  in: query
+  required: true
+  schema:
+    type: string
+
+id_sucursal_query:
+  name: id_sucursal
+  in: query
+  required: true
+  schema:
+    type: string
+
+id_doctor_query:
+  name: id_doctor
+  in: query
+  required: true
+  schema:
+    type: string
+
+# Parámetros de tiempo y calendario
+mes_query:
+  name: mes
+  in: query
+  required: true
+  schema:
+    type: string
+    example: "2026-03"
+
+fecha_query:
+  name: fecha
+  in: query
+  required: true
+  schema:
+    type: string
+
+hora_query:
+  name: hora
+  in: query
+  required: true
+  schema:
+    type: string

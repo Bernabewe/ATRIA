@@ -14,6 +14,7 @@ properties:
     example: "$1,200.00"
   estado_pago:
     type: string
+    enum: [ PAGADO, PENDIENTE, RECHAZADO, REEMBOLSADO ]
     example: "PAGADO"
   icono_concepto:
     type: string

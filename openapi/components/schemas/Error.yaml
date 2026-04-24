@@ -1,0 +1,11 @@
+type: object
+properties:
+  codigo:
+    type: string
+    example: "ERROR_VALIDACION"
+  mensaje:
+    type: string
+    example: "El campo id_cita es obligatorio."
+  timestamp:
+    type: string
+    format: date-time

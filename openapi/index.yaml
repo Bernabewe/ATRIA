@@ -59,12 +59,45 @@ paths:
 # COMPONENTES - Biblioteca global de piezas reutilizables
 # ------------------------------------------------------------------
 components:
-  # Esquema de seguridad para autenticación con JWT
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  parameters:
+    IdCitaPath:
+      $ref: "./components/parameters.yaml#/id_cita_path"
+    IdTransaccionPath:
+      $ref: "./components/parameters.yaml#/id_transaccion_path"
+    IdCitaQuery:
+      $ref: "./components/parameters.yaml#/id_cita_query"
+    IdEspecialidadQuery:
+      $ref: "./components/parameters.yaml#/id_especialidad_query"
+    IdSucursalQuery:
+      $ref: "./components/parameters.yaml#/id_sucursal_query"
+    IdDoctorQuery:
+      $ref: "./components/parameters.yaml#/id_doctor_query"
+    MesQuery:
+      $ref: "./components/parameters.yaml#/mes_query"
+    FechaQuery:
+      $ref: "./components/parameters.yaml#/id_sucursal_query"
+    HoraQuery:
+      $ref: "./components/parameters.yaml#/id_sucursal_query"
+
+  responses:
+    BadRequest:
+      $ref: "./components/responses.yaml#/BadRequest"
+    Unauthorized:
+      $ref: "./components/responses.yaml#/Unauthorized"
+    Forbidden:
+      $ref: "./components/responses.yaml#/Forbidden"
+    NotFound:
+      $ref: "./components/responses.yaml#/NotFound"
+    InternalServerError:
+      $ref: "./components/responses.yaml#/InternalServerError"
+    Created:
+      $ref: "./components/responses.yaml#/Created"
 
   # Registro de todos los moldes de datos (Schemas)
   schemas:
@@ -90,8 +123,5 @@ components:
       $ref: "./components/schemas/ConsultaHistorial.yaml"
     ResumenAgendamiento:
       $ref: "./components/schemas/ResumenAgendamiento.yaml"
-
-#  # Respuestas comunes (Opcional, para profesionalizar errores)
-#  responses:
-#    UnauthorizedError:
-#      $ref: "./components/responses/Unauthorized.yaml"
+    Error:
+      $ref: "./components/schemas/Error.yaml"
