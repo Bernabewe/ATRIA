@@ -5,7 +5,7 @@ post:
   security:
     - bearerAuth: []
   parameters:
-    - $ref: "../../components/parameters.yaml#/id_transaccion_path"
+    - $ref: "../../../components/parameters.yaml#/id_transaccion_path"
   requestBody:
     required: true
     content:

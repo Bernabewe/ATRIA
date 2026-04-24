@@ -5,7 +5,7 @@ patch:
   security:
     - bearerAuth: []
   parameters:
-    - $ref: "../../components/parameters.yaml#/id_cita_path"
+    - $ref: "../../../components/parameters.yaml#/id_cita_path"
   requestBody:
     required: true
     content:
