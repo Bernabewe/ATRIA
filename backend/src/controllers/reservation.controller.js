@@ -8,8 +8,7 @@
  * @param {import('express').Response} res Objeto de respuesta Express.
  * @param {import('express').NextFunction} next Función para pasar errores al middleware global.
  */
-
-const getSpecialties = async (req, res, next) => {
+const obtenerEspecialidades = async (req, res, next) => {
     try {
         const response = {
             especialidades: [
@@ -37,8 +36,7 @@ const getSpecialties = async (req, res, next) => {
  * @param {import('express').Response} res Objeto de respuesta Express.
  * @param {import('express').NextFunction} next Función para pasar errores al middleware global.
  */
-
-const getBranches = async (req, res, next) => {
+const obtenerSucursales = async (req, res, next) => {
     try {
         const response = {
             sucursales: [
@@ -60,8 +58,7 @@ const getBranches = async (req, res, next) => {
  * @param {import('express').Response} res Objeto de respuesta Express.
  * @param {import('express').NextFunction} next Función para pasar errores al middleware global.
  */
-
-const getDoctors = async (req, res, next) => {
+const obtenerDoctores = async (req, res, next) => {
     try {
         const response = {
             especialistas: [
@@ -85,8 +82,7 @@ const getDoctors = async (req, res, next) => {
  * @param {import('express').Response} res Objeto de respuesta Express.
  * @param {import('express').NextFunction} next Función para pasar errores al middleware global.
 */
-
-const getAvailability = async (req, res, next) => {
+const obtenerDisponibilidad = async (req, res, next) => {
     try {
         const response = {
             dias_disponibles: ["2026-03-06", "2026-03-07", "2026-03-08"],
@@ -106,8 +102,7 @@ const getAvailability = async (req, res, next) => {
  * @param {import('express').Response} res Objeto de respuesta Express.
  * @param {import('express').NextFunction} next Función para pasar errores al middleware global.
 */
-
-const getCheckoutSummary = async (req, res, next) => {
+const obtenerResumenReserva = async (req, res, next) => {
     try {
         const response = {
             doctor_nombre: "Dra. Sarah Rose",
@@ -124,10 +119,52 @@ const getCheckoutSummary = async (req, res, next) => {
     } catch (error) { next(error); }
 };
 
+/**
+ * Finaliza el embudo de agendamiento procesando el pago y creando la cita.
+ * @param {import('express').Request} req - Petición. Body: id_doctor, id_sucursal, fecha_hora_inicio, metodo_pago_id.
+ * @param {import('express').Response} res - Respuesta.
+ * @param {import('express').NextFunction} next - Middleware de errores.
+ */
+const confirmarReserva = async (req, res, next) => {
+    try {
+        const { id_doctor, id_sucursal, fecha_hora_inicio, metodo_pago_id } = req.body;
+
+        res.status(201).json({
+            id_cita: "c1d2e3f4-5678-90ab-cdef-1234567890ab", 
+            estado_pago: "APROBADO"
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Cancela una cita programada y evalúa políticas de reembolso.
+ * @param {import('express').Request} req - Petición. params: id_cita, body: motivo_cancelacion.
+ * @param {import('express').Response} res - Respuesta.
+ * @param {import('express').NextFunction} next - Middleware de errores.
+ */
+const cancelarCita = async (req, res, next) => {
+    try {
+        const { id_cita } = req.params;
+        const { motivo_cancelacion } = req.body;
+
+        res.status(200).json({
+            nuevo_estado: "CANCELADA",
+            reembolso_aplicado: false
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 module.exports = {
-    getSpecialties,
-    getBranches,
-    getDoctors,
-    getAvailability,
-    getCheckoutSummary
+    obtenerEspecialidades,
+    obtenerSucursales,
+    obtenerDoctores,
+    obtenerDisponibilidad,
+    obtenerResumenReserva,
+    confirmarReserva, 
+    cancelarCita      
 };

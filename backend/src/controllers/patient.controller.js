@@ -9,8 +9,7 @@
  * @param {import('express').Response} res - Objeto de respuesta Express.
  * @param {import('express').NextFunction} next - Función para pasar errores al middleware global.
  */
-
-const getHomeData = async (req, res, next) => {
+const obtenerInicio = async (req, res, next) => {
     try {
         const pacienteId = req.user.id_paciente;
 
@@ -51,14 +50,9 @@ const getHomeData = async (req, res, next) => {
     }
 }
 
-/** 
- * Obtiene el listado decitas próximas y recientes del paciente.
- * @param {import('express').Request} req - Objeto de petición Express (Contiene req.user).
- * @param {import('express').Response} res - Objeto de respuesta Express.
- * @param {import('express').NextFunction} next - Función para pasar errores al middleware global.
-*/
-
-const getUpcomingAppointments = async (req, res, next) => {
+/** * Obtiene el listado de citas próximas y recientes del paciente.
+ */
+const obtenerCitasProximas = async (req, res, next) => {
     try {
         const response = {
             proxima_prioridad: {
@@ -101,11 +95,8 @@ const getUpcomingAppointments = async (req, res, next) => {
 
 /**
  * Obtiene el historial completo de citas pasadas.
- * @param {import('express').Request} req - Objeto de petición Express (Contiene req.user).
- * @param {import('express').Response} res - Objeto de respuesta Express.
- * @param {import('express').NextFunction} next - Función para pasar errores al middleware global.
  */
-const getPastAppointments = async (req, res, next) => {
+const obtenerCitasPasadas = async (req, res, next) => {
     try {
         const response = {
             historial_citas: [
@@ -136,14 +127,10 @@ const getPastAppointments = async (req, res, next) => {
     }
 }
 
-
 /**
  * Obtiene los detalles del perfil personal y de contacto del paciente.
- * @param {import('express').Request} req Objeto de petición Express (Contiene req.user).
- * @param {import('express').Response} res Objeto de respuesta Express.
- * @param {import('express').NextFunction} next Función para pasar errores al middleware global.
  */
-const getProfileDetails = async (req, res, next) => {
+const obtenerDetallesPerfil = async (req, res, next) => {
     try {
         const response = {
             foto_perfil_url: "https://atria.com/profiles/anna.jpg",
@@ -164,11 +151,8 @@ const getProfileDetails = async (req, res, next) => {
 
 /**
  * Obtiene la línea de tiempo de diagnósticos y consultas médicas.
- * @param {import('express').Request} req Objeto de petición Express (Contiene req.user).
- * @param {import('express').Response} res Objeto de respuesta Express.
- * @param {import('express').NextFunction} next Función para pasar errores al middleware global.
  */
-const getMedicalHistory = async (req, res, next) => {
+const obtenerHistorialMedico = async (req, res, next) => {
     try {
         const response = {
             linea_tiempo_consultas: [
@@ -189,13 +173,9 @@ const getMedicalHistory = async (req, res, next) => {
 
 /**
  * Obtiene el control financiero y pagos pendientes del paciente.
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
  */
-const getPaymentHistory = async (req, res, next) => {
+const obtenerHistorialPagos = async (req, res, next) => {
     try {
-        // Mock basado en requerimientosAPIS.txt - Módulo Historial de Pagos
         const response = {
             saldo_pendiente: "$850.00",
             transacciones_recientes: [
@@ -216,11 +196,51 @@ const getPaymentHistory = async (req, res, next) => {
 };
 
 
+
+/**
+ * Actualiza la información personal y de contacto del paciente.
+ * @param {import('express').Request} req - Petición. El body debe contener peso, altura, telefono y direccion.
+ * @param {import('express').Response} res - Respuesta.
+ * @param {import('express').NextFunction} next - Middleware de errores.
+ */
+const actualizarPerfil = async (req, res, next) => {
+    try {
+        const { peso, altura, telefono, direccion_completa } = req.body;
+
+        res.status(200).json({
+            mensaje: "Perfil actualizado con éxito."
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Procesa el pago de una transacción pendiente en el historial.
+ * @param {import('express').Request} req - Petición. params: id_transaccion, body: metodo_pago_id.
+ * @param {import('express').Response} res - Respuesta.
+ * @param {import('express').NextFunction} next - Middleware de errores.
+ */
+const pagarTransaccionPendiente = async (req, res, next) => {
+    try {
+        const { id_transaccion } = req.params;
+        const { metodo_pago_id } = req.body;
+
+        res.status(200).json({
+            nuevo_estado: "PAGADO"
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
-    getHomeData,
-    getUpcomingAppointments,
-    getPastAppointments,
-    getProfileDetails,
-    getMedicalHistory,
-    getPaymentHistory
+    obtenerInicio,
+    obtenerCitasProximas,
+    obtenerCitasPasadas,
+    obtenerDetallesPerfil,
+    obtenerHistorialMedico,
+    obtenerHistorialPagos,
+    actualizarPerfil, 
+    pagarTransaccionPendiente 
 };

@@ -21,7 +21,7 @@ GET {{baseUrl}}/test-login
 
 ### --------------------------------------------------------
 ### Pega el token que te devolvió la prueba 5 aquí abajo 👇
-@validToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9wYWNpZW50ZSI6IjEyM2U0NTY3LWU4OWItMTJkMy1hNDU2LTQyNjYxNDE3NDAwMCIsIm5vbWJyZSI6IkFubmEgU21pdGgiLCJyb2wiOiJwYWNpZW50ZSIsImlhdCI6MTc3NzE1MTE2MCwiZXhwIjoxNzc3MTU0NzYwfQ._0ALoXIw9cotstYI-Stfv7H2vOAX8HKlKYVR-e65Mw0
+@validToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9wYWNpZW50ZSI6IjEyM2U0NTY3LWU4OWItMTJkMy1hNDU2LTQyNjYxNDE3NDAwMCIsIm5vbWJyZSI6IkFubmEgU21pdGgiLCJyb2wiOiJwYWNpZW50ZSIsImlhdCI6MTc3NzE1ODg3OSwiZXhwIjoxNzc3MTYyNDc5fQ.nF3Qh4hOza2Rl0Yp30aQFGV0gNDL-G43gi8pWdVtap0
 ### --------------------------------------------------------
 
 ### 6. Probar ruta protegida CON Token Válido (¡El Happy Path!)
@@ -71,3 +71,49 @@ Authorization: Bearer {{validToken}}
 ### 16. Paso 5: Resumen Final
 GET {{baseUrl}}/v1/views/patient/reservas/resumen?id_doctor=doc-001&id_sucursal=suc-001&fecha=2026-03-06&hora=10:30
 Authorization: Bearer {{validToken}}
+
+### ==========================================
+### ACCIONES Y MUTACIONES DEL PACIENTE
+### ==========================================
+
+### 17. Actualizar Perfil (PUT)
+PUT {{baseUrl}}/v1/patient/profile
+Authorization: Bearer {{validToken}}
+Content-Type: application/json
+
+{
+    "peso": 72.5,
+    "altura": 1.75,
+    "telefono": "+52 55 1234 5678",
+    "direccion_completa": "Nueva Dirección 456, Ciudad"
+}
+
+### 18. Confirmar Reserva y Pagar Anticipo (POST)
+POST {{baseUrl}}/v1/reservas/appointments
+Authorization: Bearer {{validToken}}
+Content-Type: application/json
+
+{
+    "id_doctor": "doc-001",
+    "id_sucursal": "suc-001",
+    "fecha_hora_inicio": "2026-03-06T10:30:00Z",
+    "metodo_pago_id": "pm_1N4b5c2eZvKYlo2C"
+}
+
+### 19. Pagar Adeudo Pendiente (POST)
+POST {{baseUrl}}/v1/patient/historial_pagos/t1u2v3w4-x5y6-z789-0abc-def123456789/pay
+Authorization: Bearer {{validToken}}
+Content-Type: application/json
+
+{
+    "metodo_pago_id": "card_9876"
+}
+
+### 20. Cancelar Cita (PATCH)
+PATCH {{baseUrl}}/v1/appointments/c1d2e3f4-5678-90ab-cdef-1234567890ab/cancel
+Authorization: Bearer {{validToken}}
+Content-Type: application/json
+
+{
+    "motivo_cancelacion": "Problema de transporte inesperado"
+}
