@@ -1,0 +1,29 @@
+get:
+  operationId: getPatientHistoryByDoctor
+  summary: Ver el historial de consultas de un paciente específico
+  tags:
+    - Portal Doctor — Vistas
+  parameters:
+    - $ref: '../../components/parameters.yaml#/id_paciente_path'
+  responses:
+    '200':
+      description: Historial médico del paciente.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              paciente_nombre:
+                type: string
+                example: "Mariana Martínez"
+              paciente_foto_url:
+                type: string
+                format: uri
+              historial_consultas:
+                type: array
+                items:
+                  $ref: '../../components/schemas/ConsultaHistorial.yaml'
+    '404':
+      $ref: '../../components/responses.yaml#/NotFound'
+    '401':
+      $ref: '../../components/responses.yaml#/Unauthorized'

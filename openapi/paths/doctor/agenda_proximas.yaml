@@ -1,0 +1,26 @@
+get:
+  operationId: getDoctorAgenda
+  summary: Obtener la agenda de citas del día y posteriores
+  tags:
+    - Portal Doctor — Vistas
+  responses:
+    '200':
+      description: Agenda cargada exitosamente.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cita_destacada:
+                nullable: true
+                $ref: '../../components/schemas/CitaDoctor.yaml'
+              resto_del_dia:
+                type: array
+                items:
+                  $ref: '../../components/schemas/CitaDoctor.yaml'
+              finalizadas_hoy:
+                type: array
+                items:
+                  $ref: '../../components/schemas/CitaDoctor.yaml'
+    '401':
+      $ref: '../../components/responses.yaml#/Unauthorized'

@@ -2,9 +2,6 @@ allOf:
   - $ref: "./CitaBase.yaml"
   - type: object
     properties:
-      motivo_consulta:
-        type: string
-        example: "Chequeo de Rutina"
       fecha_corta:
         type: string
         example: "02 Nov"

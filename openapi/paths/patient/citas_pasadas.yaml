@@ -1,14 +1,19 @@
 get:
+  operationId: getPatientPastAppointments
   summary: Historial completo de citas finalizadas
-  tags: [ Vistas de Paciente ]
+  tags:
+    - Portal Paciente — Vistas
   responses:
     "200":
       description: OK
       content:
         application/json:
           schema:
+            type: object
             properties:
               historial_citas:
                 type: array
                 items:
                   $ref: "../../components/schemas/CitaLista.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

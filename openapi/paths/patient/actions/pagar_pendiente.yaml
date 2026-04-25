@@ -1,9 +1,8 @@
 post:
+  operationId: payPendingTransaction
   summary: Pagar el saldo de una transacción pendiente
   tags:
-    - Acciones Financieras
-  security:
-    - bearerAuth: []
+    - Portal Paciente — Acciones
   parameters:
     - $ref: "../../../components/parameters.yaml#/id_transaccion_path"
   requestBody:
@@ -27,3 +26,7 @@ post:
               nuevo_estado:
                 type: string
                 example: "PAGADO"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"

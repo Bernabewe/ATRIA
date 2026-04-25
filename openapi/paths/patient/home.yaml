@@ -1,10 +1,11 @@
 get:
+  operationId: getPatientHome
   summary: Obtener datos para la pantalla de inicio del paciente
   tags:
-    - Vistas de Paciente
+    - Portal Paciente — Vistas
   responses:
     "200":
-      description: Respuesta exitosa con datos agregados para el Home
+      description: Respuesta exitosa con datos agregados para el Home.
       content:
         application/json:
           schema:
@@ -27,3 +28,5 @@ get:
                 type: array
                 items:
                   $ref: "../../components/schemas/AccionRapida.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

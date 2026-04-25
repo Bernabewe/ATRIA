@@ -1,0 +1,41 @@
+type: object
+properties:
+  foto_perfil_url:
+    type: string
+    format: uri
+    example: "https://atria.com/profiles/dr_wilson.jpg"
+  nombre_display:
+    type: string
+    example: "Dr. James Wilson"
+  nivel_especialista:
+    type: string
+    example: "ESPECIALISTA SENIOR"
+  
+  # --- Sección: Información Profesional ---
+  especialidad:
+    type: string
+    example: "Cardiología Intervencionista"
+  experiencia_anios:
+    type: integer
+    example: 12
+
+  # --- Sección: Información Personal ---
+  nombre_completo:
+    type: string
+    example: "James Alexander Wilson Moore"
+  cedula_profesional:
+    type: string
+    example: "CP-884920-X"
+  fecha_nacimiento:
+    type: string
+    format: date
+    example: "1982-05-14"
+
+  # --- Sección: Contacto ---
+  telefono:
+    type: string
+    example: "+52 55 4321 9876"
+  correo_electronico:
+    type: string
+    format: email
+    example: "dr.wilson@terracotta.med"

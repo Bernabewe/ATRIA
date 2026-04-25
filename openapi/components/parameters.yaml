@@ -15,6 +15,15 @@ id_transaccion_path:
     type: string
     format: uuid
 
+id_paciente_path:
+  name: id_paciente
+  in: path
+  required: true
+  description: Identificador único del paciente
+  schema:
+    type: string
+    format: uuid
+
 # Identificadores usados como filtros (Query)
 id_cita_query:
   name: id_cita
@@ -45,6 +54,15 @@ id_doctor_query:
   required: true
   schema:
     type: string
+
+id_paciente_query:
+  name: id_paciente
+  in: query
+  required: true
+  description: Identificador único del paciente
+  schema:
+    type: string
+    format: uuid
 
 # Parámetros de tiempo y calendario
 mes_query:

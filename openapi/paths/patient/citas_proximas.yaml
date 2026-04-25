@@ -1,7 +1,8 @@
 get:
+  operationId: getPatientUpcomingAppointments
   summary: Listado de citas próximas y recientes
   tags:
-    - Vistas de Paciente
+    - Portal Paciente — Vistas
   responses:
     "200":
       description: OK
@@ -20,3 +21,5 @@ get:
                 type: array
                 items:
                   $ref: "../../components/schemas/CitaLista.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

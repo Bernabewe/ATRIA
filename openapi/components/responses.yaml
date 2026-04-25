@@ -48,3 +48,10 @@ Created:
           mensaje:
             type: string
             example: "Operación realizada con éxito."
+
+Conflict:
+  description: Conflicto detectado. Por ejemplo, intentar bloquear un horario que ya tiene citas programadas.
+  content:
+    application/json:
+      schema:
+        $ref: './schemas/Error.yaml'

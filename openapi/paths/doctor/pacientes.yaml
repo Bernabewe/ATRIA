@@ -1,0 +1,37 @@
+get:
+  operationId: getDoctorPatients
+  summary: Obtener el directorio de pacientes atendidos
+  tags:
+    - Portal Doctor — Vistas
+  responses:
+    '200':
+      description: Directorio de pacientes cargado.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              pacientes_recientes:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_paciente:
+                      type: string
+                      format: uuid
+                    foto_perfil_url:
+                      type: string
+                      format: uri
+                    nombre_completo:
+                      type: string
+                      example: "Ananna Smith"
+                    id_paciente_corto:
+                      type: string
+                      example: "ID: 88210"
+                    indicador_estado:
+                      type: boolean
+                    cita_info_resumen:
+                      type: string
+                      example: "Próxima cita: Hoy, 4:00 PM"
+    '401':
+      $ref: '../../components/responses.yaml#/Unauthorized'

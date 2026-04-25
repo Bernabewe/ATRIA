@@ -1,0 +1,24 @@
+type: object
+properties:
+  id_paciente:
+    type: string
+    format: uuid
+  notas_interrogatorio:
+    type: string
+    example: "Paciente refiere dolor agudo en zona molar..."
+  notas_exploracion_fisica:
+    type: string
+    example: "Se observa inflamación en encía superior derecha."
+  notas_diagnostico:
+    type: string
+    example: "Pulpitis reversible en pieza 14."
+  notas_tratamiento_receta:
+    type: string
+    example: "Ibuprofeno 400mg cada 8 horas por 3 días."
+  archivos_adjuntos:
+    type: array
+    items:
+      type: string
+      format: uri
+  consentimiento_firmado:
+    type: boolean

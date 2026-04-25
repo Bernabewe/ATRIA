@@ -1,0 +1,22 @@
+type: object
+required: [id_ubicacion, fechas_seleccionadas]
+properties:
+  id_ubicacion:
+    type: string
+    enum: ["Las Américas", "La Primavera", "Ambas"]
+  fechas_seleccionadas:
+    type: array
+    items:
+      type: string
+      format: date
+  bloquear_todo_el_dia:
+    type: boolean
+  hora_inicio:
+    type: string
+    example: "08:00"
+  hora_fin:
+    type: string
+    example: "20:00"
+  motivo_bloqueo:
+    type: string
+    example: "Asunto personal"

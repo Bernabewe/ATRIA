@@ -1,9 +1,8 @@
 patch:
+  operationId: cancelAppointment
   summary: Cancelar una cita programada
   tags:
-    - Acciones de Cita
-  security:
-    - bearerAuth: []
+    - Portal Paciente — Acciones
   parameters:
     - $ref: "../../../components/parameters.yaml#/id_cita_path"
   requestBody:
@@ -30,3 +29,7 @@ patch:
               reembolso_aplicado:
                 type: boolean
                 example: false
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"

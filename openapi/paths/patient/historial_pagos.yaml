@@ -1,14 +1,22 @@
 get:
+  operationId: getPatientPaymentHistory
   summary: Control financiero y adeudos pendientes
-  tags: [ Vistas de Paciente ]
+  tags:
+    - Portal Paciente — Vistas
   responses:
     "200":
+      description: Historial de pagos del paciente cargado exitosamente.
       content:
         application/json:
           schema:
+            type: object
             properties:
-              saldo_pendiente: { type: string, example: "$850.00" }
+              saldo_pendiente:
+                type: string
+                example: "$850.00"
               transacciones_recientes:
                 type: array
                 items:
                   $ref: "../../components/schemas/Transaccion.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

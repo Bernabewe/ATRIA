@@ -1,0 +1,25 @@
+get:
+  summary: Exportar historial de pagos del mes
+  tags:
+    - Acciones de Doctor
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: '../../../components/parameters.yaml#/mes_query'
+  responses:
+    '200':
+      description: URL de descarga generada con éxito.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              download_url:
+                type: string
+                format: uri
+                example: "https://api.atria.com/downloads/temp/pagos_octubre_2026.pdf"
+              expira_en_segundos:
+                type: integer
+                example: 300
+    '401':
+      $ref: '../../../components/responses.yaml#/Unauthorized'

@@ -1,0 +1,35 @@
+get:
+  operationId: getNewConsultationData
+  summary: Cargar datos previos para llenar un nuevo expediente clínico
+  tags:
+    - Portal Doctor — Vistas
+  parameters:
+    - $ref: '../../components/parameters.yaml#/id_paciente_query'
+  responses:
+    '200':
+      description: Cabecera del expediente clínico cargada.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              paciente_nombre:
+                type: string
+                example: "Ana Flores"
+              paciente_foto_url:
+                type: string
+                format: uri
+              id_paciente_formateado:
+                type: string
+                example: "PACIENTE ID: AS-2024-098"
+              edad_anios:
+                type: integer
+                example: 33
+              peso_kg:
+                type: number
+                example: 70
+              alergias_resumen:
+                type: string
+                example: "Penicilina"
+    '401':
+      $ref: '../../components/responses.yaml#/Unauthorized'

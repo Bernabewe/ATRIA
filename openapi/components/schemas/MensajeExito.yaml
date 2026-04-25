@@ -1,0 +1,5 @@
+type: object
+properties:
+  mensaje:
+    type: string
+    example: "Operación realizada con éxito."

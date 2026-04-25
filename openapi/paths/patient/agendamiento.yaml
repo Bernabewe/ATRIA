@@ -1,69 +1,103 @@
 /especialidades:
   get:
+    operationId: getSpecialties
     summary: "Paso 1: Lista de especialidades"
+    tags:
+      - Portal Paciente — Vistas
     responses:
       "200":
+        description: Lista de especialidades médicas disponibles.
         content:
           application/json:
             schema:
+              type: object
               properties:
                 especialidades:
                   type: array
-                  items: { $ref: "../../components/schemas/Especialidad.yaml" }
+                  items:
+                    $ref: "../../components/schemas/Especialidad.yaml"
 
 /sucursales:
   get:
+    operationId: getBranches
     summary: "Paso 2: Selección de clínica más cercana"
+    tags:
+      - Portal Paciente — Vistas
     responses:
       "200":
+        description: Lista de sucursales disponibles.
         content:
           application/json:
             schema:
+              type: object
               properties:
                 sucursales:
                   type: array
-                  items: { $ref: "../../components/schemas/Sucursal.yaml" }
+                  items:
+                    $ref: "../../components/schemas/Sucursal.yaml"
 
 /doctores:
   get:
+    operationId: getDoctorsBySpecialtyAndBranch
     summary: "Paso 3: Especialistas por sucursal y área"
+    tags:
+      - Portal Paciente — Vistas
     parameters:
       - $ref: "../../components/parameters.yaml#/id_especialidad_query"
       - $ref: "../../components/parameters.yaml#/id_sucursal_query"
     responses:
       "200":
+        description: Lista de especialistas filtrados.
         content:
           application/json:
             schema:
+              type: object
               properties:
                 especialistas:
                   type: array
-                  items: { $ref: "../../components/schemas/Medico.yaml" }
+                  items:
+                    $ref: "../../components/schemas/Medico.yaml"
 
 /disponibilidad:
   get:
+    operationId: getDoctorAvailability
     summary: "Paso 4: Calendario de horarios libres"
+    tags:
+      - Portal Paciente — Vistas
     parameters:
       - $ref: "../../components/parameters.yaml#/id_doctor_query"
       - $ref: "../../components/parameters.yaml#/mes_query"
     responses:
       "200":
+        description: Días y horarios disponibles del doctor.
         content:
           application/json:
             schema:
+              type: object
               properties:
-                dias_disponibles: { type: array, items: { type: string, example: "2026-03-06" } }
+                dias_disponibles:
+                  type: array
+                  items:
+                    type: string
+                    example: "2026-03-06"
                 horarios_por_dia:
                   type: array
                   items:
                     type: object
                     properties:
-                      hora_formateada: { type: string, example: "10:30 AM" }
-                      estado: { type: string, example: "disponible" }
+                      hora_formateada:
+                        type: string
+                        example: "10:30 AM"
+                      estado:
+                        type: string
+                        example: "disponible"
 
 /resumen:
   get:
+    operationId: getBookingSummary
     summary: "Paso 5: Resumen final para confirmación"
+    tags:
+      - Portal Paciente — Vistas
     parameters:
       - $ref: "../../components/parameters.yaml#/id_doctor_query"
       - $ref: "../../components/parameters.yaml#/id_sucursal_query"
@@ -71,6 +105,8 @@
       - $ref: "../../components/parameters.yaml#/hora_query"
     responses:
       "200":
+        description: Resumen completo de la cita antes de confirmar.
         content:
           application/json:
-            schema: { $ref: "../../components/schemas/ResumenAgendamiento.yaml" }
+            schema:
+              $ref: "../../components/schemas/ResumenAgendamiento.yaml"

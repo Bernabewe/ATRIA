@@ -1,9 +1,8 @@
 post:
+  operationId: createAppointment
   summary: Confirmar agendamiento y pagar anticipo
   tags:
-    - Acciones de Reserva
-  security:
-    - bearerAuth: []
+    - Portal Paciente — Acciones
   requestBody:
     required: true
     content:
@@ -42,3 +41,7 @@ post:
               estado_pago:
                 type: string
                 example: "APROBADO"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"

@@ -1,13 +1,16 @@
 get:
+  operationId: getPatientAppointmentDetails
   summary: Detalles y gestión de una cita específica
   tags:
-    - Vistas de Paciente
+    - Portal Paciente — Vistas
   parameters:
     - $ref: "../../components/parameters.yaml#/id_cita_query"
   responses:
     "200":
-      description: Carga exitosa de los detalles de la cita
+      description: Carga exitosa de los detalles de la cita.
       content:
         application/json:
           schema:
             $ref: "../../components/schemas/CitaDetalle.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

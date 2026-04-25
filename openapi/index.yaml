@@ -1,13 +1,26 @@
 openapi: 3.0.3
 info:
-  title: Atria API - Sistema de Gestión Médica (Módulo Paciente)
-  description: Documentación oficial de las APIs bajo el patrón BFF para el portal
-    de pacientes de Atria.
+  title: Atria API - Sistema de Gestión Médica
+  description: Documentación oficial de las APIs bajo el patrón BFF para los portales
+    de paciente y doctor de Atria.
   version: 1.0.0
 
 servers:
   - url: http://localhost:3000/api
     description: Servidor de desarrollo local
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Portal Paciente — Vistas
+    description: Endpoints de lectura para el portal del paciente.
+  - name: Portal Paciente — Acciones
+    description: Endpoints de escritura y mutaciones del paciente.
+  - name: Portal Doctor — Vistas
+    description: Endpoints de lectura para el portal del doctor.
+  - name: Portal Doctor — Acciones
+    description: Endpoints de escritura y mutaciones del doctor.
 
 # ------------------------------------------------------------------
 # RUTAS (PATHS) - Mapeo de endpoints a archivos específicos
@@ -55,6 +68,42 @@ paths:
   /v1/appointments/{id_cita}/cancel:
     $ref: "./paths/patient/actions/cancelar_cita.yaml"
 
+  
+  # --- Perfil e Inicio ---
+  /v1/views/doctor/home:
+    $ref: './paths/doctor/home.yaml'
+  /v1/views/doctor/profile_details:
+    $ref: './paths/doctor/perfil_doctor.yaml'
+
+  # --- Agenda y Citas ---
+  /v1/views/doctor/agenda_proximas:
+    $ref: './paths/doctor/agenda_proximas.yaml'
+
+  # --- Mis Pacientes ---
+  /v1/views/doctor/patients:
+    $ref: './paths/doctor/pacientes.yaml'
+  /v1/views/doctor/patients/{id_paciente}/history:
+    $ref: './paths/doctor/historial_paciente.yaml'
+  /v1/views/doctor/consultations/new:
+    $ref: './paths/doctor/nuevo_expediente.yaml'
+
+  # --- Finanzas ---
+  /v1/views/doctor/payments:
+    $ref: './paths/doctor/pagos.yaml'
+
+  # --- Acciones (Mutaciones) del Doctor ---
+  /v1/doctor/consultations:
+    $ref: './paths/doctor/actions/guardar_expediente.yaml'
+    
+  /v1/doctor/schedule/blocks:
+    $ref: './paths/doctor/actions/bloquear_agenda.yaml'
+    
+  /v1/doctor/payments/export:
+    $ref: './paths/doctor/actions/exportar_pagos.yaml'
+    
+  /v1/doctor/profile:
+    $ref: './paths/doctor/actions/editar_perfil.yaml'
+
 # ------------------------------------------------------------------
 # COMPONENTES - Biblioteca global de piezas reutilizables
 # ------------------------------------------------------------------
@@ -70,6 +119,8 @@ components:
       $ref: "./components/parameters.yaml#/id_cita_path"
     IdTransaccionPath:
       $ref: "./components/parameters.yaml#/id_transaccion_path"
+    IdPacientePath:
+      $ref: "./components/parameters.yaml#/id_paciente_path"
     IdCitaQuery:
       $ref: "./components/parameters.yaml#/id_cita_query"
     IdEspecialidadQuery:
@@ -78,12 +129,14 @@ components:
       $ref: "./components/parameters.yaml#/id_sucursal_query"
     IdDoctorQuery:
       $ref: "./components/parameters.yaml#/id_doctor_query"
+    IdPacienteQuery:
+      $ref: "./components/parameters.yaml#/id_paciente_query"
     MesQuery:
       $ref: "./components/parameters.yaml#/mes_query"
     FechaQuery:
-      $ref: "./components/parameters.yaml#/id_sucursal_query"
+      $ref: "./components/parameters.yaml#/fecha_query"
     HoraQuery:
-      $ref: "./components/parameters.yaml#/id_sucursal_query"
+      $ref: "./components/parameters.yaml#/hora_query"
 
   responses:
     BadRequest:
@@ -94,6 +147,8 @@ components:
       $ref: "./components/responses.yaml#/Forbidden"
     NotFound:
       $ref: "./components/responses.yaml#/NotFound"
+    Conflict:
+      $ref: "./components/responses.yaml#/Conflict"
     InternalServerError:
       $ref: "./components/responses.yaml#/InternalServerError"
     Created:
@@ -123,5 +178,15 @@ components:
       $ref: "./components/schemas/ConsultaHistorial.yaml"
     ResumenAgendamiento:
       $ref: "./components/schemas/ResumenAgendamiento.yaml"
+    MensajeExito:
+      $ref: "./components/schemas/MensajeExito.yaml"
+    CitaDoctor:
+      $ref: "./components/schemas/CitaDoctor.yaml"
+    PerfilDoctor:
+      $ref: "./components/schemas/PerfilDoctor.yaml"
+    ExpedienteClinico:
+      $ref: "./components/schemas/ExpedienteClinico.yaml"
+    BloqueoAgenda:
+      $ref: "./components/schemas/BloqueoAgenda.yaml"
     Error:
       $ref: "./components/schemas/Error.yaml"

@@ -9,6 +9,9 @@ properties:
   especialidad_etiqueta:
     type: string
     example: "Especialista en Cardiología"
+  motivo_consulta:
+    type: string
+    example: "Chequeo de Rutina"
   estado_badge:
     type: string
     example: "CONFIRMADA"

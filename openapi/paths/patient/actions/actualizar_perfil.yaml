@@ -1,9 +1,8 @@
 put:
+  operationId: updatePatientProfile
   summary: Actualizar la información del perfil del paciente
   tags:
-    - Acciones de Paciente
-  security:
-    - bearerAuth: []
+    - Portal Paciente — Acciones
   requestBody:
     required: true
     content:
@@ -29,8 +28,8 @@ put:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              mensaje:
-                type: string
-                example: "Perfil guardado con éxito"
+            $ref: "../../../components/schemas/MensajeExito.yaml"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"

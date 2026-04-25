@@ -1,0 +1,28 @@
+get:
+  operationId: getDoctorHome
+  summary: Obtener datos para la pantalla de inicio del doctor
+  tags:
+    - Portal Doctor — Vistas
+  responses:
+    '200':
+      description: Respuesta exitosa con datos agregados para el Home del doctor.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              doctor_nombre_pila:
+                type: string
+                example: "James"
+              total_citas_hoy:
+                type: integer
+                example: 8
+              proxima_cita:
+                nullable: true
+                $ref: '../../components/schemas/CitaDoctor.yaml'
+              quick_actions:
+                type: array
+                items:
+                  $ref: '../../components/schemas/AccionRapida.yaml'
+    '401':
+      $ref: '../../components/responses.yaml#/Unauthorized'

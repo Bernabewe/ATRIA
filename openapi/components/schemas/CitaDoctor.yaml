@@ -1,0 +1,10 @@
+allOf:
+  - $ref: './CitaBase.yaml'
+  - type: object
+    properties:
+      paciente_nombre:
+        type: string
+        example: "Carlos Alberto Ruiz"
+      paciente_foto_url:
+        type: string
+        format: uri

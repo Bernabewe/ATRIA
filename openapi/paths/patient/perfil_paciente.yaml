@@ -1,9 +1,14 @@
 get:
+  operationId: getPatientProfile
   summary: Información personal y de contacto del paciente
-  tags: [ Vistas de Paciente ]
+  tags:
+    - Portal Paciente — Vistas
   responses:
     "200":
+      description: Perfil del paciente cargado exitosamente.
       content:
         application/json:
           schema:
             $ref: "../../components/schemas/Paciente.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
