@@ -1,0 +1,73 @@
+### Variables
+@baseUrl = http://localhost:3000/api
+# Token falso para probar que nuestro escudo rechaza intrusos
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.falso.falso
+
+### 1. Probar el servidor (Ruta Pública)
+GET {{baseUrl}}/ping
+
+### 2. Probar ruta protegida SIN Token (Debería devolver 401 UNAUTHORIZED)
+GET {{baseUrl}}/v1/views/patient/home
+
+### 3. Probar ruta protegida CON Token inválido (Debería devolver 401 INVALID_TOKEN)
+GET {{baseUrl}}/v1/views/patient/home
+Authorization: Bearer {{token}}
+
+### 4. Probar captura de errores (Debería devolver un 400 estandarizado)
+GET {{baseUrl}}/error
+
+### 5. Generar un Token Válido (Simulando un Login)
+GET {{baseUrl}}/test-login
+
+### --------------------------------------------------------
+### Pega el token que te devolvió la prueba 5 aquí abajo 👇
+@validToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9wYWNpZW50ZSI6IjEyM2U0NTY3LWU4OWItMTJkMy1hNDU2LTQyNjYxNDE3NDAwMCIsIm5vbWJyZSI6IkFubmEgU21pdGgiLCJyb2wiOiJwYWNpZW50ZSIsImlhdCI6MTc3NzE1MTE2MCwiZXhwIjoxNzc3MTU0NzYwfQ._0ALoXIw9cotstYI-Stfv7H2vOAX8HKlKYVR-e65Mw0
+### --------------------------------------------------------
+
+### 6. Probar ruta protegida CON Token Válido (¡El Happy Path!)
+GET {{baseUrl}}/v1/views/patient/home
+Authorization: Bearer {{validToken}}
+
+### 7. Probar Citas Próximas
+GET {{baseUrl}}/v1/views/patient/citas_proximas
+Authorization: Bearer {{validToken}}
+
+### 8. Probar Citas Pasadas
+GET {{baseUrl}}/v1/views/patient/citas_pasadas
+Authorization: Bearer {{validToken}}
+
+### 9. Probar Mi Perfil
+GET {{baseUrl}}/v1/views/patient/profile_details
+Authorization: Bearer {{validToken}}
+
+### 10. Probar Historial Médico
+GET {{baseUrl}}/v1/views/patient/historial_medico
+Authorization: Bearer {{validToken}}
+
+### 11. Probar Historial de Pagos
+GET {{baseUrl}}/v1/views/patient/historial_pagos
+Authorization: Bearer {{validToken}}
+
+### ==========================================
+### FLUJO DE RESERVA MÉDICA
+### ==========================================
+
+### 12. Paso 1: Especialidades
+GET {{baseUrl}}/v1/views/patient/reservas/especialidad
+Authorization: Bearer {{validToken}}
+
+### 13. Paso 2: Sucursales
+GET {{baseUrl}}/v1/views/patient/reservas/sucursal
+Authorization: Bearer {{validToken}}
+
+### 14. Paso 3: Doctores
+GET {{baseUrl}}/v1/views/patient/reservas/doctores?id_especialidad=esp-001&id_sucursal=suc-001
+Authorization: Bearer {{validToken}}
+
+### 15. Paso 4: Disponibilidad
+GET {{baseUrl}}/v1/views/patient/reservas/disponibilidad?id_doctor=doc-001&mes=2026-03
+Authorization: Bearer {{validToken}}
+
+### 16. Paso 5: Resumen Final
+GET {{baseUrl}}/v1/views/patient/reservas/resumen?id_doctor=doc-001&id_sucursal=suc-001&fecha=2026-03-06&hora=10:30
+Authorization: Bearer {{validToken}}
