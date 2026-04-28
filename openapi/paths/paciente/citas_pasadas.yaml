@@ -2,7 +2,7 @@ get:
   operationId: getPatientPastAppointments
   summary: Historial completo de citas finalizadas
   tags:
-    - Portal Paciente — Vistas
+    - paciente_vistas
   responses:
     "200":
       description: OK

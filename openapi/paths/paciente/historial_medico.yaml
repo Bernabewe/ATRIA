@@ -2,7 +2,7 @@ get:
   operationId: getPatientMedicalHistory
   summary: Línea de tiempo de diagnósticos y consultas
   tags:
-    - Portal Paciente — Vistas
+    - paciente_vistas
   responses:
     "200":
       description: Historial médico del paciente cargado exitosamente.

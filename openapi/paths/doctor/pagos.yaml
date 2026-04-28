@@ -2,9 +2,9 @@ get:
   operationId: getDoctorPayments
   summary: Ver ingresos y transacciones recientes del médico
   tags:
-    - Portal Doctor — Vistas
+    - doctor_vistas
   responses:
-    '200':
+    "200":
       description: Historial financiero cargado.
       content:
         application/json:
@@ -17,6 +17,6 @@ get:
               transacciones_recientes:
                 type: array
                 items:
-                  $ref: '../../components/schemas/Transaccion.yaml'
-    '401':
-      $ref: '../../components/responses.yaml#/Unauthorized'
+                  $ref: "../../components/schemas/Transaccion.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

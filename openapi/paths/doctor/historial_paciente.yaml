@@ -2,11 +2,11 @@ get:
   operationId: getPatientHistoryByDoctor
   summary: Ver el historial de consultas de un paciente específico
   tags:
-    - Portal Doctor — Vistas
+    - doctor_vistas
   parameters:
-    - $ref: '../../components/parameters.yaml#/id_paciente_path'
+    - $ref: "../../components/parameters.yaml#/id_paciente_path"
   responses:
-    '200':
+    "200":
       description: Historial médico del paciente.
       content:
         application/json:
@@ -22,8 +22,8 @@ get:
               historial_consultas:
                 type: array
                 items:
-                  $ref: '../../components/schemas/ConsultaHistorial.yaml'
-    '404':
-      $ref: '../../components/responses.yaml#/NotFound'
-    '401':
-      $ref: '../../components/responses.yaml#/Unauthorized'
+                  $ref: "../../components/schemas/ConsultaHistorial.yaml"
+    "404":
+      $ref: "../../components/responses.yaml#/NotFound"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

@@ -2,13 +2,13 @@ get:
   operationId: getDoctorProfile
   summary: Obtener la información del perfil del doctor
   tags:
-    - Portal Doctor — Vistas
+    - doctor_vistas
   responses:
-    '200':
+    "200":
       description: Perfil cargado exitosamente.
       content:
         application/json:
           schema:
-            $ref: '../../components/schemas/PerfilDoctor.yaml'
-    '401':
-      $ref: '../../components/responses.yaml#/Unauthorized'
+            $ref: "../../components/schemas/PerfilDoctor.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

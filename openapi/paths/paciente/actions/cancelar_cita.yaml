@@ -1,10 +1,10 @@
-post:
-  operationId: payPendingTransaction
-  summary: Pagar el saldo de una transacción pendiente
+patch:
+  operationId: cancelAppointment
+  summary: Cancelar una cita programada
   tags:
-    - Portal Paciente — Acciones
+    - paciente_acciones
   parameters:
-    - $ref: "../../../components/parameters.yaml#/id_transaccion_path"
+    - $ref: "../../../components/parameters.yaml#/id_cita_path"
   requestBody:
     required: true
     content:
@@ -12,12 +12,12 @@ post:
         schema:
           type: object
           properties:
-            metodo_pago_id:
+            motivo_cancelacion:
               type: string
-              example: "card_9876"
+              example: "Problemas de transporte"
   responses:
     "200":
-      description: Pago completado.
+      description: Cita cancelada correctamente.
       content:
         application/json:
           schema:
@@ -25,7 +25,10 @@ post:
             properties:
               nuevo_estado:
                 type: string
-                example: "PAGADO"
+                example: "CANCELADA"
+              reembolso_aplicado:
+                type: boolean
+                example: false
     "400":
       $ref: "../../../components/responses.yaml#/BadRequest"
     "401":

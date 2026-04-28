@@ -14,13 +14,13 @@ security:
   - bearerAuth: []
 
 tags:
-  - name: Portal Paciente — Vistas
+  - name: paciente_vistas
     description: Endpoints de lectura para el portal del paciente.
-  - name: Portal Paciente — Acciones
+  - name: paciente_acciones
     description: Endpoints de escritura y mutaciones del paciente.
-  - name: Portal Doctor — Vistas
+  - name: doctor_vistas
     description: Endpoints de lectura para el portal del doctor.
-  - name: Portal Doctor — Acciones
+  - name: doctor_acciones
     description: Endpoints de escritura y mutaciones del doctor.
 
 # ------------------------------------------------------------------
@@ -32,51 +32,51 @@ paths:
     $ref: "./paths/auth/login.yaml"
 
   # --- Módulo de Perfil e Inicio ---
-  /v1/views/patient/home:
-    $ref: "./paths/patient/home.yaml"
-  /v1/views/patient/profile_details:
-    $ref: "./paths/patient/perfil_paciente.yaml"
+  /v1/views/paciente/home:
+    $ref: "./paths/paciente/home.yaml"
+  /v1/views/paciente/perfil_paciente:
+    $ref: "./paths/paciente/perfil_paciente.yaml"
 
   # --- Módulo de Citas ---
-  /v1/views/patient/citas_proximas:
-    $ref: "./paths/patient/citas_proximas.yaml"
-  /v1/views/patient/citas_pasadas:
-    $ref: "./paths/patient/citas_pasadas.yaml"
-  /v1/views/patient/gestionar_cita:
-    $ref: "./paths/patient/gestionar_cita.yaml"
+  /v1/views/paciente/citas_proximas:
+    $ref: "./paths/paciente/citas_proximas.yaml"
+  /v1/views/paciente/citas_pasadas:
+    $ref: "./paths/paciente/citas_pasadas.yaml"
+  /v1/views/paciente/gestionar_cita:
+    $ref: "./paths/paciente/gestionar_cita.yaml"
 
   # --- Módulo de Reserva Médica (Agendamiento) ---
-  /v1/views/patient/reservas/especialidad:
-    $ref: "./paths/patient/agendamiento.yaml#/~1especialidades"
-  /v1/views/patient/reservas/sucursal:
-    $ref: "./paths/patient/agendamiento.yaml#/~1sucursales"
-  /v1/views/patient/reservas/doctores:
-    $ref: "./paths/patient/agendamiento.yaml#/~1doctores"
-  /v1/views/patient/reservas/disponibilidad:
-    $ref: "./paths/patient/agendamiento.yaml#/~1disponibilidad"
-  /v1/views/patient/reservas/resumen:
-    $ref: "./paths/patient/agendamiento.yaml#/~1resumen"
+  /v1/views/paciente/reservas/especialidades:
+    $ref: "./paths/paciente/agendamiento.yaml#/especialidades"
+  /v1/views/paciente/reservas/sucursales:
+    $ref: "./paths/paciente/agendamiento.yaml#/sucursales"
+  /v1/views/paciente/reservas/doctores:
+    $ref: "./paths/paciente/agendamiento.yaml#/doctores"
+  /v1/views/paciente/reservas/disponibilidad:
+    $ref: "./paths/paciente/agendamiento.yaml#/disponibilidad"
+  /v1/views/paciente/reservas/resumen:
+    $ref: "./paths/paciente/agendamiento.yaml#/resumen"
 
   # --- Módulo de Historiales ---
-  /v1/views/patient/historial_medico:
-    $ref: "./paths/patient/historial_medico.yaml"
-  /v1/views/patient/historial_pagos:
-    $ref: "./paths/patient/historial_pagos.yaml"
+  /v1/views/paciente/historial_medico:
+    $ref: "./paths/paciente/historial_medico.yaml"
+  /v1/views/paciente/historial_pagos:
+    $ref: "./paths/paciente/historial_pagos.yaml"
 
   # --- Módulo de Acciones (Mutaciones) ---
-  /v1/patient/profile:
-    $ref: "./paths/patient/actions/actualizar_perfil.yaml"
-  /v1/reservas/appointments:
-    $ref: "./paths/patient/actions/reservar_cita.yaml"
-  /v1/patient/historial_pagos/{id_transaccion}/pay:
-    $ref: "./paths/patient/actions/pagar_pendiente.yaml"
-  /v1/appointments/{id_cita}/cancel:
-    $ref: "./paths/patient/actions/cancelar_cita.yaml"
+  /v1/paciente/actualizar_perfil:
+    $ref: "./paths/paciente/actions/actualizar_perfil.yaml"
+  /v1/paciente/reservas/reservar_cita:
+    $ref: "./paths/paciente/actions/reservar_cita.yaml"
+  /v1/paciente/pagos/{id_transaccion}/pagar_pendiente:
+    $ref: "./paths/paciente/actions/pagar_pendiente.yaml"
+  /v1/paciente/citas/{id_cita}/cancelar:
+    $ref: "./paths/paciente/actions/cancelar_cita.yaml"
 
   # --- Perfil e Inicio ---
   /v1/views/doctor/home:
     $ref: "./paths/doctor/home.yaml"
-  /v1/views/doctor/profile_details:
+  /v1/views/doctor/perfil_doctor:
     $ref: "./paths/doctor/perfil_doctor.yaml"
 
   # --- Agenda y Citas ---
@@ -84,28 +84,28 @@ paths:
     $ref: "./paths/doctor/agenda_proximas.yaml"
 
   # --- Mis Pacientes ---
-  /v1/views/doctor/patients:
+  /v1/views/doctor/pacientes:
     $ref: "./paths/doctor/pacientes.yaml"
-  /v1/views/doctor/patients/{id_paciente}/history:
+  /v1/views/doctor/pacientes/{id_paciente}/historial_paciente:
     $ref: "./paths/doctor/historial_paciente.yaml"
-  /v1/views/doctor/consultations/new:
+  /v1/views/doctor/nuevo_expediente:
     $ref: "./paths/doctor/nuevo_expediente.yaml"
 
   # --- Finanzas ---
-  /v1/views/doctor/payments:
+  /v1/views/doctor/pagos:
     $ref: "./paths/doctor/pagos.yaml"
 
   # --- Acciones (Mutaciones) del Doctor ---
-  /v1/doctor/consultations:
+  /v1/doctor/guardar_expediente:
     $ref: "./paths/doctor/actions/guardar_expediente.yaml"
 
-  /v1/doctor/schedule/blocks:
+  /v1/doctor/bloquear_agenda:
     $ref: "./paths/doctor/actions/bloquear_agenda.yaml"
 
-  /v1/doctor/payments/export:
+  /v1/doctor/exportar_pagos:
     $ref: "./paths/doctor/actions/exportar_pagos.yaml"
 
-  /v1/doctor/profile:
+  /v1/doctor/editar_perfil:
     $ref: "./paths/doctor/actions/editar_perfil.yaml"
 
 # ------------------------------------------------------------------
@@ -194,7 +194,7 @@ components:
       $ref: "./components/schemas/BloqueoAgenda.yaml"
     Error:
       $ref: "./components/schemas/Error.yaml"
-    LoginCredenciales:
-      $ref: "./components/schemas/LoginCredenciales.yaml"
+    Login:
+      $ref: "./components/schemas/Login.yaml"
     AuthRespuesta:
       $ref: "./components/schemas/AuthRespuesta.yaml"

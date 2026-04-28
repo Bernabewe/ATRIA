@@ -2,7 +2,7 @@ post:
   operationId: createAppointment
   summary: Confirmar agendamiento y pagar anticipo
   tags:
-    - Portal Paciente — Acciones
+    - paciente_acciones
   requestBody:
     required: true
     content:

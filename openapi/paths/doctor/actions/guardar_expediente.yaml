@@ -1,7 +1,7 @@
 post:
   summary: Guardar y Firmar Expediente Clínico
   tags:
-    - Acciones de Doctor
+    - doctor_acciones
   security:
     - bearerAuth: []
   requestBody:
@@ -9,9 +9,9 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../../components/schemas/ExpedienteClinico.yaml'
+          $ref: "../../../components/schemas/ExpedienteClinico.yaml"
   responses:
-    '201':
+    "201":
       description: Expediente guardado y firmado correctamente.
       content:
         application/json:
@@ -24,7 +24,7 @@ post:
               mensaje:
                 type: string
                 example: "Expediente guardado y firmado correctamente."
-    '400':
-      $ref: '../../../components/responses.yaml#/BadRequest'
-    '401':
-      $ref: '../../../components/responses.yaml#/Unauthorized'
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"

@@ -1,9 +1,9 @@
-/especialidades:
+especialidades:
   get:
     operationId: getSpecialties
     summary: "Paso 1: Lista de especialidades"
     tags:
-      - Portal Paciente — Vistas
+      - paciente_vistas
     responses:
       "200":
         description: Lista de especialidades médicas disponibles.
@@ -17,12 +17,12 @@
                   items:
                     $ref: "../../components/schemas/Especialidad.yaml"
 
-/sucursales:
+sucursales:
   get:
     operationId: getBranches
     summary: "Paso 2: Selección de clínica más cercana"
     tags:
-      - Portal Paciente — Vistas
+      - paciente_vistas
     responses:
       "200":
         description: Lista de sucursales disponibles.
@@ -36,12 +36,12 @@
                   items:
                     $ref: "../../components/schemas/Sucursal.yaml"
 
-/doctores:
+doctores:
   get:
     operationId: getDoctorsBySpecialtyAndBranch
     summary: "Paso 3: Especialistas por sucursal y área"
     tags:
-      - Portal Paciente — Vistas
+      - paciente_vistas
     parameters:
       - $ref: "../../components/parameters.yaml#/id_especialidad_query"
       - $ref: "../../components/parameters.yaml#/id_sucursal_query"
@@ -58,12 +58,12 @@
                   items:
                     $ref: "../../components/schemas/Medico.yaml"
 
-/disponibilidad:
+disponibilidad:
   get:
     operationId: getDoctorAvailability
     summary: "Paso 4: Calendario de horarios libres"
     tags:
-      - Portal Paciente — Vistas
+      - paciente_vistas
     parameters:
       - $ref: "../../components/parameters.yaml#/id_doctor_query"
       - $ref: "../../components/parameters.yaml#/mes_query"
@@ -92,12 +92,12 @@
                         type: string
                         example: "disponible"
 
-/resumen:
+resumen:
   get:
     operationId: getBookingSummary
     summary: "Paso 5: Resumen final para confirmación"
     tags:
-      - Portal Paciente — Vistas
+      - paciente_vistas
     parameters:
       - $ref: "../../components/parameters.yaml#/id_doctor_query"
       - $ref: "../../components/parameters.yaml#/id_sucursal_query"

@@ -2,9 +2,9 @@ get:
   operationId: getDoctorPatients
   summary: Obtener el directorio de pacientes atendidos
   tags:
-    - Portal Doctor — Vistas
+    - doctor_vistas
   responses:
-    '200':
+    "200":
       description: Directorio de pacientes cargado.
       content:
         application/json:
@@ -33,5 +33,5 @@ get:
                     cita_info_resumen:
                       type: string
                       example: "Próxima cita: Hoy, 4:00 PM"
-    '401':
-      $ref: '../../components/responses.yaml#/Unauthorized'
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

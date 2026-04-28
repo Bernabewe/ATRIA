@@ -2,7 +2,7 @@ get:
   operationId: getPatientUpcomingAppointments
   summary: Listado de citas próximas y recientes
   tags:
-    - Portal Paciente — Vistas
+    - paciente_vistas
   responses:
     "200":
       description: OK

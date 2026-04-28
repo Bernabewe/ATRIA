@@ -2,7 +2,7 @@ get:
   operationId: getPatientPaymentHistory
   summary: Control financiero y adeudos pendientes
   tags:
-    - Portal Paciente — Vistas
+    - paciente_vistas
   responses:
     "200":
       description: Historial de pagos del paciente cargado exitosamente.

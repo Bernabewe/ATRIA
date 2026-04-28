@@ -1,13 +1,13 @@
 get:
   summary: Exportar historial de pagos del mes
   tags:
-    - Acciones de Doctor
+    - doctor_acciones
   security:
     - bearerAuth: []
   parameters:
-    - $ref: '../../../components/parameters.yaml#/mes_query'
+    - $ref: "../../../components/parameters.yaml#/mes_query"
   responses:
-    '200':
+    "200":
       description: URL de descarga generada con éxito.
       content:
         application/json:
@@ -21,5 +21,5 @@ get:
               expira_en_segundos:
                 type: integer
                 example: 300
-    '401':
-      $ref: '../../../components/responses.yaml#/Unauthorized'
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"

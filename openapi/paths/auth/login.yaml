@@ -1,14 +1,14 @@
 post:
   summary: Iniciar sesión en el sistema
   tags:
-    - Autenticación
+    - Autenticacion
   security: [] # Ruta pública
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: "../../components/schemas/LoginCredenciales.yaml"
+          $ref: "../../components/schemas/Login.yaml"
   responses:
     "200":
       description: Login exitoso. Retorna el token y rol.

@@ -2,9 +2,9 @@ get:
   operationId: getDoctorHome
   summary: Obtener datos para la pantalla de inicio del doctor
   tags:
-    - Portal Doctor — Vistas
+    - doctor_vistas
   responses:
-    '200':
+    "200":
       description: Respuesta exitosa con datos agregados para el Home del doctor.
       content:
         application/json:
@@ -19,10 +19,10 @@ get:
                 example: 8
               proxima_cita:
                 nullable: true
-                $ref: '../../components/schemas/CitaDoctor.yaml'
+                $ref: "../../components/schemas/CitaDoctor.yaml"
               quick_actions:
                 type: array
                 items:
-                  $ref: '../../components/schemas/AccionRapida.yaml'
-    '401':
-      $ref: '../../components/responses.yaml#/Unauthorized'
+                  $ref: "../../components/schemas/AccionRapida.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"

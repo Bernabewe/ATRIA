@@ -2,7 +2,7 @@ get:
   operationId: getPatientAppointmentDetails
   summary: Detalles y gestión de una cita específica
   tags:
-    - Portal Paciente — Vistas
+    - paciente_vistas
   parameters:
     - $ref: "../../components/parameters.yaml#/id_cita_query"
   responses:

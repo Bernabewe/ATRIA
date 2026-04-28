@@ -1,7 +1,7 @@
 put:
   summary: Actualizar información de contacto del perfil
   tags:
-    - Acciones de Doctor
+    - doctor_acciones
   security:
     - bearerAuth: []
   requestBody:
@@ -22,7 +22,7 @@ put:
               type: string
               description: "Opcional: Nueva foto en Base64"
   responses:
-    '200':
+    "200":
       description: Perfil actualizado correctamente.
       content:
         application/json:
@@ -32,7 +32,7 @@ put:
               mensaje:
                 type: string
                 example: "Perfil actualizado con éxito."
-    '400':
-      $ref: '../../../components/responses.yaml#/BadRequest'
-    '401':
-      $ref: '../../../components/responses.yaml#/Unauthorized'
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"

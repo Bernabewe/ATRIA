@@ -1,7 +1,7 @@
 post:
   summary: Bloquear Horario (Ajustes de disponibilidad)
   tags:
-    - Acciones de Doctor
+    - doctor_acciones
   security:
     - bearerAuth: []
   requestBody:
@@ -9,9 +9,9 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../../components/schemas/BloqueoAgenda.yaml'
+          $ref: "../../../components/schemas/BloqueoAgenda.yaml"
   responses:
-    '200':
+    "200":
       description: Horario bloqueado con éxito.
       content:
         application/json:
@@ -24,9 +24,9 @@ post:
               citas_canceladas_count:
                 type: integer
                 example: 0
-    '409':
-      $ref: '../../../components/responses.yaml#/Conflict'
-    '400':
-      $ref: '../../../components/responses.yaml#/BadRequest'
-    '401':
-      $ref: '../../../components/responses.yaml#/Unauthorized'
+    "409":
+      $ref: "../../../components/responses.yaml#/Conflict"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"

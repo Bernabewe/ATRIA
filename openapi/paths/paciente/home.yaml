@@ -2,7 +2,7 @@ get:
   operationId: getPatientHome
   summary: Obtener datos para la pantalla de inicio del paciente
   tags:
-    - Portal Paciente — Vistas
+    - paciente_vistas
   responses:
     "200":
       description: Respuesta exitosa con datos agregados para el Home.
