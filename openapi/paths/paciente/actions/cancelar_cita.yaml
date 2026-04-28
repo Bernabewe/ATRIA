@@ -1,5 +1,5 @@
 patch:
-  operationId: cancelAppointment
+  operationId: cancelarCita
   summary: Cancelar una cita programada
   tags:
     - paciente_acciones
@@ -30,6 +30,6 @@ patch:
                 type: boolean
                 example: false
     "400":
-      $ref: "../../../components/responses.yaml#/BadRequest"
+      $ref: "../../../components/responses.yaml#/PeticionIncorrecta"
     "401":
-      $ref: "../../../components/responses.yaml#/Unauthorized"
+      $ref: "../../../components/responses.yaml#/NoAutorizado"

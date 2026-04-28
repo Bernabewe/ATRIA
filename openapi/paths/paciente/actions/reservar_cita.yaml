@@ -1,5 +1,5 @@
 post:
-  operationId: createAppointment
+  operationId: crearCita
   summary: Confirmar agendamiento y pagar anticipo
   tags:
     - paciente_acciones
@@ -42,6 +42,6 @@ post:
                 type: string
                 example: "APROBADO"
     "400":
-      $ref: "../../../components/responses.yaml#/BadRequest"
+      $ref: "../../../components/responses.yaml#/PeticionIncorrecta"
     "401":
-      $ref: "../../../components/responses.yaml#/Unauthorized"
+      $ref: "../../../components/responses.yaml#/NoAutorizado"

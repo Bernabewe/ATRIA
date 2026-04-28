@@ -1,5 +1,5 @@
 get:
-  operationId: getDoctorPatients
+  operationId: obtenerPacientesDoctor
   summary: Obtener el directorio de pacientes atendidos
   tags:
     - doctor_vistas
@@ -34,4 +34,4 @@ get:
                       type: string
                       example: "Próxima cita: Hoy, 4:00 PM"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

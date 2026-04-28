@@ -1,5 +1,5 @@
 get:
-  operationId: getNewConsultationData
+  operationId: obtenerDatosNuevaConsulta
   summary: Cargar datos previos para llenar un nuevo expediente clínico
   tags:
     - doctor_vistas
@@ -32,4 +32,4 @@ get:
                 type: string
                 example: "Penicilina"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

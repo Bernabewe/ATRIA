@@ -25,8 +25,8 @@ post:
                 type: integer
                 example: 0
     "409":
-      $ref: "../../../components/responses.yaml#/Conflict"
+      $ref: "../../../components/responses.yaml#/Conflicto"
     "400":
-      $ref: "../../../components/responses.yaml#/BadRequest"
+      $ref: "../../../components/responses.yaml#/PeticionIncorrecta"
     "401":
-      $ref: "../../../components/responses.yaml#/Unauthorized"
+      $ref: "../../../components/responses.yaml#/NoAutorizado"

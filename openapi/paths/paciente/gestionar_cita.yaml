@@ -1,5 +1,5 @@
 get:
-  operationId: getPatientAppointmentDetails
+  operationId: obtenerDetallesCitaPaciente
   summary: Detalles y gestión de una cita específica
   tags:
     - paciente_vistas
@@ -13,4 +13,4 @@ get:
           schema:
             $ref: "../../components/schemas/CitaDetalle.yaml"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

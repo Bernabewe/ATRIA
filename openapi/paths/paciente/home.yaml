@@ -1,5 +1,5 @@
 get:
-  operationId: getPatientHome
+  operationId: obtenerInicioPaciente
   summary: Obtener datos para la pantalla de inicio del paciente
   tags:
     - paciente_vistas
@@ -29,4 +29,4 @@ get:
                 items:
                   $ref: "../../components/schemas/AccionRapida.yaml"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

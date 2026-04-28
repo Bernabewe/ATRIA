@@ -1,5 +1,5 @@
 get:
-  operationId: getDoctorHome
+  operationId: obtenerInicioDoctor
   summary: Obtener datos para la pantalla de inicio del doctor
   tags:
     - doctor_vistas
@@ -25,4 +25,4 @@ get:
                 items:
                   $ref: "../../components/schemas/AccionRapida.yaml"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

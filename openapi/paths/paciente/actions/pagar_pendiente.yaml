@@ -1,5 +1,5 @@
 post:
-  operationId: payPendingTransaction
+  operationId: pagarTransaccionPendiente
   summary: Pagar el saldo de una transacción pendiente
   tags:
     - paciente_acciones
@@ -27,6 +27,6 @@ post:
                 type: string
                 example: "PAGADO"
     "400":
-      $ref: "../../../components/responses.yaml#/BadRequest"
+      $ref: "../../../components/responses.yaml#/PeticionIncorrecta"
     "401":
-      $ref: "../../../components/responses.yaml#/Unauthorized"
+      $ref: "../../../components/responses.yaml#/NoAutorizado"

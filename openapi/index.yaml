@@ -143,20 +143,20 @@ components:
       $ref: "./components/parameters.yaml#/hora_query"
 
   responses:
-    BadRequest:
-      $ref: "./components/responses.yaml#/BadRequest"
-    Unauthorized:
-      $ref: "./components/responses.yaml#/Unauthorized"
-    Forbidden:
-      $ref: "./components/responses.yaml#/Forbidden"
-    NotFound:
-      $ref: "./components/responses.yaml#/NotFound"
-    Conflict:
-      $ref: "./components/responses.yaml#/Conflict"
-    InternalServerError:
-      $ref: "./components/responses.yaml#/InternalServerError"
-    Created:
-      $ref: "./components/responses.yaml#/Created"
+    PeticionIncorrecta:
+      $ref: "./components/responses.yaml#/PeticionIncorrecta"
+    NoAutorizado:
+      $ref: "./components/responses.yaml#/NoAutorizado"
+    Prohibido:
+      $ref: "./components/responses.yaml#/Prohibido"
+    NoEncontrado:
+      $ref: "./components/responses.yaml#/NoEncontrado"
+    Conflicto:
+      $ref: "./components/responses.yaml#/Conflicto"
+    ErrorInterno:
+      $ref: "./components/responses.yaml#/ErrorInterno"
+    Creado:
+      $ref: "./components/responses.yaml#/Creado"
 
   # Registro de todos los moldes de datos (Schemas)
   schemas:

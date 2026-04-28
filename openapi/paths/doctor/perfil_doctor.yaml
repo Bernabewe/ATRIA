@@ -1,5 +1,5 @@
 get:
-  operationId: getDoctorProfile
+  operationId: obtenerPerfilDoctor
   summary: Obtener la información del perfil del doctor
   tags:
     - doctor_vistas
@@ -11,4 +11,4 @@ get:
           schema:
             $ref: "../../components/schemas/PerfilDoctor.yaml"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

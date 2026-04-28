@@ -1,5 +1,5 @@
 get:
-  operationId: getDoctorPayments
+  operationId: obtenerPagosDoctor
   summary: Ver ingresos y transacciones recientes del médico
   tags:
     - doctor_vistas
@@ -19,4 +19,4 @@ get:
                 items:
                   $ref: "../../components/schemas/Transaccion.yaml"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

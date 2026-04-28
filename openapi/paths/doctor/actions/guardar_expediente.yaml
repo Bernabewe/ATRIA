@@ -25,6 +25,6 @@ post:
                 type: string
                 example: "Expediente guardado y firmado correctamente."
     "400":
-      $ref: "../../../components/responses.yaml#/BadRequest"
+      $ref: "../../../components/responses.yaml#/PeticionIncorrecta"
     "401":
-      $ref: "../../../components/responses.yaml#/Unauthorized"
+      $ref: "../../../components/responses.yaml#/NoAutorizado"

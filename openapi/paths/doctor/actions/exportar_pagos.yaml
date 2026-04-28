@@ -22,4 +22,4 @@ get:
                 type: integer
                 example: 300
     "401":
-      $ref: "../../../components/responses.yaml#/Unauthorized"
+      $ref: "../../../components/responses.yaml#/NoAutorizado"

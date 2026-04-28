@@ -1,5 +1,5 @@
 get:
-  operationId: getDoctorAgenda
+  operationId: obtenerAgendaDoctor
   summary: Obtener la agenda de citas del día y posteriores
   tags:
     - doctor_vistas
@@ -23,4 +23,4 @@ get:
                 items:
                   $ref: "../../components/schemas/CitaDoctor.yaml"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

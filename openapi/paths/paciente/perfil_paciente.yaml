@@ -1,5 +1,5 @@
 get:
-  operationId: getPatientProfile
+  operationId: obtenerPerfilPaciente
   summary: Información personal y de contacto del paciente
   tags:
     - paciente_vistas
@@ -11,4 +11,4 @@ get:
           schema:
             $ref: "../../components/schemas/Paciente.yaml"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

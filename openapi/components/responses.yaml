@@ -1,41 +1,41 @@
 # openapi/components/responses.yaml
 
-BadRequest:
+PeticionIncorrecta:
   description: Solicitud incorrecta. Datos inválidos o faltantes.
   content:
     application/json:
       schema:
         $ref: "./schemas/Error.yaml"
 
-Unauthorized:
+NoAutorizado:
   description: No autorizado. Token inexistente o expirado.
   content:
     application/json:
       schema:
         $ref: "./schemas/Error.yaml"
 
-Forbidden:
+Prohibido:
   description: Acceso prohibido. Sin permisos suficientes.
   content:
     application/json:
       schema:
         $ref: "./schemas/Error.yaml"
 
-NotFound:
+NoEncontrado:
   description: Recurso no encontrado. El ID no existe.
   content:
     application/json:
       schema:
         $ref: "./schemas/Error.yaml"
 
-InternalServerError:
+ErrorInterno:
   description: Error interno del servidor. Fallo inesperado.
   content:
     application/json:
       schema:
         $ref: "./schemas/Error.yaml"
 
-Created:
+Creado:
   description: Recurso creado exitosamente.
   content:
     application/json:
@@ -49,7 +49,7 @@ Created:
             type: string
             example: "Operación realizada con éxito."
 
-Conflict:
+Conflicto:
   description: Conflicto detectado. Por ejemplo, intentar bloquear un horario que ya tiene citas programadas.
   content:
     application/json:

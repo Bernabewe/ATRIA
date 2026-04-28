@@ -1,5 +1,5 @@
 get:
-  operationId: getPatientHistoryByDoctor
+  operationId: obtenerHistorialPacientePorDoctor
   summary: Ver el historial de consultas de un paciente específico
   tags:
     - doctor_vistas
@@ -24,6 +24,6 @@ get:
                 items:
                   $ref: "../../components/schemas/ConsultaHistorial.yaml"
     "404":
-      $ref: "../../components/responses.yaml#/NotFound"
+      $ref: "../../components/responses.yaml#/NoEncontrado"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

@@ -1,5 +1,5 @@
 get:
-  operationId: getPatientMedicalHistory
+  operationId: obtenerHistorialMedicoPaciente
   summary: Línea de tiempo de diagnósticos y consultas
   tags:
     - paciente_vistas
@@ -16,4 +16,4 @@ get:
                 items:
                   $ref: "../../components/schemas/ConsultaHistorial.yaml"
     "401":
-      $ref: "../../components/responses.yaml#/Unauthorized"
+      $ref: "../../components/responses.yaml#/NoAutorizado"

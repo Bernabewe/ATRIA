@@ -1,6 +1,6 @@
 especialidades:
   get:
-    operationId: getSpecialties
+    operationId: obtenerEspecialidades
     summary: "Paso 1: Lista de especialidades"
     tags:
       - paciente_vistas
@@ -19,7 +19,7 @@ especialidades:
 
 sucursales:
   get:
-    operationId: getBranches
+    operationId: obtenerSucursales
     summary: "Paso 2: Selección de clínica más cercana"
     tags:
       - paciente_vistas
@@ -38,7 +38,7 @@ sucursales:
 
 doctores:
   get:
-    operationId: getDoctorsBySpecialtyAndBranch
+    operationId: obtenerDoctoresPorEspecialidadYSucursal
     summary: "Paso 3: Especialistas por sucursal y área"
     tags:
       - paciente_vistas
@@ -60,7 +60,7 @@ doctores:
 
 disponibilidad:
   get:
-    operationId: getDoctorAvailability
+    operationId: obtenerDisponibilidadDoctor
     summary: "Paso 4: Calendario de horarios libres"
     tags:
       - paciente_vistas
@@ -94,7 +94,7 @@ disponibilidad:
 
 resumen:
   get:
-    operationId: getBookingSummary
+    operationId: obtenerResumenReserva
     summary: "Paso 5: Resumen final para confirmación"
     tags:
       - paciente_vistas
