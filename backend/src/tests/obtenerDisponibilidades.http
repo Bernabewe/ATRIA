@@ -1,0 +1,27 @@
+### Variables
+@baseUrl = http://localhost:3000/api
+# Token falso para probar que nuestro escudo rechaza intrusos
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.falso.falso
+
+@validToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9wYWNpZW50ZSI6IjEyM2U0NTY3LWU4OWItMTJkMy1hNDU2LTQyNjYxNDE3NDAwMCIsIm5vbWJyZSI6IkFubmEgU21pdGgiLCJyb2wiOiJwYWNpZW50ZSIsImlhdCI6MTc3NzIyMTc2NCwiZXhwIjoxNzc3MjI1MzY0fQ.L5rh-Zxlj-eo8MBzNgjojgwb6l_dAVna00ofXqAMHl0
+
+### Caso 1: Probar Disponibilidad
+### 15. Paso 4: Disponibilidad (CON ID CORRECTO)
+GET {{baseUrl}}/v1/views/patient/reservas/disponibilidad?id_doctor=bc5ab90c-8d53-4f79-8bf3-e328ed66274e
+Authorization: Bearer {{validToken}}
+
+### Caso 2: Doctor sin Horarios
+# Debe retornar 200 OK con arreglos vacíos (Comportamiento esperado)
+# Nota: Usa un ID de un doctor que exista en usuarios pero no en horarios_doctor
+GET {{baseUrl}}/v1/views/patient/reservas/disponibilidad?id_doctor=ID_DE_OTRO_USUARIO
+Authorization: Bearer {{validToken}}
+
+### Caso 3: Error de Validación Zod (ID Mal Formateado)
+# Debe retornar 400 Bad Request gracias al middleware de Zod
+GET {{baseUrl}}/v1/views/patient/reservas/disponibilidad?id_doctor=no-es-un-uuid
+Authorization: Bearer {{validToken}}
+
+### Caso 4: Error de Validación Zod (Falta parámetro obligatorio)
+# Debe retornar 400 Bad Request indicando que id_doctor es requerido
+GET {{baseUrl}}/v1/views/patient/reservas/disponibilidad
+Authorization: Bearer {{validToken}}
