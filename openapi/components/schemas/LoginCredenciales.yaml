@@ -1,0 +1,11 @@
+type: object
+required: [correo, password]
+properties:
+  correo:
+    type: string
+    format: email
+    example: "dr.wilson@atria.com"
+  password:
+    type: string
+    format: password
+    example: "********"

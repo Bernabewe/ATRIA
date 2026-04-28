@@ -1,7 +1,8 @@
 openapi: 3.0.3
 info:
   title: Atria API - Sistema de Gestión Médica
-  description: Documentación oficial de las APIs bajo el patrón BFF para los portales
+  description:
+    Documentación oficial de las APIs bajo el patrón BFF para los portales
     de paciente y doctor de Atria.
   version: 1.0.0
 
@@ -26,6 +27,10 @@ tags:
 # RUTAS (PATHS) - Mapeo de endpoints a archivos específicos
 # ------------------------------------------------------------------
 paths:
+  # --- Autenticación ---
+  /v1/auth/login:
+    $ref: "./paths/auth/login.yaml"
+
   # --- Módulo de Perfil e Inicio ---
   /v1/views/patient/home:
     $ref: "./paths/patient/home.yaml"
@@ -68,41 +73,40 @@ paths:
   /v1/appointments/{id_cita}/cancel:
     $ref: "./paths/patient/actions/cancelar_cita.yaml"
 
-  
   # --- Perfil e Inicio ---
   /v1/views/doctor/home:
-    $ref: './paths/doctor/home.yaml'
+    $ref: "./paths/doctor/home.yaml"
   /v1/views/doctor/profile_details:
-    $ref: './paths/doctor/perfil_doctor.yaml'
+    $ref: "./paths/doctor/perfil_doctor.yaml"
 
   # --- Agenda y Citas ---
   /v1/views/doctor/agenda_proximas:
-    $ref: './paths/doctor/agenda_proximas.yaml'
+    $ref: "./paths/doctor/agenda_proximas.yaml"
 
   # --- Mis Pacientes ---
   /v1/views/doctor/patients:
-    $ref: './paths/doctor/pacientes.yaml'
+    $ref: "./paths/doctor/pacientes.yaml"
   /v1/views/doctor/patients/{id_paciente}/history:
-    $ref: './paths/doctor/historial_paciente.yaml'
+    $ref: "./paths/doctor/historial_paciente.yaml"
   /v1/views/doctor/consultations/new:
-    $ref: './paths/doctor/nuevo_expediente.yaml'
+    $ref: "./paths/doctor/nuevo_expediente.yaml"
 
   # --- Finanzas ---
   /v1/views/doctor/payments:
-    $ref: './paths/doctor/pagos.yaml'
+    $ref: "./paths/doctor/pagos.yaml"
 
   # --- Acciones (Mutaciones) del Doctor ---
   /v1/doctor/consultations:
-    $ref: './paths/doctor/actions/guardar_expediente.yaml'
-    
+    $ref: "./paths/doctor/actions/guardar_expediente.yaml"
+
   /v1/doctor/schedule/blocks:
-    $ref: './paths/doctor/actions/bloquear_agenda.yaml'
-    
+    $ref: "./paths/doctor/actions/bloquear_agenda.yaml"
+
   /v1/doctor/payments/export:
-    $ref: './paths/doctor/actions/exportar_pagos.yaml'
-    
+    $ref: "./paths/doctor/actions/exportar_pagos.yaml"
+
   /v1/doctor/profile:
-    $ref: './paths/doctor/actions/editar_perfil.yaml'
+    $ref: "./paths/doctor/actions/editar_perfil.yaml"
 
 # ------------------------------------------------------------------
 # COMPONENTES - Biblioteca global de piezas reutilizables
@@ -190,3 +194,7 @@ components:
       $ref: "./components/schemas/BloqueoAgenda.yaml"
     Error:
       $ref: "./components/schemas/Error.yaml"
+    LoginCredenciales:
+      $ref: "./components/schemas/LoginCredenciales.yaml"
+    AuthRespuesta:
+      $ref: "./components/schemas/AuthRespuesta.yaml"

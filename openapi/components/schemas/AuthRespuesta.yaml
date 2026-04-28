@@ -1,0 +1,13 @@
+type: object
+properties:
+  token:
+    type: string
+    description: "JWT para autenticar peticiones"
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  rol:
+    type: string
+    enum: [PACIENTE, DOCTOR]
+    example: "DOCTOR"
+  usuario_id:
+    type: string
+    format: uuid

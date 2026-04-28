@@ -1,0 +1,24 @@
+post:
+  summary: Iniciar sesión en el sistema
+  tags:
+    - Autenticación
+  security: [] # Ruta pública
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/LoginCredenciales.yaml"
+  responses:
+    "200":
+      description: Login exitoso. Retorna el token y rol.
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/AuthRespuesta.yaml"
+    "401":
+      description: Credenciales incorrectas.
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Error.yaml"
