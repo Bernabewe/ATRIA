@@ -6,22 +6,16 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerDetallesCitaPaciente200 = {
+export type ObtenerInicioDoctor200ProximaCita = {
   id_cita?: string;
   doctor_nombre?: string;
   especialidad_etiqueta?: string;
   motivo_consulta?: string;
   estado_badge?: string;
-} & ({
-  doctor_foto_url?: string;
-  fecha_completa?: string;
+  fecha_frase?: string;
   hora_formateada?: string;
-  ubicacion_completa?: string;
-  anticipo_monto?: string;
-  /** @nullable */
-  alerta_cancelacion?: {
-  titulo?: string;
-  mensaje?: string;
-} | null;
-  permitir_cancelacion?: boolean;
-});
+  consultorio_numero?: string;
+} & {
+  paciente_nombre?: string;
+  paciente_foto_url?: string;
+};

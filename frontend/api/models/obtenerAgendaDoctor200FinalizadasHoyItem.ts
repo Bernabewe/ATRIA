@@ -12,6 +12,9 @@ export type ObtenerAgendaDoctor200FinalizadasHoyItem = {
   especialidad_etiqueta?: string;
   motivo_consulta?: string;
   estado_badge?: string;
+  fecha_frase?: string;
+  hora_formateada?: string;
+  consultorio_numero?: string;
 } & {
   paciente_nombre?: string;
   paciente_foto_url?: string;

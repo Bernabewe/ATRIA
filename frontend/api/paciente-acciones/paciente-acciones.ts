@@ -32,7 +32,7 @@ import type {
   PagarTransaccionPendiente400,
   PagarTransaccionPendiente401,
   PagarTransaccionPendienteBody
-} from '../model';
+} from '../models';
 
 import { customInstance } from '.././axios-instance';
 

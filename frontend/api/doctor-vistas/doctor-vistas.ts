@@ -37,7 +37,7 @@ import type {
   ObtenerPagosDoctor401,
   ObtenerPerfilDoctor200,
   ObtenerPerfilDoctor401
-} from '../model';
+} from '../models';
 
 import { customInstance } from '.././axios-instance';
 

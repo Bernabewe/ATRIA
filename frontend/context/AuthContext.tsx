@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setToken(userToken);
     setUserRole(role);
     // Redirección basada en el rol definido en tus requerimientos
-    if (role === 'patient') router.replace('/(patient)/home');
+    if (role === 'patient') router.replace('/(paciente)/home');
     if (role === 'doctor') router.replace('/(doctor)/home');
   };
 

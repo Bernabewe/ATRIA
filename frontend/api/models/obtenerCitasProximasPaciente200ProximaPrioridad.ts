@@ -6,13 +6,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerAgendaDoctor200CitaDestacada = {
+export type ObtenerCitasProximasPaciente200ProximaPrioridad = {
   id_cita?: string;
   doctor_nombre?: string;
   especialidad_etiqueta?: string;
   motivo_consulta?: string;
   estado_badge?: string;
-} & {
-  paciente_nombre?: string;
-  paciente_foto_url?: string;
+  fecha_frase?: string;
+  hora_formateada?: string;
+  consultorio_numero?: string;
 };

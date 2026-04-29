@@ -8,8 +8,9 @@ export default function WelcomeScreen() {
       <Text style={styles.subtitle}>Sistema de Gestión Médica</Text>
       
       {/* Botones temporales para probar la navegación más tarde */}
-      <Link href="/(patient)/home" style={styles.link}>Entrar como Paciente</Link>
-      <Link href="/(doctor)/home" style={styles.link}>Entrar como Doctor</Link>
+      <Link href="/(auth)/login" style={styles.link}>Ir al Login</Link>
+      <Link href="/(paciente)/home" style={styles.link}>Entrar como Paciente (Directo)</Link>
+      <Link href="/(doctor)/home" style={styles.link}>Entrar como Doctor (Directo)</Link>
     </View>
   );
 }

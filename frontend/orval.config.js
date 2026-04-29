@@ -7,7 +7,7 @@ module.exports = {
     output: {
       mode: 'tags-split', // Separa los archivos por etiquetas (Doctor/Paciente)
       target: './api/atria.ts',
-      schemas: './api/model',
+      schemas: './api/models',
       client: 'react-query', // Genera Hooks de TanStack Query
       httpClient: 'axios',
       mock: false,

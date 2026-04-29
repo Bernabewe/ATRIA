@@ -23,7 +23,9 @@ allOf:
         properties:
           titulo:
             type: string
+            example: "¿Seguro que quieres cancelar?"
           mensaje:
             type: string
+            example: "Si cancelas con menos de 24 horas de antelación, perderás el anticipo de $500."
       permitir_cancelacion:
         type: boolean

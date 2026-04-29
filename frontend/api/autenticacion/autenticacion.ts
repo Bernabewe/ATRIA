@@ -19,7 +19,7 @@ import type {
   PostV1AuthLogin200,
   PostV1AuthLogin401,
   PostV1AuthLoginBody
-} from '../model';
+} from '../models';
 
 import { customInstance } from '.././axios-instance';
 

@@ -12,6 +12,9 @@ export type ObtenerCitasProximasPaciente200VisitasProximasItem = {
   especialidad_etiqueta?: string;
   motivo_consulta?: string;
   estado_badge?: string;
+  fecha_frase?: string;
+  hora_formateada?: string;
+  consultorio_numero?: string;
 } & ({
   fecha_corta?: string;
   icono_especialidad_id?: string;

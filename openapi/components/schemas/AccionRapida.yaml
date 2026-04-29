@@ -2,11 +2,16 @@ type: object
 properties:
   action_id:
     type: string
+    example: "1"
   label:
     type: string
+    example: "agendar cita"
   icon_id:
     type: string
+    example: calendar-outline
   route_name:
     type: string
+    example: "/paciente/citas"
   is_enabled:
     type: boolean
+    example: true

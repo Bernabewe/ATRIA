@@ -3,6 +3,7 @@ properties:
   id_cita:
     type: string
     format: uuid
+    example: "354b6930-c063-fe87-38e8-44bea940b750"
   doctor_nombre:
     type: string
     example: "Dr. Aris Thorne"
@@ -15,3 +16,12 @@ properties:
   estado_badge:
     type: string
     example: "CONFIRMADA"
+  fecha_frase:
+    type: string
+    example: "Mañana"
+  hora_formateada:
+    type: string
+    example: "10:30 AM"
+  consultorio_numero:
+    type: string
+    example: "205"

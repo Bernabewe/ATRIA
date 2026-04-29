@@ -41,7 +41,7 @@ import type {
   PutV1DoctorEditarPerfil400,
   PutV1DoctorEditarPerfil401,
   PutV1DoctorEditarPerfilBody
-} from '../model';
+} from '../models';
 
 import { customInstance } from '.././axios-instance';
 

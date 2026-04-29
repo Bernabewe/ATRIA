@@ -44,7 +44,7 @@ import type {
   ObtenerResumenReserva200,
   ObtenerResumenReservaParams,
   ObtenerSucursales200
-} from '../model';
+} from '../models';
 
 import { customInstance } from '.././axios-instance';
 

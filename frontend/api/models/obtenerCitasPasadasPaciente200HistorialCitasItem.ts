@@ -6,12 +6,15 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type CitaLista = {
+export type ObtenerCitasPasadasPaciente200HistorialCitasItem = {
   id_cita?: string;
   doctor_nombre?: string;
   especialidad_etiqueta?: string;
   motivo_consulta?: string;
   estado_badge?: string;
+  fecha_frase?: string;
+  hora_formateada?: string;
+  consultorio_numero?: string;
 } & ({
   fecha_corta?: string;
   icono_especialidad_id?: string;

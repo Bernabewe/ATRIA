@@ -23,7 +23,8 @@ get:
                 example: "Tus métricas de salud lucen excelentes hoy."
               next_cita:
                 nullable: true
-                $ref: "../../components/schemas/CitaBase.yaml"
+                allOf:
+                  - $ref: "../../components/schemas/CitaBase.yaml"
               quick_actions:
                 type: array
                 items:
