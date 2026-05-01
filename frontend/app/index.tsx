@@ -1,40 +1,33 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Button } from 'react-native';
+import { useRouter, Redirect } from 'expo-router';
+import { useAuth } from '../context/AuthContext';
+import { AuthRespuestaRol } from '../api/models/authRespuestaRol';
 
-export default function WelcomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Bienvenido a ATRIA</Text>
-      <Text style={styles.subtitle}>Sistema de Gestión Médica</Text>
-      
-      {/* Botones temporales para probar la navegación más tarde */}
-      <Link href="/(auth)/login" style={styles.link}>Ir al Login</Link>
-      <Link href="/(paciente)/home" style={styles.link}>Entrar como Paciente (Directo)</Link>
-      <Link href="/(doctor)/home" style={styles.link}>Entrar como Doctor (Directo)</Link>
-    </View>
-  );
-}
+export default function Index(){
+  const { usuario } = useAuth();
+  const router = useRouter();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FDFCF8', // El tono crema que definimos
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1A1A1B',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#8B5E3C', // El tono café de tu marca
-    marginBottom: 20,
-  },
-  link: {
-    marginTop: 10,
-    color: '#007AFF',
-    textDecorationLine: 'underline',
+  // 1. Lógica de Redirección Automática
+  if(usuario) {
+    const rutaDestino = usuario.rol === AuthRespuestaRol.PACIENTE
+      ? "/(paciente)/home"
+      : "/(doctor)/home";
+
+    // El componente Redirect hace el salto automáticamente[cite: 2]
+    return <Redirect href={rutaDestino}/>
   }
-});
+
+  // 2. Vista Inicial para usuarios sin sesión (Estado null)
+  return (
+    <View>
+      <Button
+        title="Iniciar Sesión"
+        onPress={() => router.push("/login")}  
+      />
+      <Button
+        title="Registrarse"
+        onPress={() => router.push("/signup")}  
+      />  
+    </View>
+  )
+}
