@@ -11,7 +11,7 @@ properties:
     example: calendar-outline
   route_name:
     type: string
-    example: "/paciente/citas"
+    example: "/(paciente)/agendar/especialidad"
   is_enabled:
     type: boolean
     example: true

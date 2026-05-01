@@ -14,18 +14,8 @@ export default function PatientTabsLayout() {
       <Tabs.Screen name="expediente" options={{ title: 'Expediente', tabBarIcon: ({ color }) => <Ionicons name="document-text" size={24} color={color} /> }} />
       <Tabs.Screen name="pagos" options={{ title: 'Pagos', tabBarIcon: ({ color }) => <Ionicons name="card" size={24} color={color} /> }} />
       <Tabs.Screen name="perfil" options={{ title: 'Perfil', tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} /> }} />
-      <Tabs.Screen 
-        name="gestionar-cita" 
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen 
-        name="reservar" 
-        options={{
-          href: null,
-        }} 
-      />
+      <Tabs.Screen name="gestionar-cita" options={{href: null}} />
+      <Tabs.Screen name="agendar" options={{ href: null }} />
     </Tabs>
   );
 }
