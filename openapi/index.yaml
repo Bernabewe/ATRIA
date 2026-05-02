@@ -30,6 +30,8 @@ paths:
   # --- Autenticación ---
   /v1/auth/login:
     $ref: "./paths/auth/login.yaml"
+  /v1/auth/signup:
+    $ref: "./paths/auth/signup.yaml"
 
   # --- Módulo de Perfil e Inicio ---
   /v1/views/paciente/home:

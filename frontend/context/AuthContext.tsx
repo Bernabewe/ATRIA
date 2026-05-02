@@ -1,44 +1,83 @@
 import { AuthRespuestaRol } from "@/api/models";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import * as SecureStore from 'expo-secure-store';
 
-// 1. El Molde de los Datos: ¿Qué vamos a guardar?
+// 1. El Molde de los Datos
 interface DatosUsuario {
   token: string;
   rol: typeof AuthRespuestaRol[keyof typeof AuthRespuestaRol]; // 'PACIENTE' | 'DOCTOR'
   usuario_id: string;
 }
 
-// 2. El Molde del Contexto: ¿Qué acciones podemos hacer con la caja fuerte?
+// 2. El Molde del Contexto: Agregamos 'isReady' para saber cuándo termino de cargar
 interface AuthContextType {
   usuario: DatosUsuario | null,
-  iniciarSesion: (datos: DatosUsuario) => void;
-  cerrarSesion: () => void;
+  isReady: boolean; // Para evitar parpadeos al iniciar
+  iniciarSesion: (datos: DatosUsuario) => Promise<void>;
+  cerrarSesion: () => Promise<void>;
 }
 
 // 3. Creamos la caja fuerte (vacía por defecto)
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// El nombre del archivo donde guardaremos todo
+const USER_STORAGE_KEY = 'atria_user_session';
+
 // 4. El Proveedor: Este componente envolverá toda tu app para darle acceso a la caja fuerte
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-
   const [usuario, setUsuario] = useState<DatosUsuario | null>(null);
+  const [isReady, setIsReady] = useState(false);   // isReady empieza en false mientras buscamos en el disco duro
 
-  const iniciarSesion = (datos: DatosUsuario) => {
-    setUsuario(datos);
+  // --- EFECTO INICIAL: Buscar si hay sesión guardada al abrir la app ---
+  useEffect(() => {
+    const cargarSesion = async () => {
+      try {
+        const sessionString = await SecureStore.getItemAsync(USER_STORAGE_KEY);
+        if (sessionString) {
+          setUsuario(JSON.parse(sessionString));
+        }
+      }catch(error) {
+        console.error("Error al cargar la sesión: ", error)
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    cargarSesion();
+  }, []);
+  
+  // --- INICIAR SESIÓN: Guardar en RAM y en Disco ---
+  const iniciarSesion = async (datos: DatosUsuario) => {
+    try {
+      // Lo guardamos en el telefono cmoo texto (JSON)
+      await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(datos));
+      // Lo guardamos en la memoria temporal (Contexto)
+      setUsuario(datos);
+    } catch (error) {
+      console.error("Error al guardar la sesión:", error);
+    }
   };
 
-  const cerrarSesion = () => {
-    setUsuario(null); // Al cerrar sesión, volvemos al estado inicial
+  // --- CERRAR SESIÓN: Borrar de RAM y de Disco ---
+  const cerrarSesion = async () => {
+    try {
+      // Borramos el archivo del telefono
+      await SecureStore.deleteItemAsync(USER_STORAGE_KEY);
+      // Vaciamos la memoria (Contexto)
+      setUsuario(null);
+    } catch (error) {
+      console.error("Error al cerrar la sesión: ", error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ usuario, iniciarSesion, cerrarSesion }}>
+    <AuthContext.Provider value={{ usuario, isReady, iniciarSesion, cerrarSesion }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// 5. El Hook Personalizado: Una llave rápida para abrir la caja en cualquier pantalla
+// 5. El Hook Personalizado: Una llave rapida para abrir la caja en cualquier pantalla
 export const useAuth = () => {
   const context = useContext(AuthContext);
   

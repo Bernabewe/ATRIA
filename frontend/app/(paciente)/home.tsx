@@ -3,13 +3,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { ActionTile } from '../../components/ui/ActionTile';
 import { Typography } from '../../components/ui/Typography';
+// 1. Importacion del hook generado por Orval para obtener los datos del backend
 import { useObtenerInicioPaciente } from '../../api/paciente-vistas/paciente-vistas';
 
 export default function PatientHome() {
   const router = useRouter();
-  // Consumo del Hook real generado por Orval
+  // 2. Consumo del Hook: 'data' contiene la respuesta y 'isLoading' el estado de la peticion
   const { data, isLoading } = useObtenerInicioPaciente();
 
+  // 3. Estado de Carga: Mientras la API responde, mostramos una pantalla de espera
   if (isLoading) {
     return (
       <View className="flex-1 justify-center items-center bg-atria-crema">
@@ -21,7 +23,7 @@ export default function PatientHome() {
   return (
     <ScrollView className="flex-1 bg-atria-crema px-6 pt-12">
       
-      {/* --- HEADER --- */}
+      {/* --- HEADER: Información de perfil y notificaciones --- */}      
       <View className="flex-row justify-between items-center mb-8">
         <View className="flex-row items-center">
           <Image 
@@ -38,7 +40,7 @@ export default function PatientHome() {
         </TouchableOpacity>
       </View>
 
-      {/* --- BIENVENIDA --- */}
+      {/* --- BIENVENIDA: Muestra el nombre dinamico del paciente desde la API --- */}      
       <View className="mb-8">
         <Typography variant="h1">Bienvenida de nuevo,</Typography>
         <Typography variant="h1" className="text-atria-cafe">
@@ -49,7 +51,7 @@ export default function PatientHome() {
         </Typography>
       </View>
 
-      {/* --- CARD DE PRÓXIMA CITA --- */}
+      {/* --- CARD DE PROXIMA CITA: Logica condicional para mostrar la cita o un estado vacio --- */}      
       <View className="bg-white p-6 rounded-[30px] shadow-md border border-gray-50 mb-10">
         <Typography variant="subtitle" className="text-atria-cafe mb-3">
           Próxima Cita
@@ -58,7 +60,7 @@ export default function PatientHome() {
         <Typography variant="body" className="text-atria-gris mb-4">
           {data?.next_cita?.especialidad_etiqueta || 'Agenda libre'}
         </Typography>
-        
+        {/* Solo mostramos fecha y consultorio si existe una cita programada */}
         {data?.next_cita && (
           <View className="flex-row justify-between mb-6">
             <View className="flex-row items-center flex-1 mr-2">
@@ -75,7 +77,7 @@ export default function PatientHome() {
             </View>
           </View>
         )}
-
+        {/* Boton de accion: Navega a la gestion de la cita especifica */}
         <TouchableOpacity className="bg-atria-cafe p-4 rounded-2xl items-center flex-row justify-center active:opacity-90" onPress={() => router.push(`/gestionar-cita?id_cita=${data?.next_cita?.id_cita}`)}>
           <Typography variant="body" className="text-white font-bold mr-2">
             Ver Detalles de la Cita
@@ -84,7 +86,7 @@ export default function PatientHome() {
         </TouchableOpacity>
       </View>
 
-      {/* --- ACCIONES RÁPIDAS --- */}
+      {/* --- ACCIONES RAPIDAS: Mapeo dinamico de botones basado en la respuesta de la API --- */}      
       <Typography variant="subtitle" className="mb-4">Acciones Rápidas</Typography>
       <View className="flex-row flex-wrap justify-between pb-10">
         {data?.quick_actions?.map((action) => (

@@ -1,0 +1,20 @@
+post:
+  summary: Registrar un nuevo paciente en el sistema
+  tags:
+    - Autenticacion
+  security: [] # Ruta pública
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/Signup.yaml"
+  responses:
+    "201":
+      description: Registro exitoso. Retorna el token y datos del nuevo usuario.
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/AuthRespuesta.yaml"
+    "400":
+      description: Error en los datos enviados.

@@ -1,0 +1,41 @@
+type: object
+required:
+  - email
+  - password
+  - nombre
+  - apellido_paterno
+properties:
+  email:
+    type: string
+    format: email
+    example: "paciente@atria.com"
+  password:
+    type: string
+    format: password
+    example: "password123"
+  nombre:
+    type: string
+    example: "Bernardo"
+  apellido_paterno:
+    type: string
+    example: "Bejarano"
+  apellido_materno:
+    type: string
+    example: "Garcia"
+  fecha_nacimiento:
+    type: string
+    format: date
+    example: "1990-01-01"
+  altura:
+    type: number
+    example: 1.75
+    description: "Altura en metros"
+  tipo_sangre:
+    type: string
+    example: "A+"
+  telefono:
+    type: string
+    example: "1234567890"
+  direccion:
+    type: string
+    example: "Calle Falsa 123"

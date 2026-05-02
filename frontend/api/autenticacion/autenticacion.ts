@@ -18,7 +18,9 @@ import type {
 import type {
   PostV1AuthLogin200,
   PostV1AuthLogin401,
-  PostV1AuthLoginBody
+  PostV1AuthLoginBody,
+  PostV1AuthSignup201,
+  PostV1AuthSignupBody
 } from '../models';
 
 import { customInstance } from '.././axios-instance';
@@ -88,4 +90,67 @@ export const usePostV1AuthLogin = <TError = PostV1AuthLogin401,
         TContext
       > => {
       return useMutation(getPostV1AuthLoginMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Registrar un nuevo paciente en el sistema
+ */
+export const postV1AuthSignup = (
+    postV1AuthSignupBody: PostV1AuthSignupBody,
+ signal?: AbortSignal
+) => {
+
+
+      return customInstance<PostV1AuthSignup201>(
+      {url: `/v1/auth/signup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postV1AuthSignupBody, signal
+    },
+      );
+    }
+
+
+
+export const getPostV1AuthSignupMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postV1AuthSignup>>, TError,{data: PostV1AuthSignupBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postV1AuthSignup>>, TError,{data: PostV1AuthSignupBody}, TContext> => {
+
+const mutationKey = ['postV1AuthSignup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postV1AuthSignup>>, {data: PostV1AuthSignupBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postV1AuthSignup(data,)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostV1AuthSignupMutationResult = NonNullable<Awaited<ReturnType<typeof postV1AuthSignup>>>
+    export type PostV1AuthSignupMutationBody = PostV1AuthSignupBody
+    export type PostV1AuthSignupMutationError = void
+
+    /**
+ * @summary Registrar un nuevo paciente en el sistema
+ */
+export const usePostV1AuthSignup = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postV1AuthSignup>>, TError,{data: PostV1AuthSignupBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postV1AuthSignup>>,
+        TError,
+        {data: PostV1AuthSignupBody},
+        TContext
+      > => {
+      return useMutation(getPostV1AuthSignupMutationOptions(options), queryClient);
     }
