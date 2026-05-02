@@ -7,6 +7,7 @@
  */
 
 export type ObtenerPerfilPaciente200 = {
+  id_paciente?: string;
   nombre_completo?: string;
   nombre_pila?: string;
   foto_perfil_url?: string;

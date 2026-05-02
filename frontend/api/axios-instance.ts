@@ -1,17 +1,19 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 // Aquí es donde vive tu servidor de Express
-// Para pruebas en Android con localhost, a veces se usa 10.0.2.2
 export const AXIOS_INSTANCE = axios.create({ 
   baseURL: 'http://127.0.0.1:3000' 
 });
 
-// Interceptor para inyectar el token en todas las peticiones
-AXIOS_INSTANCE.interceptors.request.use((config) => {
-  // Prism requiere el header Authorization porque el OpenAPI tiene configurado security: bearerAuth
-  config.headers['Authorization'] = 'Bearer token-de-prueba';
-  return config;
-});
+// 1. Creamos una funcion para actualizar el token en las cabeceras de Axios
+export const setAutorizacionAxios = (token: string | null) => {
+  console.log("Token recibido en Axios:", token);
+  if (token) {
+    AXIOS_INSTANCE.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }  else {
+    delete AXIOS_INSTANCE.defaults.headers.common['Authorization'];
+  }
+}
 
 export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
   const source = axios.CancelToken.source();

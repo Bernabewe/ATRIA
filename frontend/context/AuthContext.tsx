@@ -1,6 +1,7 @@
 import { AuthRespuestaRol } from "@/api/models";
 import { createContext, useContext, useState, useEffect } from "react";
 import * as SecureStore from 'expo-secure-store';
+import { setAutorizacionAxios } from "@/api/axios-instance";
 
 // 1. El Molde de los Datos
 interface DatosUsuario {
@@ -34,7 +35,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const sessionString = await SecureStore.getItemAsync(USER_STORAGE_KEY);
         if (sessionString) {
-          setUsuario(JSON.parse(sessionString));
+          const datosGuardados = JSON.parse(sessionString);
+          setUsuario(datosGuardados);
+          // Le compartimos a Axios el token recuperado del disco
+          setAutorizacionAxios(datosGuardados.token);
         }
       }catch(error) {
         console.error("Error al cargar la sesión: ", error)
@@ -53,6 +57,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       await SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(datos));
       // Lo guardamos en la memoria temporal (Contexto)
       setUsuario(datos);
+      // Le compartimos a Axios el nuevo token
+      setAutorizacionAxios(datos.token);
     } catch (error) {
       console.error("Error al guardar la sesión:", error);
     }
@@ -65,6 +71,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       await SecureStore.deleteItemAsync(USER_STORAGE_KEY);
       // Vaciamos la memoria (Contexto)
       setUsuario(null);
+      // Limpiamos las cabeceras de Axios
+      setAutorizacionAxios(null);
     } catch (error) {
       console.error("Error al cerrar la sesión: ", error);
     }

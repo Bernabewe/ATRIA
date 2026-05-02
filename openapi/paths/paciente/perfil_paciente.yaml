@@ -9,6 +9,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../../components/schemas/Paciente.yaml"
+            $ref: "../../components/schemas/PerfilPaciente.yaml"
     "401":
       $ref: "../../components/responses.yaml#/NoAutorizado"

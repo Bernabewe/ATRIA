@@ -1,5 +1,8 @@
 type: object
 properties:
+  id_paciente:
+    type: string
+    example: "1-E"
   nombre_completo:
     type: string
     example: "Ananna Smith"

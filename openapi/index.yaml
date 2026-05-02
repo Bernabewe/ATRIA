@@ -163,7 +163,7 @@ components:
   # Registro de todos los moldes de datos (Schemas)
   schemas:
     Paciente:
-      $ref: "./components/schemas/Paciente.yaml"
+      $ref: "./components/schemas/PerfilPaciente.yaml"
     CitaBase:
       $ref: "./components/schemas/CitaBase.yaml"
     CitaLista:
