@@ -80,11 +80,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 // 5. El Hook Personalizado: Una llave rapida para abrir la caja en cualquier pantalla
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  
+
   // Si el contexto es undefined, significa que olvidamos envolver la app en el AuthProvider
   if (context === undefined) {
     throw new Error("useAuth debe usarse dentro de un AuthProvider");
   }
-  
+
   return context;
 };
