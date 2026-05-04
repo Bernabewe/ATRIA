@@ -6,7 +6,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerDisponibilidadDoctorParams = {
+export type ObtenerSucursalesPorDoctorParams = {
 id_doctor: string;
-id_sucursal: string;
 };

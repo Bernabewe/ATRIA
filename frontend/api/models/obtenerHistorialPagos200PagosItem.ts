@@ -5,9 +5,9 @@
  * Documentación oficial de las APIs bajo el patrón BFF para los portales de paciente y doctor de Atria.
  * OpenAPI spec version: 1.0.0
  */
-import type { TransaccionEstatus } from './transaccionEstatus';
+import type { ObtenerHistorialPagos200PagosItemEstatus } from './obtenerHistorialPagos200PagosItemEstatus';
 
-export interface Transaccion {
+export type ObtenerHistorialPagos200PagosItem = {
   id_pago?: string;
   /** Identificador de la cita para saber qué pagos pertenecen al mismo evento */
   id_cita?: string;
@@ -15,5 +15,5 @@ export interface Transaccion {
   doctor?: string;
   fecha_formateada?: string;
   monto?: number;
-  estatus?: TransaccionEstatus;
-}
+  estatus?: ObtenerHistorialPagos200PagosItemEstatus;
+};

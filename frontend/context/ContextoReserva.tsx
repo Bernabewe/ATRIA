@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
 
 interface DatosReserva {
-  especialidadId?: string;
-  sucursalId?: string;
-  doctorId?: string;
+  id_especialidad?: string;
+  id_sucursal?: string;
+  id_doctor?: string;
   fecha?: string;
   hora?: string;
+  id_metodo_pago?: string;
 }
 
 interface ContextoReservaType {
@@ -19,10 +20,12 @@ const ContextoReserva = createContext<ContextoReservaType | undefined>(undefined
 export const ProveedorReserva = ({ children }: { children: React.ReactNode }) => {
   const [reserva, setReserva] = useState<DatosReserva>({});
 
+  // Función para actualizar partes específicas de la reserva sin borrar lo anterior[cite: 11]
   const actualizarReserva = (datos: Partial<DatosReserva>) => {
     setReserva((prev) => ({ ...prev, ...datos }));
   };
 
+  // Limpiar el estado después de completar una cita o cancelar el proceso[cite: 11]
   const reiniciarReserva = () => setReserva({});
 
   return (
@@ -34,6 +37,8 @@ export const ProveedorReserva = ({ children }: { children: React.ReactNode }) =>
 
 export const useReserva = () => {
   const context = useContext(ContextoReserva);
-  if (!context) throw new Error('useReserva debe usarse dentro de un ProveedorReserva');
+  if (!context) {
+    throw new Error('useReserva debe usarse dentro de un ProveedorReserva');
+  }
   return context;
 };

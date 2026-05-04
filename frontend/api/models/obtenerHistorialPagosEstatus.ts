@@ -6,7 +6,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerDisponibilidadDoctorParams = {
-id_doctor: string;
-id_sucursal: string;
-};
+export type ObtenerHistorialPagosEstatus = typeof ObtenerHistorialPagosEstatus[keyof typeof ObtenerHistorialPagosEstatus];
+
+
+export const ObtenerHistorialPagosEstatus = {
+  PENDIENTE: 'PENDIENTE',
+  PAGADO: 'PAGADO',
+} as const;

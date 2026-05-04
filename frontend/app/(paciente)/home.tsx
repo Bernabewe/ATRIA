@@ -1,16 +1,39 @@
 import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { ActionTile } from '../../components/ui/ActionTile';
 import { Typography } from '../../components/ui/Typography';
 // 1. Importacion del hook generado por Orval para obtener los datos del backend
 import { useObtenerInicioPaciente } from '../../api/paciente-vistas/paciente-vistas';
+import { useAuth } from '../../context/AuthContext';
 
 export default function PatientHome() {
   const router = useRouter();
-  // 2. Consumo del Hook: 'data' contiene la respuesta y 'isLoading' el estado de la peticion
-  const { data, isLoading } = useObtenerInicioPaciente();
+  const { usuario, isReady } = useAuth();
 
+  // 2. Consumo del Hook: 'data' contiene la respuesta y 'isLoading' el estado de la peticion
+  const { data, isLoading, error } = useObtenerInicioPaciente({
+    query: {
+      // SOLO se dispara si el contexto termino de cargar Y hay un usuario logueado
+      enabled: isReady && !!usuario
+    }
+  });
+
+  // 3. Mientras el contexto carga la sesion, mostramos una pantalla de espera
+  if (!isReady) {
+    return (
+      <View className="flex-1 justify-center items-center bg-atria-crema">
+        <Typography variant="body">Verificando sesión...</Typography>
+      </View>
+    );
+  }
+
+  // 4. Si ya cargo y no hay usuario, mandamos al login (Protección de ruta)
+  if (!usuario) {
+    return <Redirect href="/login" />;
+  }
+
+  console.log("error: ", error);
   // 3. Estado de Carga: Mientras la API responde, mostramos una pantalla de espera
   if (isLoading) {
     return (
@@ -22,13 +45,13 @@ export default function PatientHome() {
 
   return (
     <ScrollView className="flex-1 bg-atria-crema px-6 pt-12">
-      
-      {/* --- HEADER: Información de perfil y notificaciones --- */}      
+
+      {/* --- HEADER: Información de perfil y notificaciones --- */}
       <View className="flex-row justify-between items-center mb-8">
         <View className="flex-row items-center">
-          <Image 
-            source={{ uri: 'https://avatar.iran.liara.run/public/girl' }} 
-            className="w-12 h-12 rounded-full mr-3" 
+          <Image
+            source={{ uri: 'https://avatar.iran.liara.run/public/girl' }}
+            className="w-12 h-12 rounded-full mr-3"
           />
           <View>
             <Typography variant="subtitle">Portal de Bienestar</Typography>
@@ -40,7 +63,7 @@ export default function PatientHome() {
         </TouchableOpacity>
       </View>
 
-      {/* --- BIENVENIDA: Muestra el nombre dinamico del paciente desde la API --- */}      
+      {/* --- BIENVENIDA: Muestra el nombre dinamico del paciente desde la API --- */}
       <View className="mb-8">
         <Typography variant="h1">Bienvenida de nuevo,</Typography>
         <Typography variant="h1" className="text-atria-cafe">
@@ -51,7 +74,7 @@ export default function PatientHome() {
         </Typography>
       </View>
 
-      {/* --- CARD DE PROXIMA CITA: Logica condicional para mostrar la cita o un estado vacio --- */}      
+      {/* --- CARD DE PROXIMA CITA: Logica condicional para mostrar la cita o un estado vacio --- */}
       <View className="bg-white p-6 rounded-[30px] shadow-md border border-gray-50 mb-10">
         <Typography variant="subtitle" className="text-atria-cafe mb-3">
           Próxima Cita
@@ -86,19 +109,19 @@ export default function PatientHome() {
         </TouchableOpacity>
       </View>
 
-      {/* --- ACCIONES RAPIDAS: Mapeo dinamico de botones basado en la respuesta de la API --- */}      
+      {/* --- ACCIONES RAPIDAS: Mapeo dinamico de botones basado en la respuesta de la API --- */}
       <Typography variant="subtitle" className="mb-4">Acciones Rápidas</Typography>
       <View className="flex-row flex-wrap justify-between pb-10">
         {data?.quick_actions?.map((action) => (
-          <ActionTile 
+          <ActionTile
             key={action.action_id || Math.random().toString()}
-            title={action.label || ''} 
-            icon={(action.icon_id || 'apps-outline') as any} 
+            title={action.label || ''}
+            icon={(action.icon_id || 'apps-outline') as any}
             onPress={() => {
               if (action.route_name) {
                 router.push(action.route_name as any);
               }
-            }} 
+            }}
           />
         ))}
       </View>

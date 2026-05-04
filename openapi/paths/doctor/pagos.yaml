@@ -17,6 +17,6 @@ get:
               transacciones_recientes:
                 type: array
                 items:
-                  $ref: "../../components/schemas/Transaccion.yaml"
+                  $ref: "../../components/schemas/TransaccionPago.yaml"
     "401":
       $ref: "../../components/responses.yaml#/NoAutorizado"

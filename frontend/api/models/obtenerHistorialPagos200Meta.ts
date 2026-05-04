@@ -6,7 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerDoctoresPorEspecialidadYSucursalParams = {
-id_especialidad: string;
-id_sucursal: string;
+export type ObtenerHistorialPagos200Meta = {
+  total_registros?: number;
+  pagina_actual?: number;
+  total_paginas?: number;
 };

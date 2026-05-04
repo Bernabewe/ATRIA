@@ -1,6 +1,6 @@
 post:
   operationId: crearCita
-  summary: Confirmar agendamiento y pagar anticipo
+  summary: "Paso 5: Confirmar agendamiento"
   tags:
     - paciente_acciones
   requestBody:
@@ -8,25 +8,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - id_doctor
-            - id_sucursal
-            - fecha_hora_inicio
-            - metodo_pago_id
-          properties:
-            id_doctor:
-              type: string
-              format: uuid
-            id_sucursal:
-              type: string
-              format: uuid
-            fecha_hora_inicio:
-              type: string
-              format: date-time
-            metodo_pago_id:
-              type: string
-              example: "pm_1N4b5c2eZvKYlo2C"
+          $ref: "../../../components/schemas/CrearCitaBody.yaml"
   responses:
     "201":
       description: Cita creada y pago procesado.

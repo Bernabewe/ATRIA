@@ -6,7 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 import type { ObtenerHistorialMedicoPaciente200LineaTiempoConsultasItem } from './obtenerHistorialMedicoPaciente200LineaTiempoConsultasItem';
+import type { ObtenerHistorialMedicoPaciente200Meta } from './obtenerHistorialMedicoPaciente200Meta';
 
 export type ObtenerHistorialMedicoPaciente200 = {
   linea_tiempo_consultas?: ObtenerHistorialMedicoPaciente200LineaTiempoConsultasItem[];
+  meta?: ObtenerHistorialMedicoPaciente200Meta;
 };

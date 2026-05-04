@@ -1,18 +1,18 @@
 import { Text, TextProps } from 'react-native';
 
 interface TypographyProps extends TextProps {
-  variant?: 'h1' | 'h2' | 'h3' | 'body' | 'subtitle' | 'caption';
+  variant?: 'h1' | 'h2' | 'h3' | 'body' | 'subtitle' | 'caption' | 'button';
   className?: string;
   children: React.ReactNode;
 }
 
-export const Typography = ({ 
-  variant = 'body', 
-  className = '', 
-  children, 
-  ...props 
+export const Typography = ({
+  variant = 'body',
+  className = '',
+  children,
+  ...props
 }: TypographyProps) => {
-  
+
   // Definimos los estilos base para cada variante usando las clases de Atria
   const variants = {
     h1: 'text-3xl font-bold text-atria-oscuro',
@@ -21,11 +21,12 @@ export const Typography = ({
     subtitle: 'text-xs uppercase tracking-[2px] text-atria-gris font-medium',
     body: 'text-base text-atria-oscuro',
     caption: 'text-sm text-atria-gris italic',
+    button: 'text-base font-semibold tracking-wide',
   };
 
   return (
-    <Text 
-      className={`${variants[variant]} ${className}`} 
+    <Text
+      className={`${variants[variant]} ${className}`}
       {...props}
     >
       {children}

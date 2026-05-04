@@ -6,12 +6,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type TransaccionEstadoPago = typeof TransaccionEstadoPago[keyof typeof TransaccionEstadoPago];
+export type TransaccionEstatus = typeof TransaccionEstatus[keyof typeof TransaccionEstatus];
 
 
-export const TransaccionEstadoPago = {
+export const TransaccionEstatus = {
   PAGADO: 'PAGADO',
   PENDIENTE: 'PENDIENTE',
-  RECHAZADO: 'RECHAZADO',
-  REEMBOLSADO: 'REEMBOLSADO',
 } as const;

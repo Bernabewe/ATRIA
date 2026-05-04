@@ -86,3 +86,20 @@ hora_query:
   required: true
   schema:
     type: string
+
+# Parámetros de paginación
+limit_query:
+  name: limit
+  in: query
+  description: "Cantidad de registros por página"
+  schema:
+    type: integer
+    default: 5
+
+page_query:
+  name: page
+  in: query
+  description: "Número de página a consultar"
+  schema:
+    type: integer
+    default: 1

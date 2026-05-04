@@ -30,20 +30,23 @@ import type {
   ObtenerDetallesCitaPacienteParams,
   ObtenerDisponibilidadDoctor200,
   ObtenerDisponibilidadDoctorParams,
-  ObtenerDoctoresPorEspecialidadYSucursal200,
-  ObtenerDoctoresPorEspecialidadYSucursalParams,
+  ObtenerDoctoresPorEspecialidad200,
+  ObtenerDoctoresPorEspecialidadParams,
   ObtenerEspecialidades200,
   ObtenerHistorialMedicoPaciente200,
   ObtenerHistorialMedicoPaciente401,
-  ObtenerHistorialPagosPaciente200,
-  ObtenerHistorialPagosPaciente401,
+  ObtenerHistorialMedicoPacienteParams,
+  ObtenerHistorialPagos200,
+  ObtenerHistorialPagos401,
+  ObtenerHistorialPagosParams,
   ObtenerInicioPaciente200,
   ObtenerInicioPaciente401,
   ObtenerPerfilPaciente200,
   ObtenerPerfilPaciente401,
   ObtenerResumenReserva200,
   ObtenerResumenReservaParams,
-  ObtenerSucursales200
+  ObtenerSucursalesPorDoctor200,
+  ObtenerSucursalesPorDoctorParams
 } from '../models';
 
 import { customInstance } from '.././axios-instance';
@@ -605,16 +608,17 @@ export function useObtenerEspecialidades<TData = Awaited<ReturnType<typeof obten
 
 
 /**
- * @summary Paso 2: Selección de clínica más cercana
+ * @summary Paso 3: Clínicas donde atiende el doctor
  */
-export const obtenerSucursales = (
-
+export const obtenerSucursalesPorDoctor = (
+    params: ObtenerSucursalesPorDoctorParams,
  signal?: AbortSignal
 ) => {
 
 
-      return customInstance<ObtenerSucursales200>(
-      {url: `/v1/views/paciente/reservas/sucursales`, method: 'GET', signal
+      return customInstance<ObtenerSucursalesPorDoctor200>(
+      {url: `/v1/views/paciente/reservas/sucursales`, method: 'GET',
+        params, signal
     },
       );
     }
@@ -622,69 +626,69 @@ export const obtenerSucursales = (
 
 
 
-export const getObtenerSucursalesQueryKey = () => {
+export const getObtenerSucursalesPorDoctorQueryKey = (params?: ObtenerSucursalesPorDoctorParams,) => {
     return [
-    `/v1/views/paciente/reservas/sucursales`
+    `/v1/views/paciente/reservas/sucursales`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getObtenerSucursalesQueryOptions = <TData = Awaited<ReturnType<typeof obtenerSucursales>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursales>>, TError, TData>>, }
+export const getObtenerSucursalesPorDoctorQueryOptions = <TData = Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError = unknown>(params: ObtenerSucursalesPorDoctorParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getObtenerSucursalesQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getObtenerSucursalesPorDoctorQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerSucursales>>> = ({ signal }) => obtenerSucursales(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>> = ({ signal }) => obtenerSucursalesPorDoctor(params, signal);
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursales>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type ObtenerSucursalesQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerSucursales>>>
-export type ObtenerSucursalesQueryError = unknown
+export type ObtenerSucursalesPorDoctorQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>>
+export type ObtenerSucursalesPorDoctorQueryError = unknown
 
 
-export function useObtenerSucursales<TData = Awaited<ReturnType<typeof obtenerSucursales>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursales>>, TError, TData>> & Pick<
+export function useObtenerSucursalesPorDoctor<TData = Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError = unknown>(
+ params: ObtenerSucursalesPorDoctorParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof obtenerSucursales>>,
+          Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>,
           TError,
-          Awaited<ReturnType<typeof obtenerSucursales>>
+          Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerSucursales<TData = Awaited<ReturnType<typeof obtenerSucursales>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursales>>, TError, TData>> & Pick<
+export function useObtenerSucursalesPorDoctor<TData = Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError = unknown>(
+ params: ObtenerSucursalesPorDoctorParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof obtenerSucursales>>,
+          Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>,
           TError,
-          Awaited<ReturnType<typeof obtenerSucursales>>
+          Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerSucursales<TData = Awaited<ReturnType<typeof obtenerSucursales>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursales>>, TError, TData>>, }
+export function useObtenerSucursalesPorDoctor<TData = Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError = unknown>(
+ params: ObtenerSucursalesPorDoctorParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Paso 2: Selección de clínica más cercana
+ * @summary Paso 3: Clínicas donde atiende el doctor
  */
 
-export function useObtenerSucursales<TData = Awaited<ReturnType<typeof obtenerSucursales>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursales>>, TError, TData>>, }
+export function useObtenerSucursalesPorDoctor<TData = Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError = unknown>(
+ params: ObtenerSucursalesPorDoctorParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerSucursalesPorDoctor>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getObtenerSucursalesQueryOptions(options)
+  const queryOptions = getObtenerSucursalesPorDoctorQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -697,15 +701,15 @@ export function useObtenerSucursales<TData = Awaited<ReturnType<typeof obtenerSu
 
 
 /**
- * @summary Paso 3: Especialistas por sucursal y área
+ * @summary Paso 2: Médicos según la especialidad elegida
  */
-export const obtenerDoctoresPorEspecialidadYSucursal = (
-    params: ObtenerDoctoresPorEspecialidadYSucursalParams,
+export const obtenerDoctoresPorEspecialidad = (
+    params: ObtenerDoctoresPorEspecialidadParams,
  signal?: AbortSignal
 ) => {
 
 
-      return customInstance<ObtenerDoctoresPorEspecialidadYSucursal200>(
+      return customInstance<ObtenerDoctoresPorEspecialidad200>(
       {url: `/v1/views/paciente/reservas/doctores`, method: 'GET',
         params, signal
     },
@@ -715,69 +719,69 @@ export const obtenerDoctoresPorEspecialidadYSucursal = (
 
 
 
-export const getObtenerDoctoresPorEspecialidadYSucursalQueryKey = (params?: ObtenerDoctoresPorEspecialidadYSucursalParams,) => {
+export const getObtenerDoctoresPorEspecialidadQueryKey = (params?: ObtenerDoctoresPorEspecialidadParams,) => {
     return [
     `/v1/views/paciente/reservas/doctores`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getObtenerDoctoresPorEspecialidadYSucursalQueryOptions = <TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError = unknown>(params: ObtenerDoctoresPorEspecialidadYSucursalParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError, TData>>, }
+export const getObtenerDoctoresPorEspecialidadQueryOptions = <TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError = unknown>(params: ObtenerDoctoresPorEspecialidadParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getObtenerDoctoresPorEspecialidadYSucursalQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getObtenerDoctoresPorEspecialidadQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>> = ({ signal }) => obtenerDoctoresPorEspecialidadYSucursal(params, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>> = ({ signal }) => obtenerDoctoresPorEspecialidad(params, signal);
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type ObtenerDoctoresPorEspecialidadYSucursalQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>>
-export type ObtenerDoctoresPorEspecialidadYSucursalQueryError = unknown
+export type ObtenerDoctoresPorEspecialidadQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>>
+export type ObtenerDoctoresPorEspecialidadQueryError = unknown
 
 
-export function useObtenerDoctoresPorEspecialidadYSucursal<TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError = unknown>(
- params: ObtenerDoctoresPorEspecialidadYSucursalParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError, TData>> & Pick<
+export function useObtenerDoctoresPorEspecialidad<TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError = unknown>(
+ params: ObtenerDoctoresPorEspecialidadParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>,
+          Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>,
           TError,
-          Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>
+          Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerDoctoresPorEspecialidadYSucursal<TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError = unknown>(
- params: ObtenerDoctoresPorEspecialidadYSucursalParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError, TData>> & Pick<
+export function useObtenerDoctoresPorEspecialidad<TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError = unknown>(
+ params: ObtenerDoctoresPorEspecialidadParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>,
+          Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>,
           TError,
-          Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>
+          Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerDoctoresPorEspecialidadYSucursal<TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError = unknown>(
- params: ObtenerDoctoresPorEspecialidadYSucursalParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError, TData>>, }
+export function useObtenerDoctoresPorEspecialidad<TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError = unknown>(
+ params: ObtenerDoctoresPorEspecialidadParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Paso 3: Especialistas por sucursal y área
+ * @summary Paso 2: Médicos según la especialidad elegida
  */
 
-export function useObtenerDoctoresPorEspecialidadYSucursal<TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError = unknown>(
- params: ObtenerDoctoresPorEspecialidadYSucursalParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidadYSucursal>>, TError, TData>>, }
+export function useObtenerDoctoresPorEspecialidad<TData = Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError = unknown>(
+ params: ObtenerDoctoresPorEspecialidadParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerDoctoresPorEspecialidad>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getObtenerDoctoresPorEspecialidadYSucursalQueryOptions(params,options)
+  const queryOptions = getObtenerDoctoresPorEspecialidadQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -979,13 +983,14 @@ export function useObtenerResumenReserva<TData = Awaited<ReturnType<typeof obten
  * @summary Línea de tiempo de diagnósticos y consultas
  */
 export const obtenerHistorialMedicoPaciente = (
-
+    params?: ObtenerHistorialMedicoPacienteParams,
  signal?: AbortSignal
 ) => {
 
 
       return customInstance<ObtenerHistorialMedicoPaciente200>(
-      {url: `/v1/views/paciente/historial_medico`, method: 'GET', signal
+      {url: `/v1/views/paciente/historial_medico`, method: 'GET',
+        params, signal
     },
       );
     }
@@ -993,23 +998,23 @@ export const obtenerHistorialMedicoPaciente = (
 
 
 
-export const getObtenerHistorialMedicoPacienteQueryKey = () => {
+export const getObtenerHistorialMedicoPacienteQueryKey = (params?: ObtenerHistorialMedicoPacienteParams,) => {
     return [
-    `/v1/views/paciente/historial_medico`
+    `/v1/views/paciente/historial_medico`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getObtenerHistorialMedicoPacienteQueryOptions = <TData = Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError = ObtenerHistorialMedicoPaciente401>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>>, }
+export const getObtenerHistorialMedicoPacienteQueryOptions = <TData = Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError = ObtenerHistorialMedicoPaciente401>(params?: ObtenerHistorialMedicoPacienteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getObtenerHistorialMedicoPacienteQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getObtenerHistorialMedicoPacienteQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>> = ({ signal }) => obtenerHistorialMedicoPaciente(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>> = ({ signal }) => obtenerHistorialMedicoPaciente(params, signal);
 
 
 
@@ -1023,7 +1028,7 @@ export type ObtenerHistorialMedicoPacienteQueryError = ObtenerHistorialMedicoPac
 
 
 export function useObtenerHistorialMedicoPaciente<TData = Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError = ObtenerHistorialMedicoPaciente401>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>> & Pick<
+ params: undefined |  ObtenerHistorialMedicoPacienteParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>,
           TError,
@@ -1033,7 +1038,7 @@ export function useObtenerHistorialMedicoPaciente<TData = Awaited<ReturnType<typ
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useObtenerHistorialMedicoPaciente<TData = Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError = ObtenerHistorialMedicoPaciente401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>> & Pick<
+ params?: ObtenerHistorialMedicoPacienteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>,
           TError,
@@ -1043,7 +1048,7 @@ export function useObtenerHistorialMedicoPaciente<TData = Awaited<ReturnType<typ
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useObtenerHistorialMedicoPaciente<TData = Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError = ObtenerHistorialMedicoPaciente401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>>, }
+ params?: ObtenerHistorialMedicoPacienteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -1051,11 +1056,11 @@ export function useObtenerHistorialMedicoPaciente<TData = Awaited<ReturnType<typ
  */
 
 export function useObtenerHistorialMedicoPaciente<TData = Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError = ObtenerHistorialMedicoPaciente401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>>, }
+ params?: ObtenerHistorialMedicoPacienteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialMedicoPaciente>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getObtenerHistorialMedicoPacienteQueryOptions(options)
+  const queryOptions = getObtenerHistorialMedicoPacienteQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1068,16 +1073,17 @@ export function useObtenerHistorialMedicoPaciente<TData = Awaited<ReturnType<typ
 
 
 /**
- * @summary Control financiero y adeudos pendientes
+ * @summary Obtiene el historial de pagos y saldo pendiente
  */
-export const obtenerHistorialPagosPaciente = (
-
+export const obtenerHistorialPagos = (
+    params: ObtenerHistorialPagosParams,
  signal?: AbortSignal
 ) => {
 
 
-      return customInstance<ObtenerHistorialPagosPaciente200>(
-      {url: `/v1/views/paciente/historial_pagos`, method: 'GET', signal
+      return customInstance<ObtenerHistorialPagos200>(
+      {url: `/v1/views/paciente/historial_pagos`, method: 'GET',
+        params, signal
     },
       );
     }
@@ -1085,69 +1091,69 @@ export const obtenerHistorialPagosPaciente = (
 
 
 
-export const getObtenerHistorialPagosPacienteQueryKey = () => {
+export const getObtenerHistorialPagosQueryKey = (params?: ObtenerHistorialPagosParams,) => {
     return [
-    `/v1/views/paciente/historial_pagos`
+    `/v1/views/paciente/historial_pagos`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getObtenerHistorialPagosPacienteQueryOptions = <TData = Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError = ObtenerHistorialPagosPaciente401>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError, TData>>, }
+export const getObtenerHistorialPagosQueryOptions = <TData = Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError = ObtenerHistorialPagos401>(params: ObtenerHistorialPagosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getObtenerHistorialPagosPacienteQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getObtenerHistorialPagosQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>> = ({ signal }) => obtenerHistorialPagosPaciente(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerHistorialPagos>>> = ({ signal }) => obtenerHistorialPagos(params, signal);
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type ObtenerHistorialPagosPacienteQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>>
-export type ObtenerHistorialPagosPacienteQueryError = ObtenerHistorialPagosPaciente401
+export type ObtenerHistorialPagosQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerHistorialPagos>>>
+export type ObtenerHistorialPagosQueryError = ObtenerHistorialPagos401
 
 
-export function useObtenerHistorialPagosPaciente<TData = Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError = ObtenerHistorialPagosPaciente401>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError, TData>> & Pick<
+export function useObtenerHistorialPagos<TData = Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError = ObtenerHistorialPagos401>(
+ params: ObtenerHistorialPagosParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>,
+          Awaited<ReturnType<typeof obtenerHistorialPagos>>,
           TError,
-          Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>
+          Awaited<ReturnType<typeof obtenerHistorialPagos>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerHistorialPagosPaciente<TData = Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError = ObtenerHistorialPagosPaciente401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError, TData>> & Pick<
+export function useObtenerHistorialPagos<TData = Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError = ObtenerHistorialPagos401>(
+ params: ObtenerHistorialPagosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>,
+          Awaited<ReturnType<typeof obtenerHistorialPagos>>,
           TError,
-          Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>
+          Awaited<ReturnType<typeof obtenerHistorialPagos>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerHistorialPagosPaciente<TData = Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError = ObtenerHistorialPagosPaciente401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError, TData>>, }
+export function useObtenerHistorialPagos<TData = Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError = ObtenerHistorialPagos401>(
+ params: ObtenerHistorialPagosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Control financiero y adeudos pendientes
+ * @summary Obtiene el historial de pagos y saldo pendiente
  */
 
-export function useObtenerHistorialPagosPaciente<TData = Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError = ObtenerHistorialPagosPaciente401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagosPaciente>>, TError, TData>>, }
+export function useObtenerHistorialPagos<TData = Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError = ObtenerHistorialPagos401>(
+ params: ObtenerHistorialPagosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerHistorialPagos>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getObtenerHistorialPagosPacienteQueryOptions(options)
+  const queryOptions = getObtenerHistorialPagosQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

@@ -1,22 +1,44 @@
 get:
-  operationId: obtenerHistorialPagosPaciente
-  summary: Control financiero y adeudos pendientes
+  operationId: obtenerHistorialPagos
+  summary: "Obtiene el historial de pagos y saldo pendiente"
   tags:
     - paciente_vistas
+  parameters:
+    - $ref: "../../components/parameters.yaml#/limit_query"
+    - $ref: "../../components/parameters.yaml#/page_query"
+    - name: estatus
+      in: query
+      description: "Filtra la lista por PENDIENTE o PAGADO"
+      required: true
+      schema:
+        type: string
+        enum: [ PENDIENTE, PAGADO ]
   responses:
     "200":
-      description: Historial de pagos del paciente cargado exitosamente.
+      description: "Resumen de cuenta y lista de transacciones"
       content:
         application/json:
           schema:
             type: object
             properties:
-              saldo_pendiente:
-                type: string
-                example: "$850.00"
-              transacciones_recientes:
+              resumen:
+                type: object
+                properties:
+                  monto_total_pendiente:
+                    type: number
+                    example: 850.00
+              pagos:
                 type: array
                 items:
-                  $ref: "../../components/schemas/Transaccion.yaml"
+                  $ref: "../../components/schemas/TransaccionPago.yaml"
+              meta:
+                type: object
+                properties:
+                  total_registros:
+                    type: integer
+                  pagina_actual:
+                    type: integer
+                  total_paginas:
+                    type: integer
     "401":
       $ref: "../../components/responses.yaml#/NoAutorizado"

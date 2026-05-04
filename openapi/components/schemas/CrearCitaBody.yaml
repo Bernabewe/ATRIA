@@ -1,0 +1,26 @@
+type: object
+required:
+  - id_doctor
+  - id_sucursal
+  - fecha
+  - hora
+  - metodo_pago_id
+properties:
+  id_doctor:
+    type: string
+    format: uuid
+    example: "doc_001"
+  id_sucursal:
+    type: string
+    format: uuid
+    example: "suc_001"
+  fecha:
+    type: string
+    format: date
+    example: "2026-05-15"
+  hora:
+    type: string
+    example: "14:30"
+  id_metodo_pago:
+    type: string
+    example: "simulado_cash"

@@ -11,8 +11,8 @@ export default function PasoEspecialidad() {
   const { data, isLoading } = useObtenerEspecialidades();
 
   const manejarSeleccion = (id: string) => {
-    actualizarReserva({ especialidadId: id });
-    router.push('/(paciente)/agendar/sucursal');
+    actualizarReserva({ id_especialidad: id });
+    router.push('/(paciente)/agendar/doctor');
   };
 
   if (isLoading) return (
@@ -30,7 +30,7 @@ export default function PasoEspecialidad() {
         data={data?.especialidades}
         keyExtractor={(item) => item.id_especialidad ? item.id_especialidad : ''}
         renderItem={({ item }) => (
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => manejarSeleccion(item.id_especialidad ? item.id_especialidad : '')}
             className="bg-white p-5 rounded-2xl mb-4 flex-row justify-between items-center shadow-sm border border-gray-100 active:opacity-70"
           >

@@ -6,7 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerDisponibilidadDoctorParams = {
-id_doctor: string;
-id_sucursal: string;
+export type ObtenerDoctoresPorEspecialidad200EspecialistasItem = {
+  id_doctor?: string;
+  nombre_doctor?: string;
+  foto_url?: string;
+  calificacion_promedio?: number;
+  experiencia_anios?: number;
+  especialidad_titulo?: string;
 };

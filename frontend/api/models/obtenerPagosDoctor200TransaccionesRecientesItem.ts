@@ -5,13 +5,15 @@
  * Documentación oficial de las APIs bajo el patrón BFF para los portales de paciente y doctor de Atria.
  * OpenAPI spec version: 1.0.0
  */
-import type { ObtenerPagosDoctor200TransaccionesRecientesItemEstadoPago } from './obtenerPagosDoctor200TransaccionesRecientesItemEstadoPago';
+import type { ObtenerPagosDoctor200TransaccionesRecientesItemEstatus } from './obtenerPagosDoctor200TransaccionesRecientesItemEstatus';
 
 export type ObtenerPagosDoctor200TransaccionesRecientesItem = {
-  id_transaccion?: string;
-  titulo_concepto?: string;
+  id_pago?: string;
+  /** Identificador de la cita para saber qué pagos pertenecen al mismo evento */
+  id_cita?: string;
+  motivo_consulta?: string;
+  doctor?: string;
   fecha_formateada?: string;
-  monto_formateado?: string;
-  estado_pago?: ObtenerPagosDoctor200TransaccionesRecientesItemEstadoPago;
-  icono_concepto?: string;
+  monto?: number;
+  estatus?: ObtenerPagosDoctor200TransaccionesRecientesItemEstatus;
 };

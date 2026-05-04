@@ -6,9 +6,18 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export interface CrearCitaBody {
+  id_doctor: string;
+  id_sucursal: string;
+  fecha: string;
+  hora: string;
+  id_metodo_pago?: string;
+}
+
 export type CrearCitaBody = {
   id_doctor: string;
   id_sucursal: string;
-  fecha_hora_inicio: string;
-  metodo_pago_id: string;
+  fecha: string;
+  hora: string;
+  id_metodo_pago?: string;
 };

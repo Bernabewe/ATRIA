@@ -6,7 +6,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerDisponibilidadDoctorParams = {
-id_doctor: string;
-id_sucursal: string;
+export type ObtenerHistorialPagos200Resumen = {
+  monto_total_pendiente?: number;
 };

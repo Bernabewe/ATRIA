@@ -103,7 +103,7 @@ export const useActualizarPerfilPaciente = <TError = ActualizarPerfilPaciente400
       return useMutation(getActualizarPerfilPacienteMutationOptions(options), queryClient);
     }
     /**
- * @summary Confirmar agendamiento y pagar anticipo
+ * @summary Paso 5: Confirmar agendamiento
  */
 export const crearCita = (
     crearCitaBody: CrearCitaBody,
@@ -153,7 +153,7 @@ const {mutation: mutationOptions} = options ?
     export type CrearCitaMutationError = CrearCita400 | CrearCita401
 
     /**
- * @summary Confirmar agendamiento y pagar anticipo
+ * @summary Paso 5: Confirmar agendamiento
  */
 export const useCrearCita = <TError = CrearCita400 | CrearCita401,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof crearCita>>, TError,{data: CrearCitaBody}, TContext>, }

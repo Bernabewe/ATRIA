@@ -5,11 +5,11 @@
  * Documentación oficial de las APIs bajo el patrón BFF para los portales de paciente y doctor de Atria.
  * OpenAPI spec version: 1.0.0
  */
-import type { ObtenerSucursales200SucursalesItemCoordenadas } from './obtenerSucursales200SucursalesItemCoordenadas';
+import type { ObtenerSucursalesPorDoctor200SucursalesItemCoordenadas } from './obtenerSucursalesPorDoctor200SucursalesItemCoordenadas';
 
-export type ObtenerSucursales200SucursalesItem = {
+export type ObtenerSucursalesPorDoctor200SucursalesItem = {
   id_sucursal?: string;
   nombre_sucursal?: string;
   direccion_completa?: string;
-  coordenadas?: ObtenerSucursales200SucursalesItemCoordenadas;
+  coordenadas?: ObtenerSucursalesPorDoctor200SucursalesItemCoordenadas;
 };

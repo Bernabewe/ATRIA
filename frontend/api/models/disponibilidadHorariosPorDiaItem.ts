@@ -5,8 +5,9 @@
  * Documentación oficial de las APIs bajo el patrón BFF para los portales de paciente y doctor de Atria.
  * OpenAPI spec version: 1.0.0
  */
-import type { ObtenerSucursales200SucursalesItem } from './obtenerSucursales200SucursalesItem';
+import type { DisponibilidadHorariosPorDiaItemEstado } from './disponibilidadHorariosPorDiaItemEstado';
 
-export type ObtenerSucursales200 = {
-  sucursales?: ObtenerSucursales200SucursalesItem[];
+export type DisponibilidadHorariosPorDiaItem = {
+  hora_formateada?: string;
+  estado?: DisponibilidadHorariosPorDiaItemEstado;
 };

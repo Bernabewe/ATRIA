@@ -3,6 +3,9 @@ get:
   summary: Línea de tiempo de diagnósticos y consultas
   tags:
     - paciente_vistas
+  parameters:
+    - $ref: "../../components/parameters.yaml#/limit_query"
+    - $ref: "../../components/parameters.yaml#/page_query"
   responses:
     "200":
       description: Historial médico del paciente cargado exitosamente.
@@ -15,5 +18,17 @@ get:
                 type: array
                 items:
                   $ref: "../../components/schemas/ConsultaHistorial.yaml"
+              meta:
+                type: object
+                properties:
+                  total_registros:
+                    type: integer
+                    example: 25
+                  pagina_actual:
+                    type: integer
+                    example: 1
+                  total_paginas:
+                    type: integer
+                    example: 5
     "401":
       $ref: "../../components/responses.yaml#/NoAutorizado"

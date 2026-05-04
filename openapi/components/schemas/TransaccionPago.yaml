@@ -1,0 +1,27 @@
+type: object
+properties:
+  id_pago:
+    type: string
+    format: uuid
+    example: "pago001"
+  id_cita:
+    type: string
+    format: uuid
+    description: "Identificador de la cita para saber qué pagos pertenecen al mismo evento"
+    example: "cita001"
+  motivo_consulta:
+    type: string
+    example: "Chequeo de Rutina"
+  doctor:
+    type: string
+    example: "Dr. Arriaga"
+  fecha_formateada:
+    type: string
+    example: "15 de Octubre, 2023"
+  monto:
+    type: number
+    example: 600.00
+  estatus:
+    type: string
+    enum: [ PAGADO, PENDIENTE ]
+    example: "PAGADO"

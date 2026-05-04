@@ -5,8 +5,9 @@
  * Documentación oficial de las APIs bajo el patrón BFF para los portales de paciente y doctor de Atria.
  * OpenAPI spec version: 1.0.0
  */
+import type { ObtenerDisponibilidadDoctor200HorariosPorDiaItemEstado } from './obtenerDisponibilidadDoctor200HorariosPorDiaItemEstado';
 
 export type ObtenerDisponibilidadDoctor200HorariosPorDiaItem = {
   hora_formateada?: string;
-  estado?: string;
+  estado?: ObtenerDisponibilidadDoctor200HorariosPorDiaItemEstado;
 };

@@ -6,7 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerDisponibilidadDoctorParams = {
-id_doctor: string;
-id_sucursal: string;
+export type ObtenerHistorialMedicoPaciente200Meta = {
+  total_registros?: number;
+  pagina_actual?: number;
+  total_paginas?: number;
 };

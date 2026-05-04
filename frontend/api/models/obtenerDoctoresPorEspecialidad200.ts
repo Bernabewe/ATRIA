@@ -5,12 +5,8 @@
  * Documentación oficial de las APIs bajo el patrón BFF para los portales de paciente y doctor de Atria.
  * OpenAPI spec version: 1.0.0
  */
+import type { ObtenerDoctoresPorEspecialidad200EspecialistasItem } from './obtenerDoctoresPorEspecialidad200EspecialistasItem';
 
-export type ObtenerDoctoresPorEspecialidadYSucursal200EspecialistasItem = {
-  id_doctor?: string;
-  nombre_doctor?: string;
-  foto_url?: string;
-  calificacion_promedio?: number;
-  experiencia_anios?: number;
-  especialidad_titulo?: string;
+export type ObtenerDoctoresPorEspecialidad200 = {
+  especialistas?: ObtenerDoctoresPorEspecialidad200EspecialistasItem[];
 };

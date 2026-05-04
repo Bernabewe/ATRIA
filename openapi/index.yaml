@@ -1,13 +1,12 @@
 openapi: 3.0.3
 info:
   title: Atria API - Sistema de Gestión Médica
-  description:
-    Documentación oficial de las APIs bajo el patrón BFF para los portales
-    de paciente y doctor de Atria.
+  description: Documentación oficial de las APIs bajo el patrón BFF para los
+    portales de paciente y doctor de Atria.
   version: 1.0.0
 
 servers:
-  - url: http://localhost:3000/api
+  - url: http://localhost:3000
     description: Servidor de desarrollo local
 
 security:
@@ -179,11 +178,15 @@ components:
     AccionRapida:
       $ref: "./components/schemas/AccionRapida.yaml"
     Transaccion:
-      $ref: "./components/schemas/Transaccion.yaml"
+      $ref: "./components/schemas/TransaccionPago.yaml"
     ConsultaHistorial:
       $ref: "./components/schemas/ConsultaHistorial.yaml"
     ResumenAgendamiento:
       $ref: "./components/schemas/ResumenAgendamiento.yaml"
+    Disponibilidad:
+      $ref: "./components/schemas/Disponibilidad.yaml"
+    CrearCitaBody:
+      $ref: "./components/schemas/CrearCitaBody.yaml"
     MensajeExito:
       $ref: "./components/schemas/MensajeExito.yaml"
     CitaDoctor:
