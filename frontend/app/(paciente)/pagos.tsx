@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal } from 'react-native';
 import { Typography } from '../../components/ui/Typography';
 import { useObtenerHistorialPagos } from '../../api/paciente-vistas/paciente-vistas';
 
@@ -8,6 +8,7 @@ export default function PagosScreen() {
   const [pagina, setPagina] = useState(1);
   const [pagos, setPagos] = useState<any[]>([]);
   const [refrescando, setRefrescando] = useState(false);
+  const [mostrarAviso, setMostrarAviso] = useState(false);
 
   const { data, isLoading, isFetching } = useObtenerHistorialPagos({
     page: pagina,
@@ -17,13 +18,17 @@ export default function PagosScreen() {
 
   useEffect(() => {
     if (data?.pagos) {
+      const pagosFiltrados = data.pagos.filter(
+        (pago: any) => pago.estatus === estatus
+      );
+
       if (pagina === 1) {
-        setPagos(data.pagos);
+        setPagos(pagosFiltrados);
       } else {
-        setPagos(prev => [...prev, ...(data.pagos ?? [])]);
+        setPagos(prev => [...prev, ...pagosFiltrados]);
       }
     }
-  }, [data, pagina]);
+  }, [data, pagina, estatus]);
 
   const cambiarPestana = (nuevoEstatus: 'PENDIENTE' | 'PAGADO') => {
     if (estatus !== nuevoEstatus) {
@@ -48,6 +53,34 @@ export default function PagosScreen() {
     setRefrescando(false);
   };
 
+  const renderMensajeVacio = () => {
+    if (isLoading) return null;
+    return (
+      <View className="items-center justify-center mt-20 p-6">
+        <Typography variant="h2" className="text-center text-atria-cafe mb-2">
+          {estatus === 'PENDIENTE'
+            ? '¡Cero deudas a la vista!'
+            : '¡Sin pagos realizados!'}
+        </Typography>
+        <Typography variant="body" className="text-center text-atria-gris">
+          {estatus === 'PENDIENTE'
+            ? 'No hay pagos pendientes.'
+            : 'Agenda una cita.'}
+        </Typography>
+      </View>
+    )
+  };
+
+  const manejarPagoProximamente = () => {
+    Alert.alert(
+      "¡Zona en construcción! 🚧",
+      "Estamos aceitando los engranajes de la pasarela de pagos. ¡Vuelve muy pronto!",
+      [
+        { text: "¡Entendido!", onPress: () => console.log("Alerta cerrada") }
+      ]
+    );
+  };
+
   return (
     <View className="flex-1 bg-atria-crema p-4">
       <Typography variant="h1" className="mb-4 mt-10">Historial de Pagos</Typography>
@@ -59,10 +92,39 @@ export default function PagosScreen() {
           {/* Usamos el nuevo campo de nuestro esquema OpenAPI */}
           ${data?.resumen?.monto_total_pendiente?.toFixed(2) ?? '0.00'}
         </Typography>
-        <TouchableOpacity className="bg-atria-cafe py-3 px-10 rounded-full mt-4">
+        <TouchableOpacity className="bg-atria-cafe py-3 px-10 rounded-full mt-4" onPress={() => setMostrarAviso(true)}>
           <Typography variant="button" className="text-white">Pagar Ahora</Typography>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={mostrarAviso}
+        onRequestClose={() => setMostrarAviso(false)}
+      >
+        {/* Fondo oscurecido para centrar la atención */}
+        <View className="flex-1 justify-center items-center bg-black/50 p-6">
+          <View className="bg-white w-full max-w-sm p-8 rounded-3xl items-center shadow-xl">
+            
+            <Typography variant="h2" className="text-atria-cafe mb-4 text-center">
+              🚧 Sección en construcción
+            </Typography>
+            
+            <Typography variant="body" className="text-center text-atria-gris mb-6">
+              Estamos trabajando para que puedas realizar tus pagos de forma segura desde aquí. ¡Vuelve pronto!
+            </Typography>
+
+            <TouchableOpacity 
+              className="bg-atria-cafe py-2 px-8 rounded-full"
+              onPress={() => setMostrarAviso(false)}
+            >
+              <Typography variant="button" className="text-white">Entendido</Typography>
+            </TouchableOpacity>
+
+          </View>
+        </View>
+      </Modal>
 
       {/* 🗂️ Botones de Pestañas */}
       <View className="flex-row mb-4 bg-gray-200 rounded-full p-1">
@@ -82,6 +144,7 @@ export default function PagosScreen() {
 
       <FlatList
         data={pagos}
+        ListEmptyComponent={renderMensajeVacio}
         keyExtractor={(item) => item.id_pago} // Usamos el ID único del pago
         renderItem={({ item }) => (
           <View className="bg-white p-4 rounded-2xl mb-4 border-l-4 border-atria-cafe shadow-sm flex-row justify-between items-center">

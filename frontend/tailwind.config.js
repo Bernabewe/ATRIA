@@ -6,12 +6,16 @@ module.exports = {
     extend: {
       colors: {
         atria: {
-          crema: 'rgb(var(--color-atria-crema) / <alpha-value>)',
-          cafe: 'rgb(var(--color-atria-cafe) / <alpha-value>)',
-          oscuro: 'rgb(var(--color-atria-oscuro) / <alpha-value>)',
-          gris: 'rgb(var(--color-atria-gris) / <alpha-value>)',
-          rojo: 'rgb(var(--color-atria-rojo) / <alpha-value>)',
-          'rojo-bg': 'rgb(var(--color-atria-rojo-bg) / <alpha-value>)',
+          crema: '#FCFAF6',     // Fondo claro general
+          cafe: '#A87B51',      // Botones y acentos principales
+          oscuro: '#1E2926',    // Títulos y textos principales
+          gris: '#8B9491',      // Subtítulos y textos secundarios
+          rojo: '#C53030',      // Textos de cancelación/error
+          rojo_bg: '#FDF2F2',   // Fondo del cuadro de cancelación
+          verde: '#2F855A',     // Confirmada / Pagado
+          verde_bg: '#F0FDF4',  // Fondo etiqueta confirmada
+          dorado: '#D69E2E',    // Premium / Estrellas
+          coral: '#E28C6E',     // Iconos de especialidades
         }
       },
     },

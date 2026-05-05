@@ -46,10 +46,6 @@ export default function Perfil() {
       <Text>{'\n'}--- ACCIONES ---</Text>
       <View style={{ gap: 10, marginTop: 20 }}>
         <Button 
-          title="Editar Perfil" 
-          onPress={() => router.push('/(paciente)/editar-perfil')} 
-        />
-        <Button 
           title="Cerrar Sesión" 
           onPress={cerrarSesion} 
           color="#FF5252" 
