@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal } from 'react-native';
+import { View, FlatList, ActivityIndicator, TouchableOpacity, Modal } from 'react-native';
 import { Typography } from '../../components/ui/Typography';
 import { useObtenerHistorialPagos } from '../../api/paciente-vistas/paciente-vistas';
 
@@ -69,16 +69,6 @@ export default function PagosScreen() {
         </Typography>
       </View>
     )
-  };
-
-  const manejarPagoProximamente = () => {
-    Alert.alert(
-      "¡Zona en construcción! 🚧",
-      "Estamos aceitando los engranajes de la pasarela de pagos. ¡Vuelve muy pronto!",
-      [
-        { text: "¡Entendido!", onPress: () => console.log("Alerta cerrada") }
-      ]
-    );
   };
 
   return (

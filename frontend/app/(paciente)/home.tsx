@@ -1,11 +1,16 @@
-import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Redirect, useRouter } from 'expo-router';
+
 import { ActionTile } from '../../components/ui/ActionTile';
 import { Typography } from '../../components/ui/Typography';
+import { Avatar } from '../../components/ui/Avatar';
+import { Boton } from '../../components/ui/Boton';
+
 // 1. Importacion del hook generado por Orval para obtener los datos del backend
 import { useObtenerInicioPaciente } from '../../api/paciente-vistas/paciente-vistas';
 import { useAuth } from '../../context/AuthContext';
+import { Icono } from '@/components/ui/Icono';
+import { Card } from '@/components/ui/Card';
 
 export default function PatientHome() {
   const router = useRouter();
@@ -43,74 +48,98 @@ export default function PatientHome() {
     );
   }
 
-  return (
-    <ScrollView className="flex-1 bg-atria-crema px-6 pt-12">
+return (
+    <ScrollView className="flex-1 bg-atria-crema px-6 pt-12" showsVerticalScrollIndicator={false}>
 
-      {/* --- HEADER: Información de perfil y notificaciones --- */}
+      {/* --- HEADER --- */}
       <View className="flex-row justify-between items-center mb-8">
-        <View className="flex-row items-center">
-          <Image
-            source={{ uri: 'https://avatar.iran.liara.run/public/girl' }}
-            className="w-12 h-12 rounded-full mr-3"
+        <View className="flex-row items-center gap-x-3">
+          <Avatar 
+            url="https://avatar.iran.liara.run/public/girl" 
+            tamaño={48} 
           />
-          <View>
-            <Typography variant="subtitle">Portal de Bienestar</Typography>
-            <Typography variant="h2">Inicio</Typography>
+          <View className='pl-2'>
+            <Typography variant="caption" className="text-atria-gris uppercase font-bold tracking-widest text-xs">
+              Portal de Bienestar
+            </Typography>
+            <Typography variant="h2" className="text-atria-oscuro">Inicio</Typography>
           </View>
         </View>
-        <TouchableOpacity className="bg-white p-2 rounded-full shadow-sm active:opacity-70">
-          <Ionicons name="notifications-outline" size={24} color="#8B5E3C" />
+        <TouchableOpacity className="bg-white p-3 rounded-full shadow-sm">
+          {/* Asumiendo que tu componente Icono funciona con estas propiedades */}
+          <Icono nombre="notifications-outline" familia="Ionicons" tamaño={22} color="cafe" /> 
         </TouchableOpacity>
       </View>
 
-      {/* --- BIENVENIDA: Muestra el nombre dinamico del paciente desde la API --- */}
+      {/* --- BIENVENIDA --- */}
       <View className="mb-8">
-        <Typography variant="h1">Bienvenida de nuevo,</Typography>
+        <Typography variant="h1" className="text-atria-oscuro">Bienvenida de nuevo,</Typography>
         <Typography variant="h1" className="text-atria-cafe">
           {data?.nombre_pila || 'Paciente'}
         </Typography>
-        <Typography variant="caption" className="mt-1">
+        <Typography variant="body" className="text-atria-gris mt-2">
           Tus métricas de salud lucen excelentes hoy.
         </Typography>
       </View>
 
-      {/* --- CARD DE PROXIMA CITA: Logica condicional para mostrar la cita o un estado vacio --- */}
-      <View className="bg-white p-6 rounded-[30px] shadow-md border border-gray-50 mb-10">
-        <Typography variant="subtitle" className="text-atria-cafe mb-3">
-          Próxima Cita
-        </Typography>
-        <Typography variant="h2">{data?.next_cita?.doctor_nombre || 'No hay citas programadas'}</Typography>
-        <Typography variant="body" className="text-atria-gris mb-4">
-          {data?.next_cita?.especialidad_etiqueta || 'Agenda libre'}
-        </Typography>
-        {/* Solo mostramos fecha y consultorio si existe una cita programada */}
+      {/* --- CARD DE PRÓXIMA CITA --- */}
+      {/* Implementamos tu componente Card */}
+      <Card className="mb-10 p-5" borde="arriba"> 
+        
+        {/* Cabecera de la tarjeta */}
+        <View className="flex-row justify-between items-start mb-4">
+          <View>
+            <Typography variant="caption" className="text-atria-gris uppercase font-bold tracking-widest text-xs mb-1">
+              Próxima Cita
+            </Typography>
+            <Typography variant="h2" className="text-atria-oscuro">
+              {data?.next_cita?.doctor_nombre || 'No hay citas programadas'}
+            </Typography>
+            <Typography variant="body" className="text-atria-gris">
+              {data?.next_cita?.especialidad_etiqueta || 'Agenda libre'}
+            </Typography>
+          </View>
+          
+          {/* Icono de calendario con fondo crema */}
+          {data?.next_cita && (
+             <View className="bg-atria-crema p-3 rounded-2xl border border-gray-50">
+               <Icono nombre="calendar-outline" familia="Ionicons" tamaño={24} color="cafe" />
+             </View>
+          )}
+        </View>
+
+        {/* Detalles de hora y lugar */}
         {data?.next_cita && (
-          <View className="flex-row justify-between mb-6">
-            <View className="flex-row items-center flex-1 mr-2">
-              <Ionicons name="time-outline" size={18} color="#8B5E3C" />
-              <Typography variant="body" className="ml-2 font-semibold flex-1 flex-wrap">
-                {`${data.next_cita.fecha_frase || ''} ${data.next_cita.hora_formateada || ''}`}
+          <View className="flex-row justify-between mb-6 bg-atria-crema p-4 rounded-2xl">
+            <View className="flex-row items-center flex-1">
+              <Icono nombre="time-outline" familia="Ionicons" tamaño={18} color="cafe" />
+              <Typography variant="body" className="ml-2 text-atria-oscuro font-medium text-sm">
+                {`${data.next_cita.fecha_frase || ''}, ${data.next_cita.hora_formateada || ''}`}
               </Typography>
             </View>
             <View className="flex-row items-center flex-1 pl-2">
-              <Ionicons name="location-outline" size={18} color="#8B5E3C" />
-              <Typography variant="body" className="ml-2 font-semibold flex-1 flex-wrap">
-                Consultorio {data.next_cita.consultorio_numero}
+              <Icono nombre="location-outline" familia="Ionicons" tamaño={18} color="cafe" />
+              <Typography variant="body" className="ml-2 text-atria-oscuro font-medium text-sm">
+                Cons. {data.next_cita.consultorio_numero}
               </Typography>
             </View>
           </View>
         )}
-        {/* Boton de accion: Navega a la gestion de la cita especifica */}
-        <TouchableOpacity className="bg-atria-cafe p-4 rounded-2xl items-center flex-row justify-center active:opacity-90" onPress={() => router.push(`/gestionar-cita?id_cita=${data?.next_cita?.id_cita}`)}>
-          <Typography variant="body" className="text-white font-bold mr-2">
-            Ver Detalles de la Cita
-          </Typography>
-          <Ionicons name="arrow-forward" size={18} color="white" />
-        </TouchableOpacity>
-      </View>
 
-      {/* --- ACCIONES RAPIDAS: Mapeo dinamico de botones basado en la respuesta de la API --- */}
-      <Typography variant="subtitle" className="mb-4">Acciones Rápidas</Typography>
+        {/* Botón estandarizado */}
+        {data?.next_cita && (
+          <Boton 
+            texto="Ver Detalles de la Cita ➔" 
+            variante="primario"
+            onPress={() => router.push(`/gestionar-cita?id_cita=${data?.next_cita?.id_cita}`)} 
+          />
+        )}
+      </Card>
+
+      {/* --- ACCIONES RÁPIDAS --- */}
+      <Typography variant="caption" className="text-atria-gris uppercase font-bold tracking-widest text-xs mb-4">
+        Acciones Rápidas
+      </Typography>
       <View className="flex-row flex-wrap justify-between pb-10">
         {data?.quick_actions?.map((action) => (
           <ActionTile

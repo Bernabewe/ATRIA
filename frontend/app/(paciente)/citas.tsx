@@ -2,6 +2,13 @@ import { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useObtenerCitasProximasPaciente, useObtenerCitasPasadasPaciente } from '../../api/paciente-vistas/paciente-vistas';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { Typography } from '../../components/ui/Typography';
+import { Card } from '../../components/ui/Card';
+import { Boton } from '../../components/ui/Boton';
+import { Icono } from '../../components/ui/Icono';
+import { Etiqueta } from '@/components/ui/Etiqueta';
 
 export default function MisCitasScreen() {
   const router = useRouter();
@@ -19,79 +26,128 @@ export default function MisCitasScreen() {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#FDFCF8', padding: 20, paddingTop: 60 }}>
-      {/* Header */}
-      <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>Mis Citas</Text>
-      
-      {/* Selector de Pestañas (Tabs) */}
-      <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderColor: '#EAEAEA', marginBottom: 20 }}>
-        <TouchableOpacity 
-          style={{ flex: 1, paddingBottom: 15, alignItems: 'center', borderBottomWidth: activeTab === 'proximas' ? 2 : 0, borderColor: '#8B5E3C' }}
-          onPress={() => setActiveTab('proximas')}
-        >
-          <Text style={{ fontSize: 16, fontWeight: activeTab === 'proximas' ? 'bold' : 'normal', color: activeTab === 'proximas' ? '#8B5E3C' : '#9BA1A6' }}>Próximas</Text>
-        </TouchableOpacity>
+    <SafeAreaView className="flex-1 bg-atria-crema">
+      <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         
-        <TouchableOpacity 
-          style={{ flex: 1, paddingBottom: 15, alignItems: 'center', borderBottomWidth: activeTab === 'pasadas' ? 2 : 0, borderColor: '#8B5E3C' }}
-          onPress={() => setActiveTab('pasadas')}
-        >
-          <Text style={{ fontSize: 16, fontWeight: activeTab === 'pasadas' ? 'bold' : 'normal', color: activeTab === 'pasadas' ? '#8B5E3C' : '#9BA1A6' }}>Pasadas</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Contenido Dinámico según la Pestaña Activa */}
-      {activeTab === 'proximas' ? (
-        <View>
-          <Text style={{ fontSize: 16, marginTop: 5, fontWeight: 'bold' }}>PRÓXIMA PRIORIDAD</Text>
-          {citasProximas?.proxima_prioridad ? (
-            <View style={{ marginVertical: 10, padding: 10, borderWidth: 1, borderColor: '#eee', borderRadius: 8 }}>
-              <Text>Doctor: {citasProximas.proxima_prioridad.doctor_nombre}</Text>
-              <Text>Especialidad: {citasProximas.proxima_prioridad.especialidad_etiqueta}</Text>
-              <Text>Fecha: {citasProximas.proxima_prioridad.fecha_frase} - {citasProximas.proxima_prioridad.hora_formateada}</Text>
-              <Text>Estado: {citasProximas.proxima_prioridad.estado_badge}</Text>
-              <TouchableOpacity onPress={() => router.push(`/gestionar-cita?id_cita=${citasProximas.proxima_prioridad?.id_cita}`)}>
-                <Text style={{ color: 'blue', marginTop: 5 }}>[Botón: Gestionar]</Text>
-              </TouchableOpacity>
-            </View>
-          ) : <Text style={{ marginTop: 5, marginBottom: 15 }}>No hay cita prioritaria</Text>}
-
-          <Text style={{ fontSize: 16, marginTop: 15, fontWeight: 'bold' }}>VISITAS PRÓXIMAS</Text>
-          {citasProximas?.visitas_proximas?.length ? citasProximas.visitas_proximas.map((cita: any) => (
-            <View key={cita.id_cita || Math.random().toString()} style={{ marginVertical: 10, padding: 10, borderWidth: 1, borderColor: '#eee', borderRadius: 8 }}>
-              <Text>Doctor: {cita.doctor_nombre}</Text>
-              <Text>Motivo: {cita.motivo_consulta || cita.especialidad_etiqueta}</Text>
-              <Text>Fecha: {cita.fecha_corta}</Text>
-              <TouchableOpacity onPress={() => router.push(`/gestionar-cita?id_cita=${cita.id_cita}`)}>
-                <Text style={{ color: 'blue', marginTop: 5 }}>[Botón: Gestionar]</Text>
-              </TouchableOpacity>
-            </View>
-          )) : <Text style={{ marginTop: 5, marginBottom: 15 }}>No hay más visitas programadas</Text>}
-
-          <Text style={{ fontSize: 16, marginTop: 15, fontWeight: 'bold' }}>COMPLETADAS RECIENTEMENTE</Text>
-          {citasProximas?.completadas_recientemente?.length ? citasProximas.completadas_recientemente.map((cita: any) => (
-            <View key={cita.id_cita || Math.random().toString()} style={{ marginVertical: 10, padding: 10, borderWidth: 1, borderColor: '#eee', borderRadius: 8 }}>
-              <Text>Doctor: {cita.doctor_nombre}</Text>
-              <Text>Motivo: {cita.motivo_consulta}</Text>
-              <Text>Fecha: {cita.fecha_corta}</Text>
-              <Text style={{ color: 'green', marginTop: 5 }}>[Icono: Listo]</Text>
-            </View>
-          )) : <Text style={{ marginTop: 5, marginBottom: 15 }}>No hay citas recientes</Text>}
+        <Typography variant="h1" className="text-atria-oscuro text-center mt-4 mb-8">
+          Mis Citas
+        </Typography>
+        
+        <View className="flex-row bg-gray-200 p-1 rounded-full mb-8">
+          <TouchableOpacity 
+            className={`flex-1 py-3 items-center rounded-full ${
+              activeTab === 'proximas' ? 'bg-atria-cafe' : ''
+            }`}
+            onPress={() => setActiveTab('proximas')}
+          >
+            <Typography 
+              variant="subtitle" 
+              className={activeTab === 'proximas' ? 'text-white' : 'text-atria-oscuro'}
+            >
+              Próximas
+            </Typography>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            className={`flex-1 py-3 items-center rounded-full ${
+              activeTab === 'pasadas' ? 'bg-atria-cafe' : ''
+            }`}
+            onPress={() => setActiveTab('pasadas')}
+          >
+            <Typography 
+              variant="subtitle" 
+              className={activeTab === 'pasadas' ? 'text-white' : 'text-atria-oscuro'}
+            >
+              Pasadas
+            </Typography>
+          </TouchableOpacity>
         </View>
-      ) : (
-        <View>
-          <Text style={{ fontSize: 16, marginTop: 5, fontWeight: 'bold' }}>HISTORIAL DE CITAS</Text>
-          {citasPasadas?.historial_citas?.length ? citasPasadas.historial_citas.map((cita: any) => (
-            <View key={cita.id_cita || Math.random().toString()} style={{ marginVertical: 10, padding: 10, borderWidth: 1, borderColor: '#eee', borderRadius: 8 }}>
-              <Text>Doctor: {cita.doctor_nombre}</Text>
-              <Text>Fecha: {cita.fecha_corta || cita.fecha_frase}</Text>
-              <Text>Estado: {cita.estado_texto}</Text>
+
+        {activeTab === 'proximas' ? (
+          <View className="gap-y-8">
+            <View>
+              <Typography variant="caption" className="text-atria-gris uppercase font-bold tracking-widest mb-3">
+                PRÓXIMA PRIORIDAD
+              </Typography>
+              {citasProximas?.proxima_prioridad ? (
+                <Card className="p-5">
+                  <View className="flex-row justify-between items-start mb-4">
+                    <View>
+                      <Typography variant="h2" className="text-atria-oscuro">
+                        {citasProximas.proxima_prioridad.doctor_nombre}
+                      </Typography>
+                      <Typography variant="body" className="text-atria-gris">
+                        {citasProximas.proxima_prioridad.especialidad_etiqueta}
+                      </Typography>
+                    </View>
+                    <Etiqueta 
+                      texto={citasProximas.proxima_prioridad.estado_badge || 'pendiente'}
+                      estado={citasProximas.proxima_prioridad.estado_badge?.toLowerCase() === 'confirmada' ? 'confirmada' : 'pendiente'} //[cite: 7, 5]
+                    />
+                  </View>
+                  <View className="bg-atria-crema p-4 rounded-2xl mb-4 flex-row items-center">
+                    <Icono nombre="time-outline" familia="Ionicons" tamaño={18} color="cafe" />
+                    <Typography variant="body" className="ml-2 text-atria-oscuro font-medium">
+                      {citasProximas.proxima_prioridad.fecha_frase} • {citasProximas.proxima_prioridad.hora_formateada}
+                    </Typography>
+                  </View>
+                  <Boton 
+                    texto="Gestionar Cita"
+                    onPress={() => router.push(`/gestionar-cita?id_cita=${citasProximas.proxima_prioridad?.id_cita}`)}
+                  />
+                </Card>
+              ) : (
+                <Typography variant="body" className="text-atria-gris italic">No hay citas prioritarias</Typography>
+              )}
             </View>
-          )) : <Text style={{ marginTop: 10 }}>No tienes historial de citas pasadas.</Text>}
-        </View>
-      )}
-      
-      <View style={{ height: 100 }} /> {/* Espacio para el Tab Bar inferior */}
-    </ScrollView>
+
+            <View>
+              <Typography variant="caption" className="text-atria-gris uppercase font-bold tracking-widest mb-3">
+                OTRAS VISITAS
+              </Typography>
+              {citasProximas?.visitas_proximas?.map((cita: any) => (
+                <Card key={cita.id_cita} className="p-4 mb-4">
+                  <View className="flex-row justify-between items-center">
+                    <View>
+                      <Typography variant="h3" className="text-atria-oscuro">{cita.doctor_nombre}</Typography>
+                      <Typography variant="body" className="text-atria-gris">
+                        {cita.motivo_consulta || cita.especialidad_etiqueta} • {cita.fecha_corta}
+                      </Typography>
+                    </View>
+                    <TouchableOpacity 
+                      className="bg-atria-crema p-2 rounded-full"
+                      onPress={() => router.push(`/gestionar-cita?id_cita=${cita.id_cita}`)}
+                    >
+                      <Icono nombre="chevron-right" familia="Feather" tamaño={20} color="cafe" />
+                    </TouchableOpacity>
+                  </View>
+                </Card>
+              ))}
+            </View>
+          </View>
+        ) : (
+          <View>
+            <Typography variant="caption" className="text-atria-gris uppercase font-bold tracking-widest mb-4">
+              HISTORIAL DE CITAS
+            </Typography>
+            {citasPasadas?.historial_citas?.map((cita: any) => (
+              <Card key={cita.id_cita} className="p-4 mb-4 border-atria-gris" borde="izquierda">
+                <Typography variant="h3" className="text-atria-oscuro">{cita.doctor_nombre}</Typography>
+                <Typography variant="body" className="text-atria-gris">
+                  {cita.fecha_corta || cita.fecha_frase}
+                </Typography>
+                <View className="mt-2 self-start bg-gray-100 px-3 py-1 rounded-full">
+                  <Typography variant="caption" className="text-atria-gris font-medium">
+                    {cita.estado_texto}
+                  </Typography>
+                </View>
+              </Card>
+            ))}
+          </View>
+        )}
+        
+        <View className="h-24" />
+      </ScrollView>
+    </SafeAreaView>
   );
 }

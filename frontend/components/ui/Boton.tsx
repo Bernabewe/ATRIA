@@ -1,19 +1,18 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 import { Typography } from './Typography';
 import { Icono } from './Icono';
 import { Feather } from '@expo/vector-icons';
 
 type VarianteBoton = 'primario' | 'secundario' | 'inactivo';
 
-interface BotonProps {
+interface BotonProps extends TouchableOpacityProps{
   texto: string;
-  onPress: () => void;
   variante?: VarianteBoton;
   icono?: React.ComponentProps<typeof Feather>['name'];
 }
 
-export const Boton = ({ texto, onPress, variante = 'primario', icono }: BotonProps) => {
+export const Boton = ({ texto, onPress, variante = 'primario', icono, ...rest}: BotonProps) => {
   const estilosFondo = {
     primario: 'bg-atria-cafe',
     secundario: 'bg-white border-2 border-atria-cafe',
@@ -29,6 +28,7 @@ export const Boton = ({ texto, onPress, variante = 'primario', icono }: BotonPro
 
   return (
     <TouchableOpacity
+      {...rest}
       onPress={onPress}
       disabled={variante === 'inactivo'} 
       className={`py-3 px-6 flex-row rounded-full items-center justify-center w-full ${estilosFondo[variante]}`}

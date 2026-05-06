@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Typography } from '../../components/ui/Typography';
+import { Card } from '../../components/ui/Card';
+import { Icono } from '../../components/ui/Icono';
+
 import { useObtenerHistorialMedicoPaciente } from '../../api/paciente-vistas/paciente-vistas';
 
 export default function ExpedienteScreen() {
@@ -8,17 +13,40 @@ export default function ExpedienteScreen() {
   const [consultas, setConsultas] = useState<any[]>([]);
   const [refrescando, setRefrescando] = useState(false);
 
-  const { data, error, isLoading, isFetching } = useObtenerHistorialMedicoPaciente({
+  const { data, isLoading, isFetching } = useObtenerHistorialMedicoPaciente({
     page: pagina,
     limit: 5
   });
 
+  // useEffect(() => {
+  //   if (data?.linea_tiempo_consultas) {
+  //     if (pagina === 1) {
+  //       setConsultas(data.linea_tiempo_consultas);
+  //     } else {
+  //       setConsultas(prev => [...prev, ...(data.linea_tiempo_consultas ?? [])]);
+  //     }
+  //   }
+  // }, [data, pagina]);
+
   useEffect(() => {
-    if (data?.linea_tiempo_consultas) {
+    if (data?.linea_tiempo_consultas && data.linea_tiempo_consultas.length > 0) {
+      
+      // 🛠️ HACK TEMPORAL: Tomamos el primer registro y lo multiplicamos por 10
+      const registroEjemplo = data.linea_tiempo_consultas[0];
+      
+      const mockMultiplicado = Array.from({ length: 3 }).map((_, index) => ({
+        ...registroEjemplo,
+        // Evitamos el error de "duplicate keys" asignando un ID único
+        id_historial: `mock-${index}`, 
+        // Opcional: Le agregamos un número al título para distinguir cada card visualmente
+        diagnostico_titulo: `${registroEjemplo.diagnostico_titulo} #${index + 1}`
+      }));
+
       if (pagina === 1) {
-        setConsultas(data.linea_tiempo_consultas);
+        // En lugar de guardar la data original, guardamos nuestro arreglo de 10
+        setConsultas(mockMultiplicado);
       } else {
-        setConsultas(prev => [...prev, ...(data.linea_tiempo_consultas ?? [])]);
+        setConsultas(prev => [...prev, ...mockMultiplicado]);
       }
     }
   }, [data, pagina]);
@@ -39,33 +67,95 @@ export default function ExpedienteScreen() {
 
   if (isLoading && pagina === 1) {
     return (
-      <View className="flex-1 justify-center items-center bg-atria-crema">
+      <SafeAreaView className="flex-1 justify-center items-center bg-atria-crema">
         <ActivityIndicator size="large" color="#8B5E3C" />
-        <Typography>Cargando tu historial...</Typography>
-      </View>
+        <Typography variant="body" className="text-atria-gris mt-4">Cargando tu historial...</Typography>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View className="flex-1 bg-atria-crema p-4">
-      <Typography variant="h1" className="mb-6 mt-10">Historial Médico</Typography>
+    <SafeAreaView className="flex-1 bg-atria-crema">
+      <View className="px-6 flex-1">
+        <Typography variant="h1" className="text-atria-oscuro text-center mt-4 mb-8">
+          Historial Médico
+        </Typography>
 
-      <FlatList
-        data={consultas}
-        refreshing={refrescando}
-        onRefresh={manejarRefresco}
-        keyExtractor={(item) => item.id_historial}
-        renderItem={({ item }) => (
-          <View className="bg-white p-4 rounded-2xl mb-4 border-l-4 border-atria-cafe shadow-sm">
-            <Typography variant="caption" className="text-atria-gris">{item.fecha_formateada}</Typography>
-            <Typography variant="h3" className="my-1">{item.diagnostico_titulo}</Typography>
-            <Typography variant="body" numberOfLines={2}>{item.resumen_notas}</Typography>
-          </View>
-        )}
-        onEndReached={cargarMas}
-        onEndReachedThreshold={0.5} // Dispara cuando falta el 50% para llegar al final
-        ListFooterComponent={isFetching ? <ActivityIndicator color="#8B5E3C" /> : null}
-      />
-    </View>
+        <FlatList
+          data={consultas}
+          refreshing={refrescando}
+          onRefresh={manejarRefresco}
+          keyExtractor={(item) => item.id_historial || Math.random().toString()}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <View style={{ flexDirection: 'row', paddingBottom: 24 }}> 
+              
+              {/* --- COLUMNA IZQUIERDA --- */}
+              <View style={{ width: 32, alignItems: 'center', marginRight: 12 }}>
+                
+                {/* LÍNEA CONECTORA */}
+                {index !== consultas.length - 1 && (
+                  <View 
+                    style={{ 
+                      position: 'absolute',
+                      top: 28, 
+                      bottom: -52, // 👈 La magia matemática exacta para atravesar el hueco
+                      width: 2, 
+                      backgroundColor: '#8B9491', 
+                      opacity: 0.3,
+                      zIndex: 0 
+                    }} 
+                  />
+                )}
+
+                {/* EL PUNTO */}
+                <View 
+                  style={{ 
+                    width: 16, 
+                    height: 16, 
+                    borderRadius: 8, 
+                    backgroundColor: '#A87B51', 
+                    marginTop: 20,
+                    zIndex: 10 
+                  }} 
+                />
+              </View>
+
+              {/* --- COLUMNA DERECHA --- */}
+              <View style={{ flex: 1 }}>
+                <Card className="p-5">
+                  <View className="flex-row items-center mb-3">
+                    <Icono nombre="calendar-outline" familia="Ionicons" tamaño={16} color="cafe" />
+                    <Typography variant="caption" className="text-atria-cafe font-bold uppercase tracking-wider ml-2 text-[10px]">
+                      {item.fecha_formateada}
+                    </Typography>
+                  </View>
+                  
+                  <Typography variant="h2" className="text-atria-oscuro mb-2">
+                    {item.diagnostico_titulo}
+                  </Typography>
+                  
+                  <Typography variant="body" className="text-atria-gris leading-5" numberOfLines={2}>
+                    {item.resumen_notas}
+                  </Typography>
+                </Card>
+              </View>
+
+            </View>
+          )}
+          onEndReached={cargarMas}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetching ? (
+              <View className="py-4">
+                <ActivityIndicator color="#A87B51" />
+              </View>
+            ) : (
+              <View className="h-20" /> 
+            )
+          }
+        />
+      </View>
+    </SafeAreaView>
   );
 }

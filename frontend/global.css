@@ -1,14 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer base {
-  :root {
-    --color-atria-crema: 253 252 248; /* #FDFCF8 */
-    --color-atria-cafe: 139 94 60; /* #8B5E3C */
-    --color-atria-oscuro: 26 26 27; /* #1A1A1B */
-    --color-atria-gris: 155 161 166; /* #9BA1A6 */
-    --color-atria-rojo: 180 50 50; /* Red alert text/border */
-    --color-atria-rojo-bg: 245 235 235; /* Light red alert bg */
-  }
-}
