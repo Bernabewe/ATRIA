@@ -7,10 +7,10 @@ const bcrypt = require('bcrypt');
  */
 const registrar = async (req, res, next) => {
     try {
-        const { nombre_completo, correo_electronico, password, fecha_nacimiento, telefono, sexo_biologico, tipo_sangre } = req.body;
+        const { nombre_completo, correo, password, fecha_nacimiento, telefono, sexo_biologico, tipo_sangre } = req.body;
 
         const usuarioExistente = await prisma.usuarios.findUnique({
-            where: { correo_electronico }
+            where: { correo }
         });
 
         if (usuarioExistente) {
@@ -22,7 +22,7 @@ const registrar = async (req, res, next) => {
         const nuevoUsuario = await prisma.$transaction(async (tx) => {
             const user = await tx.usuarios.create({
                 data: {
-                    correo_electronico,
+                    correo,
                     password_hash: hashedPassword,
                     rol: 'PACIENTE' 
                 }
@@ -53,10 +53,10 @@ const registrar = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const { correo_electronico, password } = req.body;
+        const { correo, password } = req.body;
 
         const usuario = await prisma.usuarios.findUnique({
-            where: { correo_electronico: correo_electronico }
+            where: { correo_electronico: correo }
         });
 
         if (!usuario) {
@@ -88,7 +88,9 @@ const login = async (req, res, next) => {
 
         res.status(200).json({
             mensaje: "Inicio de sesión exitoso",
-            token: token
+            token: token,
+            rol: usuario.rol || 'PACIENTE',
+            id_usuario: usuario.id
         });
 
     } catch (error) {
