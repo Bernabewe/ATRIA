@@ -23,7 +23,8 @@ const authenticateJWT = (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const jwtSecret = process.env.JWT_SECRET || 'atria_secret_dev_key_123';
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) throw new Error("Falta la variable de entorno JWT_SECRET");
 
     jwt.verify(token, jwtSecret, (err, decoded) => {
         if (err) {

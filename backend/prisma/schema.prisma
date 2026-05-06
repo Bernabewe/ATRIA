@@ -1,0 +1,267 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model archivos_adjuntos {
+  id                  String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_consulta_firmada String             @db.Uuid
+  url_archivo_s3      String             @db.VarChar(500)
+  consultas_firmadas  consultas_firmadas @relation(fields: [id_consulta_firmada], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model bitacora_auditoria {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_usuario_actor    String    @db.Uuid
+  tipo_evento         String    @db.VarChar(50)
+  id_entidad_afectada String    @db.Uuid
+  tabla_afectada      String    @db.VarChar(50)
+  payload_snapshot    Json?
+  ip_origen           String    @db.VarChar(45)
+  fecha_hora          DateTime? @default(now()) @db.Timestamptz(6)
+  usuarios            usuarios  @relation(fields: [id_usuario_actor], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model catalogo_especialidades {
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nombre            String            @unique @db.VarChar(100)
+  descripcion_corta String?           @db.VarChar(255)
+  icono_id          String?           @db.VarChar(50)
+  perfiles_doctor   perfiles_doctor[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model citas {
+  id                                   String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_paciente                          String                      @db.Uuid
+  id_doctor                            String                      @db.Uuid
+  id_consultorio                       String                      @db.Uuid
+  fecha_hora_inicio                    DateTime                    @db.Timestamptz(6)
+  fecha_hora_fin                       DateTime                    @db.Timestamptz(6)
+  estatus                              enum_estatus_cita
+  costo_total_fijado                   Decimal                     @db.Decimal(10, 2)
+  calificada                           Boolean?                    @default(false)
+  motivo_cancelacion                   String?
+  consultorios                         consultorios                @relation(fields: [id_consultorio], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios_citas_id_doctorTousuarios   usuarios                    @relation("citas_id_doctorTousuarios", fields: [id_doctor], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios_citas_id_pacienteTousuarios usuarios                    @relation("citas_id_pacienteTousuarios", fields: [id_paciente], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  consultas_firmadas                   consultas_firmadas?
+  resenas                              resenas?
+  transacciones_financieras            transacciones_financieras[]
+
+  @@index([estatus], map: "idx_citas_estatus")
+  @@index([fecha_hora_inicio], map: "idx_citas_fecha_hora_inicio")
+  @@index([id_doctor], map: "idx_citas_id_doctor")
+  @@index([id_paciente], map: "idx_citas_id_paciente")
+}
+
+model consultas_firmadas {
+  id                    String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_expediente         String               @db.Uuid
+  id_cita               String               @unique @db.Uuid
+  motivos               String
+  notas_clinicas        String
+  diagnostico           String
+  tratamiento_prescrito String
+  url_receta_s3         String?              @db.VarChar(500)
+  hash_sha256           String               @db.VarChar(256)
+  fecha_firma           DateTime?            @default(now()) @db.Timestamptz(6)
+  archivos_adjuntos     archivos_adjuntos[]
+  citas                 citas                @relation(fields: [id_cita], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  expedientes_clinicos  expedientes_clinicos @relation(fields: [id_expediente], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model consultorios {
+  id              String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_sucursal     String            @db.Uuid
+  identificador   String            @db.VarChar(50)
+  citas           citas[]
+  sucursales      sucursales        @relation(fields: [id_sucursal], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  horarios_doctor horarios_doctor[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model excepciones_agenda {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_doctor         String   @db.Uuid
+  fecha_hora_inicio DateTime @db.Timestamptz(6)
+  fecha_hora_fin    DateTime @db.Timestamptz(6)
+  motivo            String?
+  usuarios          usuarios @relation(fields: [id_doctor], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model expedientes_clinicos {
+  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_paciente        String               @unique @db.Uuid
+  fecha_apertura     DateTime?            @default(now()) @db.Timestamptz(6)
+  consultas_firmadas consultas_firmadas[]
+  usuarios           usuarios             @relation(fields: [id_paciente], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model horarios_doctor {
+  id                    String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_doctor             String       @db.Uuid
+  id_consultorio        String       @db.Uuid
+  dia_semana            Int          @db.SmallInt
+  hora_inicio           DateTime     @db.Time(6)
+  hora_fin              DateTime     @db.Time(6)
+  duracion_cita_minutos Int?         @default(60) @db.SmallInt
+  consultorios          consultorios @relation(fields: [id_consultorio], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios              usuarios     @relation(fields: [id_doctor], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([id_doctor, dia_semana], map: "idx_horarios_doctor_usuario_dia")
+}
+
+model perfiles_admin {
+  id_usuario      String   @id @db.Uuid
+  nombre_completo String   @db.VarChar(255)
+  usuarios        usuarios @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model perfiles_doctor {
+  id_usuario              String                  @id @db.Uuid
+  nombre_completo         String                  @db.VarChar(255)
+  telefono                String                  @db.VarChar(20)
+  id_especialidad         String                  @db.Uuid
+  cedula_profesional      String                  @unique @db.VarChar(50)
+  costo_consulta_actual   Decimal                 @db.Decimal(10, 2)
+  promedio_calificacion   Decimal?                @default(0.00) @db.Decimal(3, 2)
+  foto_perfil_url         String?                 @db.VarChar(500)
+  experiencia_anios       Int?                    @db.SmallInt
+  biografia_resumen       String?
+  catalogo_especialidades catalogo_especialidades @relation(fields: [id_especialidad], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios                usuarios                @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model perfiles_paciente {
+  id_usuario               String              @id @db.Uuid
+  nombre_completo          String              @db.VarChar(255)
+  fecha_nacimiento         DateTime            @db.Date
+  sexo_biologico           enum_sexo_biologico
+  telefono                 String              @db.VarChar(20)
+  clabe_reembolsos_default String?             @db.VarChar(18)
+  foto_perfil_url          String?             @db.VarChar(500)
+  peso                     Decimal?            @db.Decimal(5, 2)
+  altura                   Decimal?            @db.Decimal(3, 2)
+  tipo_sangre              String?             @db.VarChar(5)
+  direccion_completa       String?
+  usuarios                 usuarios            @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model perfiles_recepcionista {
+  id_usuario           String     @id @db.Uuid
+  nombre_completo      String     @db.VarChar(255)
+  telefono             String?    @db.VarChar(20)
+  id_sucursal_asignada String     @db.Uuid
+  sucursales           sucursales @relation(fields: [id_sucursal_asignada], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios             usuarios   @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model resenas {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_cita     String   @unique @db.Uuid
+  id_doctor   String   @db.Uuid
+  puntuacion  Int      @db.SmallInt
+  comentarios String?
+  citas       citas    @relation(fields: [id_cita], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios    usuarios @relation(fields: [id_doctor], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model sucursales {
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nombre                 String                   @unique @db.VarChar(100)
+  direccion_completa     String
+  telefono_contacto      String                   @db.VarChar(20)
+  timezone_iana          String                   @db.VarChar(50)
+  coordenadas_gps        String?                  @db.VarChar(100)
+  is_active              Boolean?                 @default(true)
+  latitud                Decimal?                 @db.Decimal(10, 8)
+  longitud               Decimal?                 @db.Decimal(11, 8)
+  consultorios           consultorios[]
+  perfiles_recepcionista perfiles_recepcionista[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tareas {
+  titulo String?
+  estado String? @default("PENDIENTE")
+
+  @@ignore
+}
+
+model transacciones_financieras {
+  id                          String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_cita                     String                   @db.Uuid
+  tipo_operacion              enum_tipo_operacion
+  monto                       Decimal                  @db.Decimal(10, 2)
+  id_pasarela_pago            String                   @unique @db.VarChar(100)
+  estatus                     enum_estatus_transaccion
+  metodo_pago_ultimos_digitos String?                  @db.VarChar(4)
+  created_at                  DateTime?                @default(now()) @db.Timestamptz(6)
+  citas                       citas                    @relation(fields: [id_cita], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model usuarios {
+  id                                String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  correo_electronico                String                  @unique @db.VarChar(255)
+  password_hash                     String                  @db.VarChar(255)
+  rol                               enum_rol_usuario
+  is_active                         Boolean?                @default(true)
+  fecha_aceptacion_aviso            DateTime?               @db.Timestamptz(6)
+  ip_aceptacion                     String?                 @db.VarChar(45)
+  created_at                        DateTime?               @default(now()) @db.Timestamptz(6)
+  updated_at                        DateTime?               @default(now()) @db.Timestamptz(6)
+  bitacora_auditoria                bitacora_auditoria[]
+  citas_citas_id_doctorTousuarios   citas[]                 @relation("citas_id_doctorTousuarios")
+  citas_citas_id_pacienteTousuarios citas[]                 @relation("citas_id_pacienteTousuarios")
+  excepciones_agenda                excepciones_agenda[]
+  expedientes_clinicos              expedientes_clinicos?
+  horarios_doctor                   horarios_doctor[]
+  perfiles_admin                    perfiles_admin?
+  perfiles_doctor                   perfiles_doctor?
+  perfiles_paciente                 perfiles_paciente?
+  perfiles_recepcionista            perfiles_recepcionista?
+  resenas                           resenas[]
+}
+
+enum enum_estatus_cita {
+  Reservado_Temporal
+  Confirmada
+  Cancelada
+  Cancelada_Sin_Reembolso
+  Cancelada_Reembolso_Pendiente
+  Cancelada_Requiere_CLABE
+  Cancelada_Con_Reembolso
+  En_Curso
+  Finalizada
+}
+
+enum enum_estatus_transaccion {
+  Aprobada
+  Rechazada
+  Pendiente
+}
+
+enum enum_rol_usuario {
+  ADMIN
+  DOCTOR
+  PACIENTE
+  RECEPCIONISTA
+}
+
+enum enum_sexo_biologico {
+  M
+  F
+  OTRO
+}
+
+enum enum_tipo_operacion {
+  Cobro_Anticipo
+  Cobro_Total
+  Reembolso
+}
