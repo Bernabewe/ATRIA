@@ -18,5 +18,5 @@ properties:
           example: "14:30"
         estado:
           type: string
-          enum: [ "disponible", "ocupado", "bloqueado" ]
+          enum: ["disponible", "ocupado", "bloqueado"]
           example: "disponible"

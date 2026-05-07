@@ -1,15 +1,31 @@
-import { View, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, ScrollView, ActivityIndicator, Modal } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Typography } from '../../../components/ui/Typography';
+import { Card } from '../../../components/ui/Card';
+import { Icono } from '../../../components/ui/Icono';
+import { Boton } from '../../../components/ui/Boton';
 import { useReserva } from '../../../context/ContextoReserva';
 import { useObtenerResumenReserva } from '../../../api/paciente-vistas/paciente-vistas';
 import { useCrearCita } from '../../../api/paciente-acciones/paciente-acciones';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function PasoResumen() {
   const router = useRouter();
   const { reserva, reiniciarReserva } = useReserva();
   const { mutate: confirmarCita, isPending: confirmando } = useCrearCita();
+
+  const [modalConfig, setModalConfig] = useState<{
+    visible: boolean;
+    titulo: string;
+    mensaje: string;
+    tipo: 'exito' | 'error';
+  }>({
+    visible: false,
+    titulo: '',
+    mensaje: '',
+    tipo: 'exito'
+  });
 
   const { data, isLoading } = useObtenerResumenReserva(
     {
@@ -36,69 +52,165 @@ export default function PasoResumen() {
       }
     }, {
       onSuccess: () => {
-        Alert.alert(
-          "¡Cita Confirmada!",
-          "Te esperamos en la clínica. Revisa tu sección de 'Mis Citas' para más detalles."
-        );
+        setModalConfig({
+          visible: true,
+          titulo: "¡Cita Confirmada!",
+          mensaje: "Te esperamos en la clínica. Revisa tu sección de 'Mis Citas' para más detalles.",
+          tipo: 'exito'
+        });
         reiniciarReserva();
         router.push('/(paciente)/home');
       },
       onError: () => {
-        Alert.alert("Ups", "Hubo un problema al agendar. Intenta de nuevo.");
+        setModalConfig({
+          visible: true,
+          titulo: "Ups",
+          mensaje: "Hubo un problema al agendar. Intenta de nuevo.",
+          tipo: 'error'
+        });      
       }
     });
   };
 
+  const cerrarModal = () => {
+    setModalConfig(prev => ({ ...prev, visible: false }));
+    
+    // Si fue un éxito, al cerrar el modal navegamos al home
+    if (modalConfig.tipo === 'exito') {
+      reiniciarReserva();
+      router.push('/(paciente)/home');
+    }
+  };
+
   if (!reserva.id_doctor || !reserva.fecha) {
     return (
-      <View className="flex-1 bg-atria-crema p-6 justify-center items-center">
-        <Typography variant="body">Datos incompletos para el resumen.</Typography>
-        <TouchableOpacity onPress={() => router.back()} className="mt-4 bg-atria-cafe p-3 rounded-xl">
-          <Typography className="text-white">Volver</Typography>
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView className="flex-1 bg-atria-crema justify-center items-center px-6">
+        <Icono familia="Ionicons" nombre="alert-circle-outline" tamaño={48} color="cafe" />
+        <Typography variant="body" className="text-atria-oscuro text-center mt-4 mb-8">
+          Faltan datos para generar el resumen de tu cita.
+        </Typography>
+        <Boton 
+          texto="Volver atrás" 
+          variante="primario"
+          onPress={() => router.back()} 
+          className="w-full"
+        />
+      </SafeAreaView>
     );
   }
 
-  if (isLoading) return <View className="flex-1 bg-atria-crema p-6"><Typography>Generando resumen...</Typography></View>;
+  if (isLoading) return (
+    <SafeAreaView className="flex-1 bg-atria-crema justify-center items-center">
+      <ActivityIndicator size="large" color="#A87B51" />
+      <Typography variant="body" className="text-atria-gris mt-4">
+        Generando resumen...
+      </Typography>
+    </SafeAreaView>
+  );
 
   return (
-    <ScrollView className="flex-1 bg-atria-crema" contentContainerStyle={{ padding: 24 }}>
-      <Typography variant="h1" className="mb-6 text-center">Confirma tu cita</Typography>
-
-      <View className="bg-white p-8 rounded-[40px] shadow-lg border border-gray-50 mb-10">
-        <View className="items-center mb-6">
-          <View className="bg-orange-50 p-4 rounded-full mb-4">
-            <Ionicons name="checkmark-circle" size={40} color="#8B5E3C" />
-          </View>
-          <Typography variant="h2" className="text-center">{data?.doctor_nombre}</Typography>
-          <Typography variant="body" className="text-atria-gris">{data?.especialidad_titulo}</Typography>
-        </View>
-
-        <View className="border-t border-gray-100 pt-6 gap-y-4">
-          <View className="flex-row justify-between">
-            <Typography variant="body" className="text-atria-gris">Fecha y Hora:</Typography>
-            <Typography variant="body" className="font-bold">{data?.fecha_hora_formateada}</Typography>
-          </View>
-          <View className="flex-row justify-between">
-            <Typography variant="body" className="text-atria-gris">Sucursal:</Typography>
-            <Typography variant="body" className="font-bold text-right w-1/2">{data?.sucursal_nombre}</Typography>
-          </View>
-          <View className="mt-4 pt-4 border-t border-gray-100">
-            <Typography variant="h3" className="text-atria-cafe text-center">{data?.costo_total}</Typography>
-          </View>
-        </View>
-      </View>
-
-      <TouchableOpacity
-        disabled={confirmando}
-        onPress={finalizarReserva}
-        className={`p-5 rounded-2xl items-center shadow-md ${confirmando ? 'bg-gray-400' : 'bg-atria-cafe'}`}
+    // 3. Vista Principal con SafeAreaView
+    <SafeAreaView className="flex-1 bg-atria-crema">
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalConfig.visible}
+        onRequestClose={cerrarModal}
       >
-        <Typography variant="h3" className="text-white">
-          {confirmando ? "Procesando..." : "Confirmar Reservación"}
+        <View className="flex-1 justify-center items-center bg-black/50 p-6">
+          <View className="bg-white w-full max-w-sm p-8 rounded-3xl items-center shadow-xl">
+            
+            <Icono 
+              familia="Ionicons" 
+              nombre={modalConfig.tipo === 'exito' ? "checkmark-circle" : "close-circle"} 
+              tamaño={64} 
+              color={modalConfig.tipo === 'exito' ? "cafe" : "gris"} 
+            />
+            
+            <Typography variant="h2" className={`mt-4 mb-2 text-center ${modalConfig.tipo === 'error' ? 'text-atria-rojo' : 'text-atria-cafe'}`}>
+              {modalConfig.titulo}
+            </Typography>
+            
+            <Typography variant="body" className="text-center text-atria-gris mb-6">
+              {modalConfig.mensaje}
+            </Typography>
+
+            <Boton 
+              texto="Entendido"
+              variante="primario"
+              onPress={cerrarModal}
+              className="w-full"
+            />
+
+          </View>
+        </View>
+      </Modal>
+      
+      <ScrollView className="flex-1 px-6 pt-6" showsVerticalScrollIndicator={false}>
+        
+        {/* --- HEADER --- */}
+        <Typography variant="h1" className="text-atria-oscuro text-center mb-8">
+          Confirma tu reservación
         </Typography>
-      </TouchableOpacity>
-    </ScrollView>
+
+        {/* --- TARJETA DE RESUMEN --- */}
+        <Card className="p-6 mb-10" borde="arriba">
+          
+          {/* Encabezado: Icono + Doctor */}
+          <View className="items-center mb-6">
+            <View className="bg-atria-crema border border-gray-100 p-4 rounded-full mb-4">
+              <Icono nombre="checkmark-circle-outline" familia="Ionicons" tamaño={40} color="cafe" />
+            </View>
+            <Typography variant="h2" className="text-atria-oscuro text-center">
+              {data?.doctor_nombre}
+            </Typography>
+            <Typography variant="body" className="text-atria-gris mt-1 text-center">
+              {data?.especialidad_titulo}
+            </Typography>
+          </View>
+
+          {/* Detalles de la Cita */}
+          <View className="border-t border-gray-100 pt-6 gap-y-5">
+            
+            <View className="flex-row justify-between items-center">
+              <Typography variant="body" className="text-atria-gris">Fecha y Hora</Typography>
+              <Typography variant="body" className="text-atria-oscuro font-bold">
+                {data?.fecha_hora_formateada}
+              </Typography>
+            </View>
+            
+            <View className="flex-row justify-between items-center">
+              <Typography variant="body" className="text-atria-gris">Sucursal</Typography>
+              <Typography variant="body" className="text-atria-oscuro font-bold text-right flex-1 ml-4" numberOfLines={2}>
+                {data?.sucursal_nombre}
+              </Typography>
+            </View>
+
+            {/* Total / Costo */}
+            <View className="mt-2 pt-5 border-t border-gray-100">
+              <Typography variant="caption" className="text-atria-gris text-center uppercase tracking-widest mb-1">
+                Costo Estimado
+              </Typography>
+              <Typography variant="h2" className="text-atria-cafe text-center">
+                {data?.costo_total}
+              </Typography>
+            </View>
+
+          </View>
+        </Card>
+
+        {/* --- BOTÓN DE CONFIRMACIÓN --- */}
+        {/* Pasamos el estado disabled al botón. Asumimos que tu componente Boton acepta 'disabled' nativamente. */}
+        <Boton
+          texto={confirmando ? "Procesando..." : "Confirmar Reservación"}
+          variante="primario"
+          onPress={finalizarReserva}
+          disabled={confirmando} 
+          className="mb-8"
+        />
+
+        <View className="h-10" />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
