@@ -1,0 +1,21 @@
+type: object
+required:
+  - fecha_inicio
+  - fecha_fin
+  - hora_inicio
+  - hora_fin
+properties:
+  fecha_inicio:
+    type: string
+    format: date
+    example: "2026-05-20"
+  fecha_fin:
+    type: string
+    format: date
+    example: "2026-05-25"
+  hora_inicio:
+    type: string
+    example: "08:00"
+  hora_fin:
+    type: string
+    example: "16:00"

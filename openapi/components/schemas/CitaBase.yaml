@@ -6,7 +6,7 @@ properties:
     example: "354b6930-c063-fe87-38e8-44bea940b750"
   doctor_nombre:
     type: string
-    example: "Dr. Aris Thorne"
+    example: "Dr. Bernardo"
   especialidad_etiqueta:
     type: string
     example: "Especialista en Cardiología"

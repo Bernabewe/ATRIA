@@ -92,6 +92,7 @@ limit_query:
   name: limit
   in: query
   description: "Cantidad de registros por página"
+  required: false
   schema:
     type: integer
     default: 5
@@ -100,6 +101,7 @@ page_query:
   name: page
   in: query
   description: "Número de página a consultar"
+  required: false
   schema:
     type: integer
     default: 1

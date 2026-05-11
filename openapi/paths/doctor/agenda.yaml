@@ -1,0 +1,39 @@
+get:
+  operationId: obtenerAgendaDoctor
+  summary: "Obtiene la agenda del doctor filtrada por fecha y pestaña"
+  tags:
+    - doctor_vistas
+  parameters:
+    # 1. Filtro para el Calendario Horizontal
+    - name: fecha
+      in: query
+      required: true
+      description: "Fecha seleccionada en el calendario (YYYY-MM-DD)"
+      schema:
+        type: string
+        example: "2026-05-10"
+    # 2. Filtro para las Tabs (Próximas, Pasadas)
+    - name: pestana
+      in: query
+      required: true
+      schema:
+        type: string
+        enum: [ PROXIMAS, PASADAS ]
+        example: "PROXIMAS"
+  responses:
+    "200":
+      description: "Listado de la agenda"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              # La cita que aparece arriba resaltada
+              cita_destacada:
+                $ref: "../../components/schemas/ProximaCitaDoctor.yaml"
+                nullable: true
+              # La lista que aparece abajo en "Resto del día"
+              citas_lista:
+                type: array
+                items:
+                  $ref: "../../components/schemas/ProximaCitaDoctor.yaml"

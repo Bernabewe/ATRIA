@@ -1,0 +1,18 @@
+type: object
+properties:
+  id_cita:
+    type: string
+    format: uuid
+    example: "id_cita_12345"
+  nombre_paciente:
+    type: string
+    example: "Bernardo Bejarano"
+  hora:
+    type: string
+    example: "10:30 AM"
+  fecha_formateada:
+    type: string
+    example: "Hoy, 24 de Mayo"
+  ubicacion:
+    type: string
+    example: "Consultorio 2"

@@ -65,8 +65,6 @@ paths:
     $ref: "./paths/paciente/historial_pagos.yaml"
 
   # --- Módulo de Acciones (Mutaciones) ---
-  /v1/paciente/actualizar_perfil:
-    $ref: "./paths/paciente/actions/actualizar_perfil.yaml"
   /v1/paciente/reservas/reservar_cita:
     $ref: "./paths/paciente/actions/reservar_cita.yaml"
   /v1/paciente/pagos/{id_transaccion}/pagar_pendiente:
@@ -81,8 +79,8 @@ paths:
     $ref: "./paths/doctor/perfil_doctor.yaml"
 
   # --- Agenda y Citas ---
-  /v1/views/doctor/agenda_proximas:
-    $ref: "./paths/doctor/agenda_proximas.yaml"
+  /v1/views/doctor/agenda:
+    $ref: "./paths/doctor/agenda.yaml"
 
   # --- Mis Pacientes ---
   /v1/views/doctor/pacientes:
@@ -105,10 +103,6 @@ paths:
 
   /v1/doctor/exportar_pagos:
     $ref: "./paths/doctor/actions/exportar_pagos.yaml"
-
-  /v1/doctor/editar_perfil:
-    $ref: "./paths/doctor/actions/editar_perfil.yaml"
-
 # ------------------------------------------------------------------
 # COMPONENTES - Biblioteca global de piezas reutilizables
 # ------------------------------------------------------------------
@@ -203,3 +197,7 @@ components:
       $ref: "./components/schemas/Login.yaml"
     AuthRespuesta:
       $ref: "./components/schemas/AuthRespuesta.yaml"
+    ProximaCitaDoctor:
+      $ref: "./components/schemas/ProximaCitaDoctor.yaml"
+    BloqueoAgendaBody:
+      $ref: "./components/schemas/BloqueoAgendaBody.yaml"
