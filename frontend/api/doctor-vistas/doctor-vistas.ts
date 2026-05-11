@@ -22,7 +22,7 @@ import type {
 
 import type {
   ObtenerAgendaDoctor200,
-  ObtenerAgendaDoctor401,
+  ObtenerAgendaDoctorParams,
   ObtenerDatosNuevaConsulta200,
   ObtenerDatosNuevaConsulta401,
   ObtenerDatosNuevaConsultaParams,
@@ -30,7 +30,6 @@ import type {
   ObtenerHistorialPacientePorDoctor401,
   ObtenerHistorialPacientePorDoctor404,
   ObtenerInicioDoctor200,
-  ObtenerInicioDoctor401,
   ObtenerPacientesDoctor200,
   ObtenerPacientesDoctor401,
   ObtenerPagosDoctor200,
@@ -45,7 +44,7 @@ import { customInstance } from '.././axios-instance';
 
 
 /**
- * @summary Obtener datos para la pantalla de inicio del doctor
+ * @summary Obtiene los datos para la pantalla de inicio del doctor
  */
 export const obtenerInicioDoctor = (
 
@@ -69,7 +68,7 @@ export const getObtenerInicioDoctorQueryKey = () => {
     }
 
 
-export const getObtenerInicioDoctorQueryOptions = <TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = ObtenerInicioDoctor401>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError, TData>>, }
+export const getObtenerInicioDoctorQueryOptions = <TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -88,10 +87,10 @@ const {query: queryOptions} = options ?? {};
 }
 
 export type ObtenerInicioDoctorQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerInicioDoctor>>>
-export type ObtenerInicioDoctorQueryError = ObtenerInicioDoctor401
+export type ObtenerInicioDoctorQueryError = unknown
 
 
-export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = ObtenerInicioDoctor401>(
+export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof obtenerInicioDoctor>>,
@@ -101,7 +100,7 @@ export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtener
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = ObtenerInicioDoctor401>(
+export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof obtenerInicioDoctor>>,
@@ -111,15 +110,15 @@ export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtener
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = ObtenerInicioDoctor401>(
+export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Obtener datos para la pantalla de inicio del doctor
+ * @summary Obtiene los datos para la pantalla de inicio del doctor
  */
 
-export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = ObtenerInicioDoctor401>(
+export function useObtenerInicioDoctor<TData = Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerInicioDoctor>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -229,16 +228,17 @@ export function useObtenerPerfilDoctor<TData = Awaited<ReturnType<typeof obtener
 
 
 /**
- * @summary Obtener la agenda de citas del día y posteriores
+ * @summary Obtiene la agenda del doctor filtrada por fecha y pestaña
  */
 export const obtenerAgendaDoctor = (
-
+    params: ObtenerAgendaDoctorParams,
  signal?: AbortSignal
 ) => {
 
 
       return customInstance<ObtenerAgendaDoctor200>(
-      {url: `/v1/views/doctor/agenda_proximas`, method: 'GET', signal
+      {url: `/v1/views/doctor/agenda`, method: 'GET',
+        params, signal
     },
       );
     }
@@ -246,23 +246,23 @@ export const obtenerAgendaDoctor = (
 
 
 
-export const getObtenerAgendaDoctorQueryKey = () => {
+export const getObtenerAgendaDoctorQueryKey = (params?: ObtenerAgendaDoctorParams,) => {
     return [
-    `/v1/views/doctor/agenda_proximas`
+    `/v1/views/doctor/agenda`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getObtenerAgendaDoctorQueryOptions = <TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = ObtenerAgendaDoctor401>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>>, }
+export const getObtenerAgendaDoctorQueryOptions = <TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = unknown>(params: ObtenerAgendaDoctorParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getObtenerAgendaDoctorQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getObtenerAgendaDoctorQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerAgendaDoctor>>> = ({ signal }) => obtenerAgendaDoctor(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerAgendaDoctor>>> = ({ signal }) => obtenerAgendaDoctor(params, signal);
 
 
 
@@ -272,11 +272,11 @@ const {query: queryOptions} = options ?? {};
 }
 
 export type ObtenerAgendaDoctorQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerAgendaDoctor>>>
-export type ObtenerAgendaDoctorQueryError = ObtenerAgendaDoctor401
+export type ObtenerAgendaDoctorQueryError = unknown
 
 
-export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = ObtenerAgendaDoctor401>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>> & Pick<
+export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = unknown>(
+ params: ObtenerAgendaDoctorParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof obtenerAgendaDoctor>>,
           TError,
@@ -285,8 +285,8 @@ export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtener
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = ObtenerAgendaDoctor401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>> & Pick<
+export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = unknown>(
+ params: ObtenerAgendaDoctorParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof obtenerAgendaDoctor>>,
           TError,
@@ -295,20 +295,20 @@ export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtener
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = ObtenerAgendaDoctor401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>>, }
+export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = unknown>(
+ params: ObtenerAgendaDoctorParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Obtener la agenda de citas del día y posteriores
+ * @summary Obtiene la agenda del doctor filtrada por fecha y pestaña
  */
 
-export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = ObtenerAgendaDoctor401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>>, }
+export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError = unknown>(
+ params: ObtenerAgendaDoctorParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerAgendaDoctor>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getObtenerAgendaDoctorQueryOptions(options)
+  const queryOptions = getObtenerAgendaDoctorQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

@@ -8,14 +8,8 @@
 
 export type ObtenerInicioDoctor200ProximaCita = {
   id_cita?: string;
-  doctor_nombre?: string;
-  especialidad_etiqueta?: string;
-  motivo_consulta?: string;
-  estado_badge?: string;
-  fecha_frase?: string;
-  hora_formateada?: string;
-  consultorio_numero?: string;
-} & {
-  paciente_nombre?: string;
-  paciente_foto_url?: string;
+  nombre_paciente?: string;
+  hora?: string;
+  fecha_formateada?: string;
+  ubicacion?: string;
 };

@@ -25,22 +25,19 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  BloquearAgenda201,
+  BloquearAgenda400,
+  BloquearAgenda401,
+  BloquearAgenda409,
+  BloquearAgenda500,
+  BloquearAgendaBody,
   GetV1DoctorExportarPagos200,
   GetV1DoctorExportarPagos401,
   GetV1DoctorExportarPagosParams,
-  PostV1DoctorBloquearAgenda200,
-  PostV1DoctorBloquearAgenda400,
-  PostV1DoctorBloquearAgenda401,
-  PostV1DoctorBloquearAgenda409,
-  PostV1DoctorBloquearAgendaBody,
   PostV1DoctorGuardarExpediente201,
   PostV1DoctorGuardarExpediente400,
   PostV1DoctorGuardarExpediente401,
-  PostV1DoctorGuardarExpedienteBody,
-  PutV1DoctorEditarPerfil200,
-  PutV1DoctorEditarPerfil400,
-  PutV1DoctorEditarPerfil401,
-  PutV1DoctorEditarPerfilBody
+  PostV1DoctorGuardarExpedienteBody
 } from '../models';
 
 import { customInstance } from '.././axios-instance';
@@ -112,29 +109,29 @@ export const usePostV1DoctorGuardarExpediente = <TError = PostV1DoctorGuardarExp
       return useMutation(getPostV1DoctorGuardarExpedienteMutationOptions(options), queryClient);
     }
     /**
- * @summary Bloquear Horario (Ajustes de disponibilidad)
+ * @summary Bloquea un rango de fechas y horas en la agenda del doctor
  */
-export const postV1DoctorBloquearAgenda = (
-    postV1DoctorBloquearAgendaBody: PostV1DoctorBloquearAgendaBody,
+export const bloquearAgenda = (
+    bloquearAgendaBody: BloquearAgendaBody,
  signal?: AbortSignal
 ) => {
 
 
-      return customInstance<PostV1DoctorBloquearAgenda200>(
+      return customInstance<BloquearAgenda201>(
       {url: `/v1/doctor/bloquear_agenda`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: postV1DoctorBloquearAgendaBody, signal
+      data: bloquearAgendaBody, signal
     },
       );
     }
 
 
 
-export const getPostV1DoctorBloquearAgendaMutationOptions = <TError = PostV1DoctorBloquearAgenda400 | PostV1DoctorBloquearAgenda401 | PostV1DoctorBloquearAgenda409,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postV1DoctorBloquearAgenda>>, TError,{data: PostV1DoctorBloquearAgendaBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postV1DoctorBloquearAgenda>>, TError,{data: PostV1DoctorBloquearAgendaBody}, TContext> => {
+export const getBloquearAgendaMutationOptions = <TError = BloquearAgenda400 | BloquearAgenda401 | BloquearAgenda409 | BloquearAgenda500,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof bloquearAgenda>>, TError,{data: BloquearAgendaBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof bloquearAgenda>>, TError,{data: BloquearAgendaBody}, TContext> => {
 
-const mutationKey = ['postV1DoctorBloquearAgenda'];
+const mutationKey = ['bloquearAgenda'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -144,10 +141,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postV1DoctorBloquearAgenda>>, {data: PostV1DoctorBloquearAgendaBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof bloquearAgenda>>, {data: BloquearAgendaBody}> = (props) => {
           const {data} = props ?? {};
 
-          return  postV1DoctorBloquearAgenda(data,)
+          return  bloquearAgenda(data,)
         }
 
 
@@ -157,22 +154,22 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostV1DoctorBloquearAgendaMutationResult = NonNullable<Awaited<ReturnType<typeof postV1DoctorBloquearAgenda>>>
-    export type PostV1DoctorBloquearAgendaMutationBody = PostV1DoctorBloquearAgendaBody
-    export type PostV1DoctorBloquearAgendaMutationError = PostV1DoctorBloquearAgenda400 | PostV1DoctorBloquearAgenda401 | PostV1DoctorBloquearAgenda409
+    export type BloquearAgendaMutationResult = NonNullable<Awaited<ReturnType<typeof bloquearAgenda>>>
+    export type BloquearAgendaMutationBody = BloquearAgendaBody
+    export type BloquearAgendaMutationError = BloquearAgenda400 | BloquearAgenda401 | BloquearAgenda409 | BloquearAgenda500
 
     /**
- * @summary Bloquear Horario (Ajustes de disponibilidad)
+ * @summary Bloquea un rango de fechas y horas en la agenda del doctor
  */
-export const usePostV1DoctorBloquearAgenda = <TError = PostV1DoctorBloquearAgenda400 | PostV1DoctorBloquearAgenda401 | PostV1DoctorBloquearAgenda409,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postV1DoctorBloquearAgenda>>, TError,{data: PostV1DoctorBloquearAgendaBody}, TContext>, }
+export const useBloquearAgenda = <TError = BloquearAgenda400 | BloquearAgenda401 | BloquearAgenda409 | BloquearAgenda500,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof bloquearAgenda>>, TError,{data: BloquearAgendaBody}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postV1DoctorBloquearAgenda>>,
+        Awaited<ReturnType<typeof bloquearAgenda>>,
         TError,
-        {data: PostV1DoctorBloquearAgendaBody},
+        {data: BloquearAgendaBody},
         TContext
       > => {
-      return useMutation(getPostV1DoctorBloquearAgendaMutationOptions(options), queryClient);
+      return useMutation(getBloquearAgendaMutationOptions(options), queryClient);
     }
     /**
  * @summary Exportar historial de pagos del mes
@@ -267,66 +264,3 @@ export function useGetV1DoctorExportarPagos<TData = Awaited<ReturnType<typeof ge
 
 
 
-/**
- * @summary Actualizar información de contacto del perfil
- */
-export const putV1DoctorEditarPerfil = (
-    putV1DoctorEditarPerfilBody: PutV1DoctorEditarPerfilBody,
- signal?: AbortSignal
-) => {
-
-
-      return customInstance<PutV1DoctorEditarPerfil200>(
-      {url: `/v1/doctor/editar_perfil`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: putV1DoctorEditarPerfilBody, signal
-    },
-      );
-    }
-
-
-
-export const getPutV1DoctorEditarPerfilMutationOptions = <TError = PutV1DoctorEditarPerfil400 | PutV1DoctorEditarPerfil401,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putV1DoctorEditarPerfil>>, TError,{data: PutV1DoctorEditarPerfilBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof putV1DoctorEditarPerfil>>, TError,{data: PutV1DoctorEditarPerfilBody}, TContext> => {
-
-const mutationKey = ['putV1DoctorEditarPerfil'];
-const {mutation: mutationOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putV1DoctorEditarPerfil>>, {data: PutV1DoctorEditarPerfilBody}> = (props) => {
-          const {data} = props ?? {};
-
-          return  putV1DoctorEditarPerfil(data,)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutV1DoctorEditarPerfilMutationResult = NonNullable<Awaited<ReturnType<typeof putV1DoctorEditarPerfil>>>
-    export type PutV1DoctorEditarPerfilMutationBody = PutV1DoctorEditarPerfilBody
-    export type PutV1DoctorEditarPerfilMutationError = PutV1DoctorEditarPerfil400 | PutV1DoctorEditarPerfil401
-
-    /**
- * @summary Actualizar información de contacto del perfil
- */
-export const usePutV1DoctorEditarPerfil = <TError = PutV1DoctorEditarPerfil400 | PutV1DoctorEditarPerfil401,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putV1DoctorEditarPerfil>>, TError,{data: PutV1DoctorEditarPerfilBody}, TContext>, }
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putV1DoctorEditarPerfil>>,
-        TError,
-        {data: PutV1DoctorEditarPerfilBody},
-        TContext
-      > => {
-      return useMutation(getPutV1DoctorEditarPerfilMutationOptions(options), queryClient);
-    }

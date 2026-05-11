@@ -6,10 +6,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerAgendaDoctor200CitaDestacada = {
-  id_cita?: string;
-  nombre_paciente?: string;
-  hora?: string;
-  fecha_formateada?: string;
-  ubicacion?: string;
+export type ObtenerInicioDoctor200AccionesRapidasItem = {
+  action_id?: string;
+  label?: string;
+  icon_id?: string;
+  route_name?: string;
+  is_enabled?: boolean;
 };

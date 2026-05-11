@@ -6,10 +6,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerAgendaDoctor200CitaDestacada = {
-  id_cita?: string;
-  nombre_paciente?: string;
-  hora?: string;
-  fecha_formateada?: string;
-  ubicacion?: string;
-};
+export type ObtenerAgendaDoctorPestana = typeof ObtenerAgendaDoctorPestana[keyof typeof ObtenerAgendaDoctorPestana];
+
+
+export const ObtenerAgendaDoctorPestana = {
+  PROXIMAS: 'PROXIMAS',
+  PASADAS: 'PASADAS',
+} as const;

@@ -5,12 +5,11 @@
  * Documentación oficial de las APIs bajo el patrón BFF para los portales de paciente y doctor de Atria.
  * OpenAPI spec version: 1.0.0
  */
+import type { ObtenerInicioDoctor200AccionesRapidasItem } from './obtenerInicioDoctor200AccionesRapidasItem';
 import type { ObtenerInicioDoctor200ProximaCita } from './obtenerInicioDoctor200ProximaCita';
-import type { ObtenerInicioDoctor200QuickActionsItem } from './obtenerInicioDoctor200QuickActionsItem';
 
 export type ObtenerInicioDoctor200 = {
   doctor_nombre_pila?: string;
-  total_citas_hoy?: number;
   proxima_cita?: ObtenerInicioDoctor200ProximaCita;
-  quick_actions?: ObtenerInicioDoctor200QuickActionsItem[];
+  acciones_rapidas?: ObtenerInicioDoctor200AccionesRapidasItem[];
 };

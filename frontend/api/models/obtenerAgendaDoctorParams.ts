@@ -5,11 +5,12 @@
  * Documentación oficial de las APIs bajo el patrón BFF para los portales de paciente y doctor de Atria.
  * OpenAPI spec version: 1.0.0
  */
+import type { ObtenerAgendaDoctorPestana } from './obtenerAgendaDoctorPestana';
 
-export type ObtenerAgendaDoctor200CitaDestacada = {
-  id_cita?: string;
-  nombre_paciente?: string;
-  hora?: string;
-  fecha_formateada?: string;
-  ubicacion?: string;
+export type ObtenerAgendaDoctorParams = {
+/**
+ * Fecha seleccionada en el calendario (YYYY-MM-DD)
+ */
+fecha: string;
+pestana: ObtenerAgendaDoctorPestana;
 };

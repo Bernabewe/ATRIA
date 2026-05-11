@@ -6,11 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 import type { ObtenerAgendaDoctor200CitaDestacada } from './obtenerAgendaDoctor200CitaDestacada';
-import type { ObtenerAgendaDoctor200FinalizadasHoyItem } from './obtenerAgendaDoctor200FinalizadasHoyItem';
-import type { ObtenerAgendaDoctor200RestoDelDiaItem } from './obtenerAgendaDoctor200RestoDelDiaItem';
+import type { ObtenerAgendaDoctor200CitasListaItem } from './obtenerAgendaDoctor200CitasListaItem';
 
 export type ObtenerAgendaDoctor200 = {
   cita_destacada?: ObtenerAgendaDoctor200CitaDestacada;
-  resto_del_dia?: ObtenerAgendaDoctor200RestoDelDiaItem[];
-  finalizadas_hoy?: ObtenerAgendaDoctor200FinalizadasHoyItem[];
+  citas_lista?: ObtenerAgendaDoctor200CitasListaItem[];
 };

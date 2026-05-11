@@ -6,10 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ObtenerAgendaDoctor200CitaDestacada = {
-  id_cita?: string;
-  nombre_paciente?: string;
-  hora?: string;
-  fecha_formateada?: string;
-  ubicacion?: string;
-};
+export interface BloqueoAgendaBody {
+  fecha_inicio: string;
+  fecha_fin: string;
+  hora_inicio: string;
+  hora_fin: string;
+}

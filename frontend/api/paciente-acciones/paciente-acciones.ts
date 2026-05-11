@@ -16,10 +16,6 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  ActualizarPerfilPaciente200,
-  ActualizarPerfilPaciente400,
-  ActualizarPerfilPaciente401,
-  ActualizarPerfilPacienteBody,
   CancelarCita200,
   CancelarCita400,
   CancelarCita401,
@@ -40,69 +36,6 @@ import { customInstance } from '.././axios-instance';
 
 
 /**
- * @summary Actualizar la información del perfil del paciente
- */
-export const actualizarPerfilPaciente = (
-    actualizarPerfilPacienteBody: ActualizarPerfilPacienteBody,
- signal?: AbortSignal
-) => {
-
-
-      return customInstance<ActualizarPerfilPaciente200>(
-      {url: `/v1/paciente/actualizar_perfil`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: actualizarPerfilPacienteBody, signal
-    },
-      );
-    }
-
-
-
-export const getActualizarPerfilPacienteMutationOptions = <TError = ActualizarPerfilPaciente400 | ActualizarPerfilPaciente401,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actualizarPerfilPaciente>>, TError,{data: ActualizarPerfilPacienteBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof actualizarPerfilPaciente>>, TError,{data: ActualizarPerfilPacienteBody}, TContext> => {
-
-const mutationKey = ['actualizarPerfilPaciente'];
-const {mutation: mutationOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof actualizarPerfilPaciente>>, {data: ActualizarPerfilPacienteBody}> = (props) => {
-          const {data} = props ?? {};
-
-          return  actualizarPerfilPaciente(data,)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ActualizarPerfilPacienteMutationResult = NonNullable<Awaited<ReturnType<typeof actualizarPerfilPaciente>>>
-    export type ActualizarPerfilPacienteMutationBody = ActualizarPerfilPacienteBody
-    export type ActualizarPerfilPacienteMutationError = ActualizarPerfilPaciente400 | ActualizarPerfilPaciente401
-
-    /**
- * @summary Actualizar la información del perfil del paciente
- */
-export const useActualizarPerfilPaciente = <TError = ActualizarPerfilPaciente400 | ActualizarPerfilPaciente401,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actualizarPerfilPaciente>>, TError,{data: ActualizarPerfilPacienteBody}, TContext>, }
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof actualizarPerfilPaciente>>,
-        TError,
-        {data: ActualizarPerfilPacienteBody},
-        TContext
-      > => {
-      return useMutation(getActualizarPerfilPacienteMutationOptions(options), queryClient);
-    }
-    /**
  * @summary Paso 5: Confirmar agendamiento
  */
 export const crearCita = (

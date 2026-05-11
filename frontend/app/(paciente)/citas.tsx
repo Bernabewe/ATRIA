@@ -28,34 +28,32 @@ export default function MisCitasScreen() {
   return (
     <SafeAreaView className="flex-1 bg-atria-crema">
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
-        
+
         <Typography variant="h1" className="text-atria-oscuro text-center mt-4 mb-8">
           Mis Citas
         </Typography>
-        
+
         <View className="flex-row bg-gray-200 p-1 rounded-full mb-8">
-          <TouchableOpacity 
-            className={`flex-1 py-3 items-center rounded-full ${
-              activeTab === 'proximas' ? 'bg-atria-cafe' : ''
-            }`}
+          <TouchableOpacity
+            className={`flex-1 py-3 items-center rounded-full ${activeTab === 'proximas' ? 'bg-atria-cafe' : ''
+              }`}
             onPress={() => setActiveTab('proximas')}
           >
-            <Typography 
-              variant="subtitle" 
+            <Typography
+              variant="subtitle"
               className={activeTab === 'proximas' ? 'text-white' : 'text-atria-oscuro'}
             >
               Próximas
             </Typography>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
-            className={`flex-1 py-3 items-center rounded-full ${
-              activeTab === 'pasadas' ? 'bg-atria-cafe' : ''
-            }`}
+
+          <TouchableOpacity
+            className={`flex-1 py-3 items-center rounded-full ${activeTab === 'pasadas' ? 'bg-atria-cafe' : ''
+              }`}
             onPress={() => setActiveTab('pasadas')}
           >
-            <Typography 
-              variant="subtitle" 
+            <Typography
+              variant="subtitle"
               className={activeTab === 'pasadas' ? 'text-white' : 'text-atria-oscuro'}
             >
               Pasadas
@@ -80,9 +78,9 @@ export default function MisCitasScreen() {
                         {citasProximas.proxima_prioridad.especialidad_etiqueta}
                       </Typography>
                     </View>
-                    <Etiqueta 
+                    <Etiqueta
                       texto={citasProximas.proxima_prioridad.estado_badge || 'pendiente'}
-                      estado={citasProximas.proxima_prioridad.estado_badge?.toLowerCase() === 'confirmada' ? 'confirmada' : 'pendiente'} //[cite: 7, 5]
+                      estado={citasProximas.proxima_prioridad.estado_badge?.toLowerCase() === 'confirmada' ? 'confirmada' : 'pendiente'}
                     />
                   </View>
                   <View className="bg-atria-crema p-4 rounded-2xl mb-4 flex-row items-center">
@@ -91,7 +89,7 @@ export default function MisCitasScreen() {
                       {citasProximas.proxima_prioridad.fecha_frase} • {citasProximas.proxima_prioridad.hora_formateada}
                     </Typography>
                   </View>
-                  <Boton 
+                  <Boton
                     texto="Gestionar Cita"
                     onPress={() => router.push(`/gestionar-cita?id_cita=${citasProximas.proxima_prioridad?.id_cita}`)}
                   />
@@ -114,7 +112,7 @@ export default function MisCitasScreen() {
                         {cita.motivo_consulta || cita.especialidad_etiqueta} • {cita.fecha_corta}
                       </Typography>
                     </View>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       className="bg-atria-crema p-2 rounded-full"
                       onPress={() => router.push(`/gestionar-cita?id_cita=${cita.id_cita}`)}
                     >
@@ -145,7 +143,7 @@ export default function MisCitasScreen() {
             ))}
           </View>
         )}
-        
+
         <View className="h-24" />
       </ScrollView>
     </SafeAreaView>

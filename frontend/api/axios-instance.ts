@@ -2,7 +2,9 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 // Aquí es donde vive tu servidor de Express
 export const AXIOS_INSTANCE = axios.create({
-    baseURL: 'https://api.gabriel-roman.site/api',
+    baseURL: 'http://127.0.0.1:3000',
+    // https://api.gabriel-roman.site/api
+    // http://127.0.0.1:3000
 });
 
 // 1. Creamos una funcion para actualizar el token en las cabeceras de Axios
