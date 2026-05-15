@@ -1,39 +1,62 @@
-import React, { useState } from 'react';
-import { View, ScrollView, TouchableOpacity, Platform, Modal } from 'react-native'; // Modal agregado
+import React, { useState, useMemo } from 'react';
+import { View, ScrollView, TouchableOpacity, Modal, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Typography } from '../../components/ui/Typography';
 import { Boton } from '../../components/ui/Boton';
 import { Icono } from '../../components/ui/Icono';
 import { Card } from '../../components/ui/Card';
-import { CampoTexto } from '../../components/ui/CampoTexto';
 
 // Hook generado por Orval
 import { useBloquearAgenda } from '../../api/doctor-acciones/doctor-acciones';
+import { CampoTexto } from '../../components/ui/CampoTexto';
+
+// Configuración del calendario en español
+LocaleConfig.locales['es'] = {
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sep.', 'Oct.', 'Nov.', 'Dic.'],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['DO', 'LU', 'MA', 'MI', 'JU', 'VI', 'SA'],
+    today: 'Hoy'
+};
+LocaleConfig.defaultLocale = 'es';
 
 export default function BloquearAgendaScreen() {
     const router = useRouter();
 
-    // 1. Estados para los datos de la API
-    const [fechaInicio, setFechaInicio] = useState(new Date().toISOString().split('T')[0]);
-    const [fechaFin, setFechaFin] = useState(new Date().toISOString().split('T')[0]);
+    // 1. Estados para el Rango de Fechas
+    const [fechaInicio, setFechaInicio] = useState<string | null>(null);
+    const [fechaFin, setFechaFin] = useState<string | null>(null);
+
+    // 2. Estados para Horario
     const [horaInicio, setHoraInicio] = useState('08:00');
-    const [horaFin, setHoraFin] = useState('16:00');
+    const [horaFin, setHoraFin] = useState('20:00');
 
-    // 2. Estados para el Calendario
-    const [tempFechaInicio, setTempFechaInicio] = useState(new Date());
-    const [tempFechaFin, setTempFechaFin] = useState(new Date());
-    const [showPickerInicio, setShowPickerInicio] = useState(false);
-    const [showPickerFin, setShowPickerFin] = useState(false);
-
-    // 3. ESTADOS PARA EL MODAL DE AVISO
+    // 3. Estados para el Modal de Aviso (Atria Standard)
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalConfig, setModalConfig] = useState({
-        titulo: '',
-        mensaje: '',
-        esExito: false
+    const [modalConfig, setModalConfig] = useState({ titulo: '', mensaje: '', esExito: false });
+
+    // Estados para manejar los objetos Date internos del picker
+    const [tempHoraInicio, setTempHoraInicio] = useState(new Date(new Date().setHours(8, 0, 0, 0)));
+    const [tempHoraFin, setTempHoraFin] = useState(new Date(new Date().setHours(20, 0, 0, 0)));
+
+    // Estados para mostrar/ocultar los pickers
+    const [showPickerHoraInicio, setShowPickerHoraInicio] = useState(false);
+    const [showPickerHoraFin, setShowPickerHoraFin] = useState(false);
+
+    // Función para formatear la hora de Date a String HH:mm para la UI y API
+    const formatearHora = (date: Date) => {
+        return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false });
+    };
+
+    const { mutate: ejecutarBloqueo, isPending } = useBloquearAgenda({
+        mutation: {
+            onSuccess: () => mostrarAviso("🚨 Agenda Actualizada", "El horario ha sido bloqueado exitosamente.", true),
+            onError: () => mostrarAviso("❌ Error", "Conflicto detectado: Verifica que no existan citas en este horario.")
+        }
     });
 
     const mostrarAviso = (titulo: string, mensaje: string, esExito: boolean = false) => {
@@ -41,54 +64,44 @@ export default function BloquearAgendaScreen() {
         setModalVisible(true);
     };
 
-    const manejarCerrarModal = () => {
-        setModalVisible(false);
-        if (modalConfig.esExito) {
-            router.back(); // Si fue éxito, regresamos al cerrar
+    // 4. Lógica para marcar el rango en el calendario
+    const onDayPress = (day: any) => {
+        if (!fechaInicio || (fechaInicio && fechaFin)) {
+            setFechaInicio(day.dateString);
+            setFechaFin(null);
+        } else if (day.dateString >= fechaInicio) {
+            setFechaFin(day.dateString);
+        } else {
+            setFechaInicio(day.dateString);
+            setFechaFin(null);
         }
     };
 
-    const formatearFechaParaAPI = (date: Date) => date.toISOString().split('T')[0];
+    const markedDates = useMemo(() => {
+        if (!fechaInicio) return {};
+        let marked: any = {
+            [fechaInicio]: { startingDay: true, color: '#8B5E3C', textColor: 'white' }
+        };
 
-    const formatearFechaParaUI = (dateString: string) => {
-        const date = new Date(dateString + 'T00:00:00');
-        return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-    };
+        if (fechaFin) {
+            marked[fechaFin] = { endingDay: true, color: '#8B5E3C', textColor: 'white' };
 
-    const onChangeInicio = (event: DateTimePickerEvent, selectedDate?: Date) => {
-        if (Platform.OS === 'android') setShowPickerInicio(false);
-        if (selectedDate) {
-            setTempFechaInicio(selectedDate);
-            setFechaInicio(formatearFechaParaAPI(selectedDate));
-        }
-    };
-
-    const onChangeFin = (event: DateTimePickerEvent, selectedDate?: Date) => {
-        if (Platform.OS === 'android') setShowPickerFin(false);
-        if (selectedDate) {
-            setTempFechaFin(selectedDate);
-            setFechaFin(formatearFechaParaAPI(selectedDate));
-        }
-    };
-
-    // 4. Mutación con el Modal configurado
-    const { mutate: ejecutarBloqueo, isPending } = useBloquearAgenda({
-        mutation: {
-            onSuccess: () => {
-                mostrarAviso("🚨 Agenda Actualizada", "El horario ha sido bloqueado exitosamente.", true);
-            },
-            onError: () => {
-                mostrarAviso("❌ Error", "No se pudo realizar el bloqueo. Verifica que no tengas citas agendadas en ese rango.");
+            // Lógica para rellenar los días intermedios con color crema
+            let start = new Date(fechaInicio);
+            let end = new Date(fechaFin);
+            for (let d = new Date(start.setDate(start.getDate() + 1)); d < end; d.setDate(d.getDate() + 1)) {
+                const dateString = d.toISOString().split('T')[0];
+                marked[dateString] = { color: '#F4EFEA', textColor: '#8B5E3C' };
             }
         }
-    });
+        return marked;
+    }, [fechaInicio, fechaFin]);
 
     const manejarConfirmacion = () => {
-        if (new Date(fechaFin) < new Date(fechaInicio)) {
-            mostrarAviso("Fecha inválida", "La fecha 'Hasta' no puede ser anterior a la fecha 'Desde'.");
+        if (!fechaInicio || !fechaFin) {
+            mostrarAviso("Datos incompletos", "Por favor selecciona un rango de fechas en el calendario.");
             return;
         }
-
         ejecutarBloqueo({
             data: {
                 fecha_inicio: fechaInicio,
@@ -103,135 +116,129 @@ export default function BloquearAgendaScreen() {
         <SafeAreaView className="flex-1 bg-atria-crema">
             <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
 
-                {/* --- CABECERA --- */}
-                <View className="flex-row items-center mt-6 mb-10">
-                    <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} className="bg-white p-2 rounded-full shadow-sm">
+                {/* CABECERA */}
+                <View className="flex-row items-center mt-6 mb-8">
+                    <TouchableOpacity onPress={() => router.back()} className="bg-white p-2 rounded-full shadow-sm">
                         <Icono nombre="chevron-left" familia="Feather" color="oscuro" tamaño={24} />
                     </TouchableOpacity>
-                    <Typography variant="h1" className="ml-5 text-3xl text-atria-oscuro">Bloquear Horario</Typography>
+                    <Typography variant="h1" className="ml-5 text-2xl">Bloquear Horario</Typography>
                 </View>
 
-                {/* --- SECCIÓN DÍAS --- */}
-                <Card className="mb-6 p-6 shadow-lg bg-white">
-                    <View className="flex-row items-center mb-5 border-b border-gray-100 pb-3">
-                        <Icono nombre="calendar-outline" familia="Ionicons" color="cafe" tamaño={22} />
-                        <Typography variant="subtitle" className="ml-3 text-lg font-bold">Rango de días</Typography>
-                    </View>
+                {/* CALENDARIO DE RANGO */}
+                <View className="mb-6">
+                    <Typography variant="subtitle" className="mb-4">Rango de Fechas</Typography>
+                    <Card className="p-0 overflow-hidden" borde="arriba">
+                        <Calendar
+                            markingType={'period'}
+                            markedDates={markedDates}
+                            onDayPress={onDayPress}
+                            minDate={new Date().toISOString().split('T')[0]}
+                            theme={{
+                                calendarBackground: '#ffffff',
+                                textSectionTitleColor: '#8B9491',
+                                selectedDayBackgroundColor: '#8B5E3C',
+                                selectedDayTextColor: '#ffffff',
+                                todayTextColor: '#8B5E3C',
+                                dayTextColor: '#222B27',
+                                textDisabledColor: '#E5E7EB',
+                                monthTextColor: '#222B27',
+                                textMonthFontWeight: 'bold',
+                                arrowColor: '#8B5E3C',
+                            }}
+                        />
+                    </Card>
+                </View>
 
-                    <View className="flex-row justify-between">
-                        <TouchableOpacity
-                            className="w-[48%] border border-gray-200 rounded-2xl p-4 bg-gray-50"
-                            onPress={() => setShowPickerInicio(!showPickerInicio)}
-                        >
-                            <Typography variant="caption" className="text-atria-gris mb-1">Desde</Typography>
-                            <Typography variant="body" className="font-medium text-atria-oscuro">{formatearFechaParaUI(fechaInicio)}</Typography>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            className="w-[48%] border border-gray-200 rounded-2xl p-4 bg-gray-50"
-                            onPress={() => setShowPickerFin(!showPickerFin)}
-                        >
-                            <Typography variant="caption" className="text-atria-gris mb-1">Hasta</Typography>
-                            <Typography variant="body" className="font-medium text-atria-oscuro">{formatearFechaParaUI(fechaFin)}</Typography>
-                        </TouchableOpacity>
-                    </View>
-
-                    {showPickerInicio && (
-                        <View className="mt-4 border-t border-gray-100 pt-4 items-center">
-                            <DateTimePicker
-                                value={tempFechaInicio}
-                                mode="date"
-                                display={Platform.OS === 'ios' ? 'inline' : 'default'}
-                                onChange={onChangeInicio}
-                                locale="es-ES"
-                                minimumDate={new Date()}
-                                accentColor="#8B5E3C"
-                            />
-                            {Platform.OS === 'ios' && <Boton texto="Aceptar" variante="secundario" className="mt-2 w-full" onPress={() => setShowPickerInicio(false)} />}
-                        </View>
-                    )}
-
-                    {showPickerFin && (
-                        <View className="mt-4 border-t border-gray-100 pt-4 items-center">
-                            <DateTimePicker
-                                value={tempFechaFin}
-                                mode="date"
-                                display={Platform.OS === 'ios' ? 'inline' : 'default'}
-                                onChange={onChangeFin}
-                                locale="es-ES"
-                                minimumDate={tempFechaInicio}
-                                accentColor="#8B5E3C"
-                            />
-                            {Platform.OS === 'ios' && <Boton texto="Aceptar" variante="secundario" className="mt-2 w-full" onPress={() => setShowPickerFin(false)} />}
-                        </View>
-                    )}
-                </Card>
-
-                {/* --- SECCIÓN HORARIO --- */}
-                <Card className="mb-10 p-6 shadow-lg bg-white">
-                    <View className="flex-row items-center mb-5 border-b border-gray-100 pb-3">
-                        <Icono nombre="time-outline" familia="Ionicons" color="cafe" tamaño={22} />
-                        <Typography variant="subtitle" className="ml-3 text-lg font-bold">Rango de horario</Typography>
-                    </View>
-
-                    <View className="flex-row justify-between">
-                        <View className="w-[48%]">
-                            <Typography variant="caption" className="text-atria-gris mb-1">Desde</Typography>
-                            <CampoTexto
-                                placeholder="08:00"
-                                icono="clock"
-                                value={horaInicio}
-                                onChangeText={setHoraInicio}
-                                keyboardType="numbers-and-punctuation"
-                            />
-                        </View>
-                        <View className="w-[48%]">
-                            <Typography variant="caption" className="text-atria-gris mb-1">Hasta</Typography>
-                            <CampoTexto
-                                placeholder="16:00"
-                                icono="clock"
-                                value={horaFin}
-                                onChangeText={setHoraFin}
-                                keyboardType="numbers-and-punctuation"
-                            />
-                        </View>
-                    </View>
-                </Card>
-
+                {/* --- SECCIÓN: RANGO DE HORARIO --- */}
                 <View className="mb-10">
-                    <Boton
-                        texto={isPending ? "Procesando..." : "Confirmar Bloqueo"}
-                        variante={isPending ? "inactivo" : "primario"}
-                        onPress={manejarConfirmacion}
-                    >
-                        <Icono nombre="lock-closed-outline" familia="Ionicons" tamaño={20} />
-                    </Boton>
+                    <Typography variant="subtitle" className="mb-4">Rango de Horario</Typography>
+
+                    <Card className="p-5 flex-row justify-between bg-white shadow-lg">
+
+                        {/* Selector HORA INICIO */}
+                        <TouchableOpacity
+                            onPress={() => setShowPickerHoraInicio(true)}
+                            activeOpacity={0.7}
+                            className="flex-1 mr-2 items-center p-4 rounded-2xl bg-atria-crema/50 border border-atria-gris-claro"
+                        >
+                            <Typography variant="subtitle" className="text-[10px] mb-2">Inicio</Typography>
+                            <View className="flex-row items-center">
+                                <Icono nombre="time-outline" familia="Ionicons" tamaño={20} color="cafe" />
+                                <Typography variant="h2" className="ml-2 text-atria-cafe">
+                                    {formatearHora(tempHoraInicio)}
+                                </Typography>
+                            </View>
+                        </TouchableOpacity>
+
+                        {/* Selector HORA FIN */}
+                        <TouchableOpacity
+                            onPress={() => setShowPickerHoraFin(true)}
+                            activeOpacity={0.7}
+                            className="flex-1 ml-2 items-center p-4 rounded-2xl bg-atria-crema/50 border border-atria-gris-claro"
+                        >
+                            <Typography variant="subtitle" className="text-[10px] mb-2">Fin</Typography>
+                            <View className="flex-row items-center">
+                                <Icono nombre="time-outline" familia="Ionicons" tamaño={20} color="cafe" />
+                                <Typography variant="h2" className="ml-2 text-atria-cafe">
+                                    {formatearHora(tempHoraFin)}
+                                </Typography>
+                            </View>
+                        </TouchableOpacity>
+
+                    </Card>
+
+                    {/* PICKERS NATIVOS (Se activan al tocar las tarjetas) */}
+                    {showPickerHoraInicio && (
+                        <DateTimePicker
+                            value={tempHoraInicio}
+                            mode="time"
+                            is24Hour={true}
+                            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                            onChange={(event, date) => {
+                                if (Platform.OS === 'android') setShowPickerHoraInicio(false);
+                                if (date) {
+                                    setTempHoraInicio(date);
+                                    setHoraInicio(formatearHora(date)); // Actualiza el string para la API
+                                }
+                            }}
+                        />
+                    )}
+
+                    {showPickerHoraFin && (
+                        <DateTimePicker
+                            value={tempHoraFin}
+                            mode="time"
+                            is24Hour={true}
+                            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                            onChange={(event, date) => {
+                                if (Platform.OS === 'android') setShowPickerHoraFin(false);
+                                if (date) {
+                                    setTempHoraFin(date);
+                                    setHoraFin(formatearHora(date)); // Actualiza el string para la API
+                                }
+                            }}
+                        />
+                    )}
                 </View>
+
+                <Boton
+                    texto={isPending ? "Procesando..." : "Confirmar Bloqueo"}
+                    variante={isPending ? "inactivo" : "primario"}
+                    onPress={manejarConfirmacion}
+                >
+                    <Icono nombre="lock-closed-outline" familia="Ionicons" tamaño={20} />
+                </Boton>
 
                 <View className="h-10" />
             </ScrollView>
 
-            {/* --- MODAL DE AVISO PERSONALIZADO --- */}
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
+            {/* MODAL DE AVISO */}
+            <Modal animationType="fade" transparent={true} visible={modalVisible}>
                 <View className="flex-1 justify-center items-center bg-black/50 p-6">
                     <View className="bg-white w-full max-w-sm p-8 rounded-3xl items-center shadow-xl">
-                        <Typography variant="h2" className="text-atria-cafe mb-4 text-center">
-                            {modalConfig.titulo}
-                        </Typography>
-
-                        <Typography variant="body" className="text-center text-atria-gris mb-6">
-                            {modalConfig.mensaje}
-                        </Typography>
-
-                        <TouchableOpacity
-                            className="bg-atria-cafe py-2 px-8 rounded-full"
-                            onPress={manejarCerrarModal}
-                        >
+                        <Typography variant="h2" className="text-atria-cafe mb-4 text-center">{modalConfig.titulo}</Typography>
+                        <Typography variant="body" className="text-center text-atria-gris mb-6">{modalConfig.mensaje}</Typography>
+                        <TouchableOpacity className="bg-atria-cafe py-2 px-8 rounded-full" onPress={() => { setModalVisible(false); if (modalConfig.esExito) router.back(); }}>
                             <Typography variant="button" className="text-white">Entendido</Typography>
                         </TouchableOpacity>
                     </View>

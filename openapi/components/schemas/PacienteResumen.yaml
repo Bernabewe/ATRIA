@@ -1,0 +1,21 @@
+type: object
+required:
+  - id
+  - nombre
+  - ultima_consulta
+properties:
+  id:
+    type: string
+    format: uuid
+    example: "550e8400-e29b-41d4-a716-446655440000"
+  nombre:
+    type: string
+    example: "Ananna Smith"
+  ultima_consulta:
+    type: string
+    description: "Fecha o información de la última sesión con el paciente"
+    example: "12 Oct"
+  avatar_url:
+    type: string
+    format: uri
+    example: "https://ejemplo.com/avatar1.jpg"

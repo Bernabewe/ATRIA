@@ -10,7 +10,7 @@ import { CampoTexto } from '@/components/ui/CampoTexto';
 import { AuthRespuestaRol } from '../../api/models/authRespuestaRol';
 import { Feather } from '@expo/vector-icons';
 
-export default function Login(){
+export default function Login() {
   const router = useRouter();
   const { iniciarSesion } = useAuth();
 
@@ -35,7 +35,7 @@ export default function Login(){
     }, {
       onSuccess: (response) => {
         // 3. Si es exitoso, extraemos los datos que pide nuestro contexto
-        if(response.token && response.rol && response.usuario_id){
+        if (response.token && response.rol && response.usuario_id) {
           iniciarSesion({
             token: response.token,
             rol: response.rol,
@@ -58,10 +58,10 @@ export default function Login(){
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 px-6 pt-4"> {/* Ajustamos el padding superior */}
-        
+
         {/* BOTÓN DE ATRÁS */}
-        <TouchableOpacity 
-          onPress={() => router.back()} 
+        <TouchableOpacity
+          onPress={() => router.back()}
           className="mb-6 w-10 h-10 bg-atria-gris-claro rounded-full items-center justify-center"
         >
           <Feather name="arrow-left" size={24} color="#1A1A1B" />
@@ -100,7 +100,7 @@ export default function Login(){
           texto={isPending ? "Verificando..." : "Iniciar Sesión"}
           onPress={manejarLogin}
           variante="primario"
-          disabled={isPending} 
+          disabled={isPending}
         />
 
         {/* Componente Modal */}
@@ -108,7 +108,7 @@ export default function Login(){
           animationType="fade"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)} 
+          onRequestClose={() => setModalVisible(false)}
         >
           <View className="flex-1 justify-center items-center bg-black/50 px-6">
             <View className="bg-white w-full rounded-2xl p-6 items-center">
@@ -118,12 +118,12 @@ export default function Login(){
               <Typography variant="body" className="text-center text-atria-gris mb-6">
                 El correo o la contraseña son incorrectos. Por favor, revisa tus datos e intenta de nuevo.
               </Typography>
-              
+
               <View className="w-full">
-                <Boton 
-                  texto="Entendido" 
-                  variante="primario" 
-                  onPress={() => setModalVisible(false)} 
+                <Boton
+                  texto="Entendido"
+                  variante="primario"
+                  onPress={() => setModalVisible(false)}
                 />
               </View>
             </View>

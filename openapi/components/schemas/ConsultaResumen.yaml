@@ -1,0 +1,23 @@
+type: object
+required:
+  - id
+  - fecha
+  - titulo
+  - resumen
+properties:
+  id:
+    type: string
+    format: uuid
+    description: "ID de la consulta para ir al detalle completo"
+  fecha:
+    type: string
+    description: "Fecha formateada o ISO (ej. 15 DE AGOSTO, 2023)"
+    example: "15 DE AGOSTO, 2023"
+  titulo:
+    type: string
+    description: "Motivo principal o diagnóstico (ej. Faringitis Aguda)"
+    example: "Seguimiento de Hipertensión"
+  resumen:
+    type: string
+    description: "Breve descripción o notas principales de la consulta"
+    example: "Presión arterial estable en 125/82. Continuar con la dosis actual..."

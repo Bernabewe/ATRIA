@@ -1,0 +1,46 @@
+get:
+  operationId: obtenerExpedientePaciente
+  summary: "Obtiene el perfil del paciente y su historial de consultas"
+  tags:
+    - doctor_vistas
+  parameters:
+    - name: paciente_id
+      in: path
+      required: true
+      description: "ID del paciente seleccionado"
+      schema:
+        type: string
+        format: uuid
+    - $ref: "../../components/parameters.yaml#/busqueda_query"
+    - $ref: "../../components/parameters.yaml#/page_query"
+    - $ref: "../../components/parameters.yaml#/limit_query"
+  responses:
+    "200":
+      description: "Expediente cargado con éxito"
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - paciente_id
+              - nombre
+              - historial
+            properties:
+              paciente_id:
+                type: string
+                format: uuid
+              nombre:
+                type: string
+                example: "Mariana Martinéz"
+              avatar_url:
+                type: string
+                format: uri
+                example: "https://ejemplo.com/avatar_mariana.jpg"
+              historial:
+                type: array
+                items:
+                  $ref: "../../components/schemas/ConsultaResumen.yaml"
+    "404":
+      description: "Paciente no encontrado"
+    "500":
+      $ref: "../../components/responses.yaml#/ErrorInterno"

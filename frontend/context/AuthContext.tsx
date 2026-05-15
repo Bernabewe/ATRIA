@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         let sessionString = await storage.getItem(USER_STORAGE_KEY);
 
         if (!sessionString && __DEV__) {
-          const sessionPrueba = { token: 'mock-token', rol: 'doctor', usuario_id: 'dev-1' };
+          const sessionPrueba = { token: 'mock-token', rol: 'Paciente', usuario_id: 'dev-1' };
           sessionString = JSON.stringify(sessionPrueba);
         }
 

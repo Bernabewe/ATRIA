@@ -1,0 +1,73 @@
+type: object
+required:
+  - id
+  - estado
+  - paciente
+  - notas
+properties:
+  id:
+    type: string
+    format: uuid
+  estado:
+    type: string
+    enum: [ ACTIVA, FINALIZADA ]
+    description: "Define si el frontend debe renderizar la vista como editable o de
+      solo lectura."
+
+  # --- SECCIÓN: CABECERA DEL PACIENTE ---
+  paciente:
+    type: object
+    required:
+      - nombre
+      - edad
+      - peso
+      - alergias
+      - id_interno
+    properties:
+      nombre:
+        type: string
+        example: "Ana Flores"
+      avatar_url:
+        type: string
+        format: uri
+      edad:
+        type: integer
+        example: 33
+      peso:
+        type: string
+        example: "70kg"
+
+  # --- SECCIÓN: NOTAS CLÍNICAS ---
+  notas:
+    type: object
+    description: "Si el estado es ACTIVA, estos campos pueden venir nulos o vacíos
+      inicialmente."
+    properties:
+      interrogatorio:
+        type: string
+        example: "Dolor de cabeza severo..."
+      exploracion_fisica:
+        type: string
+        example: "Presión arterial 120/80..."
+      diagnostico:
+        type: string
+        example: "Migraña tensional"
+      tratamiento:
+        type: string
+        example: "Paracetamol 500mg cada 8 horas."
+
+  # --- SECCIÓN: ARCHIVOS ADJUNTOS ---
+  archivos_adjuntos:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        nombre:
+          type: string
+          example: "rayos_x_torax.pdf"
+        url:
+          type: string
+          format: uri

@@ -87,6 +87,15 @@ hora_query:
   schema:
     type: string
 
+# Filtro de búsqueda por texto
+busqueda_query:
+  name: q
+  in: query
+  description: "Busca pacientes por nombre"
+  required: false
+  schema:
+    type: string
+
 # Parámetros de paginación
 limit_query:
   name: limit

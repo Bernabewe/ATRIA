@@ -89,6 +89,8 @@ paths:
     $ref: "./paths/doctor/historial_paciente.yaml"
   /v1/views/doctor/nuevo_expediente:
     $ref: "./paths/doctor/nuevo_expediente.yaml"
+  /v1/views/doctor/expediente/{paciente_id}:
+    $ref: "./paths/doctor/expediente.yaml"
 
   # --- Finanzas ---
   /v1/views/doctor/pagos:
@@ -136,6 +138,12 @@ components:
       $ref: "./components/parameters.yaml#/fecha_query"
     HoraQuery:
       $ref: "./components/parameters.yaml#/hora_query"
+    BusquedaQuery:
+      $ref: "./components/parameters.yaml#/busqueda_query"
+    LimitQuery:
+      $ref: "./components/parameters.yaml#/limit_query"
+    PageQuery:
+      $ref: "./components/parameters.yaml#/page_query"
 
   responses:
     PeticionIncorrecta:
@@ -201,3 +209,7 @@ components:
       $ref: "./components/schemas/ProximaCitaDoctor.yaml"
     BloqueoAgendaBody:
       $ref: "./components/schemas/BloqueoAgendaBody.yaml"
+    PacienteResumen:
+      $ref: "./components/schemas/PacienteResumen.yaml"
+    ConsultaResumen:
+      $ref: "./components/schemas/ConsultaResumen.yaml"

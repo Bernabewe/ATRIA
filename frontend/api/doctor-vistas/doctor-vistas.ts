@@ -26,12 +26,17 @@ import type {
   ObtenerDatosNuevaConsulta200,
   ObtenerDatosNuevaConsulta401,
   ObtenerDatosNuevaConsultaParams,
+  ObtenerExpedientePaciente200,
+  ObtenerExpedientePaciente500,
+  ObtenerExpedientePacienteParams,
   ObtenerHistorialPacientePorDoctor200,
   ObtenerHistorialPacientePorDoctor401,
   ObtenerHistorialPacientePorDoctor404,
   ObtenerInicioDoctor200,
-  ObtenerPacientesDoctor200,
-  ObtenerPacientesDoctor401,
+  ObtenerPacientes200,
+  ObtenerPacientes401,
+  ObtenerPacientes500,
+  ObtenerPacientesParams,
   ObtenerPagosDoctor200,
   ObtenerPagosDoctor401,
   ObtenerPerfilDoctor200,
@@ -321,16 +326,17 @@ export function useObtenerAgendaDoctor<TData = Awaited<ReturnType<typeof obtener
 
 
 /**
- * @summary Obtener el directorio de pacientes atendidos
+ * @summary Obtiene el listado de pacientes del doctor
  */
-export const obtenerPacientesDoctor = (
-
+export const obtenerPacientes = (
+    params?: ObtenerPacientesParams,
  signal?: AbortSignal
 ) => {
 
 
-      return customInstance<ObtenerPacientesDoctor200>(
-      {url: `/v1/views/doctor/pacientes`, method: 'GET', signal
+      return customInstance<ObtenerPacientes200>(
+      {url: `/v1/views/doctor/pacientes`, method: 'GET',
+        params, signal
     },
       );
     }
@@ -338,69 +344,69 @@ export const obtenerPacientesDoctor = (
 
 
 
-export const getObtenerPacientesDoctorQueryKey = () => {
+export const getObtenerPacientesQueryKey = (params?: ObtenerPacientesParams,) => {
     return [
-    `/v1/views/doctor/pacientes`
+    `/v1/views/doctor/pacientes`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getObtenerPacientesDoctorQueryOptions = <TData = Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError = ObtenerPacientesDoctor401>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError, TData>>, }
+export const getObtenerPacientesQueryOptions = <TData = Awaited<ReturnType<typeof obtenerPacientes>>, TError = ObtenerPacientes401 | ObtenerPacientes500>(params?: ObtenerPacientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientes>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getObtenerPacientesDoctorQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getObtenerPacientesQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerPacientesDoctor>>> = ({ signal }) => obtenerPacientesDoctor(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerPacientes>>> = ({ signal }) => obtenerPacientes(params, signal);
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type ObtenerPacientesDoctorQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerPacientesDoctor>>>
-export type ObtenerPacientesDoctorQueryError = ObtenerPacientesDoctor401
+export type ObtenerPacientesQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerPacientes>>>
+export type ObtenerPacientesQueryError = ObtenerPacientes401 | ObtenerPacientes500
 
 
-export function useObtenerPacientesDoctor<TData = Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError = ObtenerPacientesDoctor401>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError, TData>> & Pick<
+export function useObtenerPacientes<TData = Awaited<ReturnType<typeof obtenerPacientes>>, TError = ObtenerPacientes401 | ObtenerPacientes500>(
+ params: undefined |  ObtenerPacientesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientes>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof obtenerPacientesDoctor>>,
+          Awaited<ReturnType<typeof obtenerPacientes>>,
           TError,
-          Awaited<ReturnType<typeof obtenerPacientesDoctor>>
+          Awaited<ReturnType<typeof obtenerPacientes>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerPacientesDoctor<TData = Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError = ObtenerPacientesDoctor401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError, TData>> & Pick<
+export function useObtenerPacientes<TData = Awaited<ReturnType<typeof obtenerPacientes>>, TError = ObtenerPacientes401 | ObtenerPacientes500>(
+ params?: ObtenerPacientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientes>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof obtenerPacientesDoctor>>,
+          Awaited<ReturnType<typeof obtenerPacientes>>,
           TError,
-          Awaited<ReturnType<typeof obtenerPacientesDoctor>>
+          Awaited<ReturnType<typeof obtenerPacientes>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useObtenerPacientesDoctor<TData = Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError = ObtenerPacientesDoctor401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError, TData>>, }
+export function useObtenerPacientes<TData = Awaited<ReturnType<typeof obtenerPacientes>>, TError = ObtenerPacientes401 | ObtenerPacientes500>(
+ params?: ObtenerPacientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientes>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Obtener el directorio de pacientes atendidos
+ * @summary Obtiene el listado de pacientes del doctor
  */
 
-export function useObtenerPacientesDoctor<TData = Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError = ObtenerPacientesDoctor401>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientesDoctor>>, TError, TData>>, }
+export function useObtenerPacientes<TData = Awaited<ReturnType<typeof obtenerPacientes>>, TError = ObtenerPacientes401 | ObtenerPacientes500>(
+ params?: ObtenerPacientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerPacientes>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getObtenerPacientesDoctorQueryOptions(options)
+  const queryOptions = getObtenerPacientesQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -586,6 +592,106 @@ export function useObtenerDatosNuevaConsulta<TData = Awaited<ReturnType<typeof o
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getObtenerDatosNuevaConsultaQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+/**
+ * @summary Obtiene el perfil del paciente y su historial de consultas
+ */
+export const obtenerExpedientePaciente = (
+    pacienteId: string,
+    params?: ObtenerExpedientePacienteParams,
+ signal?: AbortSignal
+) => {
+
+
+      return customInstance<ObtenerExpedientePaciente200>(
+      {url: `/v1/views/doctor/expediente/${pacienteId}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+
+
+
+
+export const getObtenerExpedientePacienteQueryKey = (pacienteId: string,
+    params?: ObtenerExpedientePacienteParams,) => {
+    return [
+    `/v1/views/doctor/expediente/${pacienteId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getObtenerExpedientePacienteQueryOptions = <TData = Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError = void | ObtenerExpedientePaciente500>(pacienteId: string,
+    params?: ObtenerExpedientePacienteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getObtenerExpedientePacienteQueryKey(pacienteId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof obtenerExpedientePaciente>>> = ({ signal }) => obtenerExpedientePaciente(pacienteId,params, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(pacienteId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ObtenerExpedientePacienteQueryResult = NonNullable<Awaited<ReturnType<typeof obtenerExpedientePaciente>>>
+export type ObtenerExpedientePacienteQueryError = void | ObtenerExpedientePaciente500
+
+
+export function useObtenerExpedientePaciente<TData = Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError = void | ObtenerExpedientePaciente500>(
+ pacienteId: string,
+    params: undefined |  ObtenerExpedientePacienteParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof obtenerExpedientePaciente>>,
+          TError,
+          Awaited<ReturnType<typeof obtenerExpedientePaciente>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useObtenerExpedientePaciente<TData = Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError = void | ObtenerExpedientePaciente500>(
+ pacienteId: string,
+    params?: ObtenerExpedientePacienteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof obtenerExpedientePaciente>>,
+          TError,
+          Awaited<ReturnType<typeof obtenerExpedientePaciente>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useObtenerExpedientePaciente<TData = Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError = void | ObtenerExpedientePaciente500>(
+ pacienteId: string,
+    params?: ObtenerExpedientePacienteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Obtiene el perfil del paciente y su historial de consultas
+ */
+
+export function useObtenerExpedientePaciente<TData = Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError = void | ObtenerExpedientePaciente500>(
+ pacienteId: string,
+    params?: ObtenerExpedientePacienteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof obtenerExpedientePaciente>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getObtenerExpedientePacienteQueryOptions(pacienteId,params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

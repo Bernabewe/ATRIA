@@ -1,37 +1,31 @@
 get:
-  operationId: obtenerPacientesDoctor
-  summary: Obtener el directorio de pacientes atendidos
+  operationId: obtenerPacientes
+  summary: "Obtiene el listado de pacientes del doctor"
   tags:
     - doctor_vistas
+  parameters:
+    - $ref: "../../components/parameters.yaml#/busqueda_query"
+    - $ref: "../../components/parameters.yaml#/page_query"
+    - $ref: "../../components/parameters.yaml#/limit_query"
   responses:
     "200":
-      description: Directorio de pacientes cargado.
+      description: "Lista de pacientes obtenida con éxito"
       content:
         application/json:
           schema:
             type: object
             properties:
-              pacientes_recientes:
+              pacientes:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id_paciente:
-                      type: string
-                      format: uuid
-                    foto_perfil_url:
-                      type: string
-                      format: uri
-                    nombre_completo:
-                      type: string
-                      example: "Ananna Smith"
-                    id_paciente_corto:
-                      type: string
-                      example: "ID: 88210"
-                    indicador_estado:
-                      type: boolean
-                    cita_info_resumen:
-                      type: string
-                      example: "Próxima cita: Hoy, 4:00 PM"
+                  $ref: "../../components/schemas/PacienteResumen.yaml"
+              meta:
+                type: object
+                properties:
+                  total_resultados:
+                    type: integer
+                    example: 10
     "401":
       $ref: "../../components/responses.yaml#/NoAutorizado"
+    "500":
+      $ref: "../../components/responses.yaml#/ErrorInterno"
